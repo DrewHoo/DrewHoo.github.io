@@ -1,6 +1,6 @@
 ---
-title: CFB All-Time Championship Grid
-blurb: Every NCAA Division I national champion in 23 sports from 1990 to present, as a hoverable grid of school logos. Hover any cell to highlight every other championship that school has won across all sports and years.
+title: NCAA D1 All-Time Championship Grid
+blurb: Every NCAA Division I national champion in 30 sports from 1990 to present, as a hoverable grid of school logos. Hover any cell to highlight every other championship that school has won across all sports and years.
 liveUrl: https://drewhoo.github.io/cfb-all-time-records/
 repoUrl: https://github.com/DrewHoo/cfb-all-time-records
 stack:
