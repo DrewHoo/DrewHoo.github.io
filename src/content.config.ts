@@ -1,14 +1,19 @@
 import { glob } from 'astro/loaders';
 import { defineCollection, z } from 'astro:content';
+import { hashnodeLoader } from './loaders/hashnode';
+
+const HASHNODE_HOST = process.env.HASHNODE_PUBLICATION_HOST ?? 'drewhoover.com';
 
 const blog = defineCollection({
-	loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
+	loader: hashnodeLoader({ host: HASHNODE_HOST }),
 	schema: z.object({
 		title: z.string(),
 		description: z.string(),
 		pubDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),
 		heroImage: z.string().optional(),
+		tags: z.array(z.string()).default([]),
+		hashnodeId: z.string().optional(),
 	}),
 });
 

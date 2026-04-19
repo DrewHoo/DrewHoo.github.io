@@ -27,6 +27,15 @@ Built with [Astro](https://astro.build/) and deployed as a GitHub Pages **User S
 3. Optionally add an MDX body under the frontmatter for a longer writeup — it will render at `/projects/<slug>/`.
 4. `git push`. The GitHub Action rebuilds and redeploys.
 
+## Blog content (headless Hashnode)
+
+Blog posts live in [Hashnode](https://hashnode.com/) and are fetched at build time via their GraphQL API (`gql.hashnode.com`) — no migration, no local markdown files. Keep writing in the Hashnode editor; the next build/deploy picks up changes.
+
+- Publication host is configured in [src/content.config.ts](src/content.config.ts) (defaults to `drewhoover.com`, overridable via `HASHNODE_PUBLICATION_HOST` env var).
+- The loader lives at [src/loaders/hashnode.ts](src/loaders/hashnode.ts) and paginates through all published posts.
+- Images (cover and inline) stay on Hashnode's CDN.
+- To pick up new or edited posts, trigger a rebuild — either push any commit, or re-run the deploy workflow manually from the Actions tab.
+
 ## Local development
 
 ```bash
@@ -78,8 +87,9 @@ The actual integration in `DrewHoo/cfb-all-time-records` and `DrewHoo/space-rock
 src/
   components/   ProjectCard, ProjectGrid, Divider, Header, Footer, BaseHead, ...
   content/
-    blog/       Blog posts (markdown + MDX). Empty for now.
     projects/   One markdown file per project card.
+  loaders/
+    hashnode.ts Custom Astro content loader — pulls blog posts from Hashnode's GraphQL API at build time.
   layouts/      BlogPost layout.
   pages/
     index.astro             Card grid.
