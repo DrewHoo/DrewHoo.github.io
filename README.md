@@ -81,6 +81,20 @@ To opt out on a specific page, add `data-dhv-back-bar="off"` to the `<html>` or 
 
 The actual integration in `DrewHoo/cfb-all-time-records` and `DrewHoo/space-rock` is a follow-up task in those repos; this repo only ships the snippet.
 
+## Comments on project sites
+
+`public/embed/giscus.js` mounts a [giscus](https://giscus.app/) comment thread on any sibling site. Comments are stored in this repo's GitHub Discussions (category: **Comments**), so moderation happens in one place regardless of which project a visitor comments on. Threads are keyed by `pathname`, so `drewhoover.com/space-rock/` and `drewhoover.com/cfb-all-time-records/` each get their own.
+
+Usage in a sibling repo's HTML:
+
+```html
+<script src="https://drewhoover.com/embed/giscus.js" async></script>
+```
+
+Placement: if the page includes `<div id="comments">`, the widget mounts there. Otherwise it appends to the bottom of `<body>`. Opt out per-page with `data-dhv-giscus="off"` on `<html>` or `<body>`.
+
+Theme follows `prefers-color-scheme` to match the rest of the ecosystem. Requires Discussions enabled on `DrewHoo/DrewHoo.github.io` and the [giscus GitHub app](https://github.com/apps/giscus) installed on it.
+
 ## Structure
 
 ```
@@ -100,7 +114,7 @@ src/
     rss.xml.js              Blog RSS feed.
   styles/global.css         One hand-written stylesheet.
 public/
-  CNAME, favicon.svg, fonts/, embed/back-bar.js
+  CNAME, favicon.svg, fonts/, embed/back-bar.js, embed/giscus.js
 ```
 
 ## Style / design notes
