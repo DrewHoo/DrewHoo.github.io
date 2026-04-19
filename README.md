@@ -31,7 +31,7 @@ Built with [Astro](https://astro.build/) and deployed as a GitHub Pages **User S
 
 Blog posts live in [Hashnode](https://hashnode.com/) and are fetched at build time via their GraphQL API (`gql.hashnode.com`) — no migration, no local markdown files. Keep writing in the Hashnode editor; the next build/deploy picks up changes.
 
-- Publication host is configured in [src/content.config.ts](src/content.config.ts) (defaults to `drewhoover.com`, overridable via `HASHNODE_PUBLICATION_HOST` env var).
+- Publication host is configured in [src/content.config.ts](src/content.config.ts) (defaults to `drewhoo.hashnode.dev`, overridable via `HASHNODE_PUBLICATION_HOST` env var).
 - The loader lives at [src/loaders/hashnode.ts](src/loaders/hashnode.ts) and paginates through all published posts.
 - Images (cover and inline) stay on Hashnode's CDN.
 - New/edited posts auto-deploy via a Hashnode webhook → [Netlify Function](webhook/README.md) → GitHub `repository_dispatch` → deploy workflow. To force a rebuild manually, push a commit or re-run the workflow from the Actions tab.

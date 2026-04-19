@@ -2,7 +2,7 @@ import { glob } from 'astro/loaders';
 import { defineCollection, z } from 'astro:content';
 import { hashnodeLoader } from './loaders/hashnode';
 
-const HASHNODE_HOST = process.env.HASHNODE_PUBLICATION_HOST ?? 'drewhoover.com';
+const HASHNODE_HOST = process.env.HASHNODE_PUBLICATION_HOST ?? 'drewhoo.hashnode.dev';
 
 const blog = defineCollection({
 	loader: hashnodeLoader({ host: HASHNODE_HOST }),
