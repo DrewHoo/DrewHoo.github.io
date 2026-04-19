@@ -13,69 +13,34 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 <html lang="en">
 	<head>
 		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-			}
-		</style>
 	</head>
-
 	<body>
 		<Header />
 		<main>
+			<p class="back"><a href="/blog">← back to the blog</a></p>
+
 			<article>
-				<div class="hero-image">
-					{heroImage && <img width={1020} height={510} src={heroImage} alt="" />}
-				</div>
+				<header class="post-head">
+					<p class="date">
+						<FormattedDate date={pubDate} />
+						{
+							updatedDate && (
+								<span class="last-updated">
+									· updated <FormattedDate date={updatedDate} />
+								</span>
+							)
+						}
+					</p>
+					<h1>{title}</h1>
+					<p class="desc">{description}</p>
+					{
+						heroImage && (
+							<img class="hero" width={1020} height={510} src={heroImage} alt="" />
+						)
+					}
+				</header>
+
 				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
 					<slot />
 				</div>
 			</article>
@@ -83,3 +48,35 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 		<Footer />
 	</body>
 </html>
+
+<style>
+	.back {
+		font-family: 'Space Mono', ui-monospace, monospace;
+		font-size: 0.9rem;
+		margin: 0 0 1.5rem;
+	}
+	.post-head {
+		margin-bottom: 2rem;
+	}
+	.date {
+		font-family: 'Space Mono', ui-monospace, monospace;
+		font-size: 0.85rem;
+		color: var(--ink-soft);
+		margin: 0 0 0.5rem;
+	}
+	.last-updated {
+		font-style: italic;
+	}
+	.desc {
+		font-size: 1.15rem;
+		color: var(--ink-soft);
+		max-width: 56ch;
+	}
+	.hero {
+		margin-top: 1.5rem;
+		width: 100%;
+	}
+	.prose {
+		max-width: var(--measure);
+	}
+</style>

@@ -1,0 +1,133 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+
+export async function getStaticPaths() {
+	const projects = await getCollection('projects');
+	return projects.map((project) => ({
+		params: { slug: project.id },
+		props: project,
+	}));
+}
+
+type Props = CollectionEntry<'projects'>;
+
+const project = Astro.props;
+const { title, blurb, liveUrl, repoUrl, stack, updated, note } = project.data;
+const { Content } = await render(project);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`${title} — drewhoover.com`} description={blurb} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<p class="back"><a href="/">← back to the index</a></p>
+
+			<article>
+				<header class="proj-head">
+					<p class="kicker">// project</p>
+					<h1>{title}</h1>
+					<p class="blurb">{blurb}</p>
+
+					<dl class="facts">
+						<dt>live</dt>
+						<dd>
+							<a href={liveUrl} target="_blank" rel="noopener">
+								{liveUrl}<span aria-hidden="true"> ↗</span>
+							</a>
+						</dd>
+						{
+							repoUrl && (
+								<>
+									<dt>source</dt>
+									<dd>
+										<a href={repoUrl} target="_blank" rel="noopener">
+											{repoUrl}<span aria-hidden="true"> ↗</span>
+										</a>
+									</dd>
+								</>
+							)
+						}
+						{
+							stack.length > 0 && (
+								<>
+									<dt>stack</dt>
+									<dd>{stack.join(', ')}</dd>
+								</>
+							)
+						}
+						<dt>updated</dt>
+						<dd><FormattedDate date={updated} /></dd>
+					</dl>
+
+					{note && <p class="note">{note}</p>}
+				</header>
+
+				<div class="prose">
+					<Content />
+				</div>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.back {
+		font-family: 'Space Mono', ui-monospace, monospace;
+		font-size: 0.9rem;
+		margin: 0 0 1.5rem;
+	}
+	.proj-head {
+		margin-bottom: 2rem;
+	}
+	.kicker {
+		font-family: 'Space Mono', ui-monospace, monospace;
+		font-size: 0.85rem;
+		color: var(--hot);
+		margin: 0 0 0.5rem;
+	}
+	.blurb {
+		font-size: 1.15rem;
+		color: var(--ink-soft);
+		max-width: 56ch;
+	}
+	.facts {
+		display: grid;
+		grid-template-columns: max-content 1fr;
+		gap: 0.25rem 1rem;
+		margin: 1.5rem 0 1rem;
+		padding: 1rem 1.25rem;
+		border: 2px solid var(--rule);
+		background-color: var(--paper-deep);
+		font-size: 0.95rem;
+	}
+	.facts dt {
+		font-family: 'Space Mono', ui-monospace, monospace;
+		font-weight: 700;
+		text-transform: lowercase;
+		color: var(--ink-soft);
+		margin: 0;
+	}
+	.facts dd {
+		margin: 0;
+		word-break: break-word;
+	}
+	.note {
+		font-style: italic;
+		color: var(--ink-soft);
+		font-size: 0.95rem;
+	}
+	.prose :global(p),
+	.prose :global(ul),
+	.prose :global(ol) {
+		max-width: var(--measure);
+	}
+</style>

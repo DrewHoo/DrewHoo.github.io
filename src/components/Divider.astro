@@ -1,0 +1,22 @@
+---
+interface Props {
+	label?: string;
+}
+const { label } = Astro.props;
+---
+
+<div class="divider" role="separator" aria-label={label}>
+	<span aria-hidden="true">{label ?? '·  *  ·  *  ·  *  ·'}</span>
+</div>
+
+<style>
+	.divider {
+		text-align: center;
+		margin: 2.5rem 0;
+		font-family: 'Space Mono', ui-monospace, monospace;
+		font-weight: 700;
+		font-size: 0.9rem;
+		color: var(--ink-soft);
+		letter-spacing: 0.2em;
+	}
+</style>

@@ -1,0 +1,160 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { title, blurb, liveUrl, repoUrl, stack, note } = project.data;
+const liveHost = new URL(liveUrl).host + new URL(liveUrl).pathname.replace(/\/$/, '');
+---
+
+<article class="card">
+	<header class="card-head">
+		<h3 class="title">
+			<a href={liveUrl} target="_blank" rel="noopener">
+				{title}<span class="arrow" aria-hidden="true">&nbsp;↗</span>
+				<span class="sr-only">(opens in new tab)</span>
+			</a>
+		</h3>
+		<p class="url"><span aria-hidden="true">→ </span>{liveHost}</p>
+	</header>
+
+	<p class="blurb">{blurb}</p>
+
+	{
+		stack.length > 0 && (
+			<ul class="stack" aria-label="Stack">
+				{stack.map((s) => (
+					<li>{s}</li>
+				))}
+			</ul>
+		)
+	}
+
+	<footer class="card-foot">
+		<a class="primary" href={liveUrl} target="_blank" rel="noopener">
+			visit project
+		</a>
+		{
+			repoUrl && (
+				<a class="secondary" href={repoUrl} target="_blank" rel="noopener">
+					source
+				</a>
+			)
+		}
+		{note && <p class="note">{note}</p>}
+	</footer>
+</article>
+
+<style>
+	.card {
+		background-color: var(--paper);
+		border: 2px solid var(--rule);
+		box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--rule);
+		padding: 1.25rem 1.25rem 1.1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		transition: transform 120ms ease-out, box-shadow 120ms ease-out;
+	}
+	.card:hover,
+	.card:focus-within {
+		transform: translate(2px, 2px);
+		box-shadow: var(--shadow-offset-pressed) var(--shadow-offset-pressed) 0 var(--rule);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.card {
+			transition: none;
+		}
+		.card:hover,
+		.card:focus-within {
+			transform: none;
+		}
+	}
+	.card-head {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+	}
+	.title {
+		margin: 0;
+		font-size: 1.2rem;
+		line-height: 1.25;
+	}
+	.title a {
+		color: var(--ink);
+		text-decoration: underline;
+		text-decoration-thickness: 2px;
+		text-decoration-color: var(--hot);
+		text-underline-offset: 4px;
+	}
+	.title a:hover {
+		background: var(--acid);
+		color: var(--ink);
+	}
+	.arrow {
+		display: inline-block;
+	}
+	.url {
+		margin: 0;
+		max-width: none;
+		font-family: 'Space Mono', ui-monospace, monospace;
+		font-size: 0.78rem;
+		color: var(--ink-soft);
+		word-break: break-all;
+	}
+	.blurb {
+		margin: 0;
+		max-width: none;
+		font-size: 1rem;
+		line-height: 1.55;
+	}
+	.stack {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		max-width: none;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+	}
+	.stack li {
+		font-family: 'Space Mono', ui-monospace, monospace;
+		font-size: 0.72rem;
+		padding: 0.15em 0.5em;
+		border: 1px solid var(--rule);
+		background-color: var(--paper-deep);
+		margin: 0;
+	}
+	.card-foot {
+		margin-top: auto;
+		padding-top: 0.5rem;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.5rem 1rem;
+		border-top: 1px dashed var(--ink-soft);
+	}
+	.primary {
+		font-family: 'Space Mono', ui-monospace, monospace;
+		font-weight: 700;
+		font-size: 0.9rem;
+		color: var(--hot);
+		text-decoration-thickness: 2px;
+	}
+	.secondary {
+		font-family: 'Space Mono', ui-monospace, monospace;
+		font-size: 0.85rem;
+		color: var(--ink-soft);
+	}
+	.note {
+		flex-basis: 100%;
+		margin: 0.25rem 0 0;
+		max-width: none;
+		font-size: 0.8rem;
+		font-style: italic;
+		color: var(--ink-soft);
+	}
+</style>
