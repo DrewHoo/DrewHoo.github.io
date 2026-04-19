@@ -34,7 +34,7 @@ Blog posts live in [Hashnode](https://hashnode.com/) and are fetched at build ti
 - Publication host is configured in [src/content.config.ts](src/content.config.ts) (defaults to `drewhoover.com`, overridable via `HASHNODE_PUBLICATION_HOST` env var).
 - The loader lives at [src/loaders/hashnode.ts](src/loaders/hashnode.ts) and paginates through all published posts.
 - Images (cover and inline) stay on Hashnode's CDN.
-- To pick up new or edited posts, trigger a rebuild — either push any commit, or re-run the deploy workflow manually from the Actions tab.
+- New/edited posts auto-deploy via a Hashnode webhook → [Netlify Function](webhook/README.md) → GitHub `repository_dispatch` → deploy workflow. To force a rebuild manually, push a commit or re-run the workflow from the Actions tab.
 
 ## Local development
 

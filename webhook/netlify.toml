@@ -1,0 +1,7 @@
+[build]
+  # No static site — this Netlify site exists only to host the webhook function.
+  publish = "public"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"

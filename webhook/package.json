@@ -1,0 +1,9 @@
+{
+  "name": "drewhoover-webhook",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "devDependencies": {
+    "@netlify/functions": "^2.8.2"
+  }
+}
