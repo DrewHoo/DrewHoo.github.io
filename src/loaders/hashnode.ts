@@ -64,67 +64,75 @@ export function hashnodeLoader({ host, pageSize = 20 }: Options): Loader {
 			let page = 0;
 			let total = 0;
 
-			while (true) {
-				page++;
-				const res = await fetch(ENDPOINT, {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({
-						query: POSTS_QUERY,
-						variables: { host, first: pageSize, after },
-					}),
-				});
-
-				if (!res.ok) {
-					throw new Error(`Hashnode API ${res.status}: ${await res.text()}`);
-				}
-
-				const json = (await res.json()) as {
-					data?: { publication: { posts: { edges: { node: HashnodePost }[]; pageInfo: { hasNextPage: boolean; endCursor: string | null } } } | null };
-					errors?: { message: string }[];
-				};
-
-				if (json.errors?.length) {
-					throw new Error(`Hashnode GraphQL errors: ${json.errors.map((e) => e.message).join('; ')}`);
-				}
-
-				const publication = json.data?.publication;
-				if (!publication) {
-					logger.warn(`No Hashnode publication found for host "${host}"`);
-					return;
-				}
-
-				const { edges, pageInfo } = publication.posts;
-				for (const { node } of edges) {
-					const body = node.content?.markdown ?? '';
-					const data = await parseData({
-						id: node.slug,
-						data: {
-							title: node.title,
-							description: node.subtitle?.trim() || node.brief?.trim() || '',
-							pubDate: new Date(node.publishedAt),
-							updatedDate: node.updatedAt ? new Date(node.updatedAt) : undefined,
-							heroImage: node.coverImage?.url,
-							tags: node.tags?.map((t) => t.name) ?? [],
-							hashnodeId: node.id,
-						},
+			try {
+				while (true) {
+					page++;
+					const res = await fetch(ENDPOINT, {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({
+							query: POSTS_QUERY,
+							variables: { host, first: pageSize, after },
+						}),
 					});
-					const rendered = await renderMarkdown(body);
-					store.set({
-						id: node.slug,
-						data,
-						body,
-						rendered,
-						digest: generateDigest({ data, body }),
-					});
-					total++;
+
+					if (!res.ok) {
+						throw new Error(`Hashnode API ${res.status}: ${await res.text()}`);
+					}
+
+					const json = (await res.json()) as {
+						data?: { publication: { posts: { edges: { node: HashnodePost }[]; pageInfo: { hasNextPage: boolean; endCursor: string | null } } } | null };
+						errors?: { message: string }[];
+					};
+
+					if (json.errors?.length) {
+						throw new Error(`Hashnode GraphQL errors: ${json.errors.map((e) => e.message).join('; ')}`);
+					}
+
+					const publication = json.data?.publication;
+					if (!publication) {
+						logger.warn(`No Hashnode publication found for host "${host}"`);
+						return;
+					}
+
+					const { edges, pageInfo } = publication.posts;
+					for (const { node } of edges) {
+						const body = node.content?.markdown ?? '';
+						const data = await parseData({
+							id: node.slug,
+							data: {
+								title: node.title,
+								description: node.subtitle?.trim() || node.brief?.trim() || '',
+								pubDate: new Date(node.publishedAt),
+								updatedDate: node.updatedAt ? new Date(node.updatedAt) : undefined,
+								heroImage: node.coverImage?.url,
+								tags: node.tags?.map((t) => t.name) ?? [],
+								hashnodeId: node.id,
+							},
+						});
+						const rendered = await renderMarkdown(body);
+						store.set({
+							id: node.slug,
+							data,
+							body,
+							rendered,
+							digest: generateDigest({ data, body }),
+						});
+						total++;
+					}
+
+					if (!pageInfo.hasNextPage) break;
+					after = pageInfo.endCursor;
 				}
 
-				if (!pageInfo.hasNextPage) break;
-				after = pageInfo.endCursor;
+				logger.info(`Loaded ${total} Hashnode post${total === 1 ? '' : 's'} from "${host}" (${page} page${page === 1 ? '' : 's'})`);
+			} catch (err) {
+				// Don't fail the whole site build when the blog backend is flaky.
+				// The blog collection will be empty for this build; the next
+				// successful sync repopulates it.
+				const msg = err instanceof Error ? err.message : String(err);
+				logger.warn(`Hashnode load failed (${msg}). Skipping blog content for this build.`);
 			}
-
-			logger.info(`Loaded ${total} Hashnode post${total === 1 ? '' : 's'} from "${host}" (${page} page${page === 1 ? '' : 's'})`);
 		},
 	};
 }
