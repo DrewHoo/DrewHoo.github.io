@@ -41,6 +41,14 @@ const posts = (await getCollection('blog')).sort(
 									<h3>{post.data.title}</h3>
 									<p class="date">
 										<FormattedDate date={post.data.pubDate} />
+										{post.data.aiWritten && (
+											<span
+												class="ai-badge"
+												title="The hands-on work and first draft were done by an AI agent (Claude Code), under the author's direction."
+											>
+												🤖 written by AI
+											</span>
+										)}
 									</p>
 									<p class="desc">{post.data.description}</p>
 								</a>
@@ -103,6 +111,18 @@ const posts = (await getCollection('blog')).sort(
 		font-size: 0.8rem;
 		color: var(--ink-soft);
 		max-width: none;
+	}
+	.ai-badge {
+		display: inline-block;
+		margin-left: 0.6rem;
+		padding: 0.1em 0.5em;
+		font-size: 0.7rem;
+		letter-spacing: 0.02em;
+		border: 1.5px solid var(--rule);
+		background-color: var(--acid);
+		color: var(--ink);
+		vertical-align: middle;
+		white-space: nowrap;
 	}
 	.desc {
 		margin: 0;

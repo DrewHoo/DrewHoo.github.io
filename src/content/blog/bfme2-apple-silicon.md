@@ -3,6 +3,7 @@ title: "Getting Battle for Middle-earth II to run on an Apple Silicon Mac (no VM
 description: "A field report on dragging BFME2 — a 2006 DirectX 9 game — to a working main menu on an M5 Mac through CrossOver and Rosetta, the four fixes it took, and the exact wall where it stops."
 pubDate: 2026-06-19
 heroImage: /blog/bfme2-apple-silicon-og.png
+aiWritten: true
 tags:
   - Apple Silicon
   - Mac gaming
@@ -11,9 +12,9 @@ tags:
   - BFME2
 ---
 
-I spent a week trying to play a twenty-year-old game on a brand-new laptop, and I want to write down exactly what happened — partly because it's a fun reverse-engineering story, and partly because when I started, the entire public internet said it couldn't be done and offered no details on *why*.
+I wanted to play a twenty-year-old game on a brand-new laptop, and what follows is exactly what happened — partly because it's a fun reverse-engineering story, and partly because when I started, the entire public internet said it couldn't be done and offered no details on *why*.
 
-> **How this was made — full disclosure.** The hands-on work behind this post was done by an AI coding agent: Anthropic's Claude, driving [Claude Code](https://claude.com/claude-code), working in my environment under my direction. The agent did the week of debugging — parsing the minidumps, repacking the `.big` archives, defeating the code-signing monitor, byte-patching MoltenVK — and wrote the first draft of this write-up. I set the goal, steered the investigation, reviewed everything, and I stand behind the findings; it's published under my name on that basis. So when I say "I" below, read it as "me and my very persistent robot." The point of doing it this way: **the agent burned a small fortune in tokens so the next person doesn't have to.**
+I should be straight with you about how it got written, though. The hands-on work — the debugging, the minidump parsing, the `.big` repacking, the code-signing-monitor wrangling, the MoltenVK byte-patching — and the first draft of this post were done by an AI coding agent: Anthropic's Claude, running in [Claude Code](https://claude.com/claude-code), in my environment and under my direction. I set the goal, steered it, reviewed everything, and I stand behind the findings, so it's published under my name — but when I say "I" below, read it as "me and a very persistent robot." I genuinely don't know how much calendar time it burned. I *can* tell you the cost in the unit that actually applies: roughly **a fifth of a Claude Max (20×) plan's entire weekly token allowance**. The robot spent it so the next person doesn't have to.
 
 The game is **The Lord of the Rings: The Battle for Middle-earth II** (2006). The laptop is an **Apple M5 MacBook**. No Boot Camp, no x86 Mac, no official Mac port — and the game is delisted, so you can't even buy it anymore. The only ways to run a 32-bit Windows DirectX 9 game on an Apple Silicon Mac are a **translation layer** (CrossOver/Wine, with Rosetta 2 handling the x86 instructions) or a **Windows-on-ARM virtual machine**.
 
