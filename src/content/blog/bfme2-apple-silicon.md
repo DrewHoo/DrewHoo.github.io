@@ -88,3 +88,7 @@ The point of doing this in the open is so the next person who types "BFME2 Apple
 - If you only take one thing: the **GameLOD crash fix** (neutering `gamelodpresets.ini` + single-core pin) is the key that unlocks the SAGE engine reaching its menu under Rosetta. That part is solid and reusable across BFME1, BFME2, and probably Generals/Zero Hour.
 
 It's not a win, exactly. But it's a *map* — and the field had none.
+
+And maps are for the people who come after. If you're chasing the same white whale — maybe you can patch SPIRV-Cross, coax the units into rendering, or spot the angle I missed — **please pick it up and finish it.** Everything I learned is in [the repo](https://github.com/DrewHoo/battle-for-middle-earth-apple-silicon) so you don't have to start from zero. I genuinely hope someone reads this, gets one step further than I did, and emails me a screenshot of an actual *battle* running on a Mac with no VM.
+
+And if you do break through — units on screen, the shader compiling, *anything* past where I stalled — **[drop a comment and tell me](https://github.com/DrewHoo/battle-for-middle-earth-apple-silicon/discussions).** I'll update this post, credit you, and celebrate properly. Someone out there has the missing piece. It might be you.
