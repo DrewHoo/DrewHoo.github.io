@@ -1,11 +1,11 @@
 import { glob } from 'astro/loaders';
 import { defineCollection, z } from 'astro:content';
-import { hashnodeLoader } from './loaders/hashnode';
 
-const HASHNODE_HOST = process.env.HASHNODE_PUBLICATION_HOST ?? 'drewhoo.hashnode.dev';
-
+// Posts are local Markdown/MDX under src/content/blog. (Previously sourced from
+// the Hashnode GraphQL API, which became a paid-only offering in May 2026 — see
+// src/loaders/hashnode.ts, kept for reference but no longer wired up.)
 const blog = defineCollection({
-	loader: hashnodeLoader({ host: HASHNODE_HOST }),
+	loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
 	schema: z.object({
 		title: z.string(),
 		description: z.string(),
@@ -13,7 +13,6 @@ const blog = defineCollection({
 		updatedDate: z.coerce.date().optional(),
 		heroImage: z.string().optional(),
 		tags: z.array(z.string()).default([]),
-		hashnodeId: z.string().optional(),
 	}),
 });
 
