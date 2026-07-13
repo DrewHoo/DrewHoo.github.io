@@ -106,9 +106,9 @@ src/
     hashnode.ts Custom Astro content loader — pulls blog posts from Hashnode's GraphQL API at build time.
   layouts/      BlogPost layout.
   pages/
-    index.astro             Card grid.
+    index.astro             Post index (the front page). /blog redirects here.
     about.astro
-    blog/index.astro        Post index.
+    projects/index.astro    Card grid.
     blog/[...slug].astro    Single post.
     projects/[...slug].astro  Per-project detail/writeup page.
     rss.xml.js              Blog RSS feed.

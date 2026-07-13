@@ -9,6 +9,8 @@ export default defineConfig({
 	// Old Hashnode-era permalinks (drewhoover.com/<slug>) now live under /blog/.
 	// Redirect the originals so existing links and search results keep working.
 	redirects: {
+		// The blog listing moved to the site root; posts still live at /blog/<slug>/.
+		'/blog': '/',
 		'/questions-i-like-to-ask-my-interviewer':
 			'/blog/questions-i-like-to-ask-my-interviewer/',
 		'/going-deep-on-type-checking-mock-resolvers-for-graphql-test-fixtures':

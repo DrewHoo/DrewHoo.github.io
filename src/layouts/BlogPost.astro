@@ -43,7 +43,7 @@ const jsonLd = {
 	<body>
 		<Header />
 		<main>
-			<p class="back"><a href="/blog">← back to the blog</a></p>
+			<p class="back"><a href="/">← back to the blog</a></p>
 
 			<article>
 				<header class="post-head">
@@ -70,6 +70,27 @@ const jsonLd = {
 					<slot />
 				</div>
 			</article>
+
+			<section class="comments" aria-label="Comments">
+				<!-- Same giscus config as public/embed/giscus.js: threads keyed by
+				     pathname, stored in this repo's Discussions (category: Comments). -->
+				<script
+					is:inline
+					src="https://giscus.app/client.js"
+					data-repo="DrewHoo/DrewHoo.github.io"
+					data-repo-id="R_kgDOSG5Iaw"
+					data-category="Comments"
+					data-category-id="DIC_kwDOSG5Ia84C7OFV"
+					data-mapping="pathname"
+					data-strict="0"
+					data-reactions-enabled="1"
+					data-emit-metadata="0"
+					data-input-position="bottom"
+					data-theme="preferred_color_scheme"
+					data-lang="en"
+					crossorigin="anonymous"
+					async></script>
+			</section>
 		</main>
 		<Footer />
 	</body>
@@ -103,6 +124,10 @@ const jsonLd = {
 		width: 100%;
 	}
 	.prose {
+		max-width: var(--measure);
+	}
+	.comments {
+		margin-top: 3rem;
 		max-width: var(--measure);
 	}
 </style>

@@ -1,0 +1,83 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ProjectGrid from '../../components/ProjectGrid.astro';
+import Divider from '../../components/Divider.astro';
+import { SITE_TITLE } from '../../consts';
+
+const projects = (await getCollection('projects')).sort((a, b) => {
+	if (a.data.pinned !== b.data.pinned) return a.data.pinned ? -1 : 1;
+	if (a.data.order !== b.data.order) return b.data.order - a.data.order;
+	return b.data.updated.valueOf() - a.data.updated.valueOf();
+});
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`projects — ${SITE_TITLE}`}
+			description="Small data-viz sites, each with its own repo and its own deploy. Built on open data, source included — take whatever's useful."
+		/>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="hero">
+				<p class="kicker">// projects</p>
+				<h1>source code included</h1>
+				<p class="lede">
+					Each card is its own repo, its own deploy, and roughly one
+					afternoon of poking at open data. If one of them is close to a
+					thing you want, fork it — that's what the source link is for.
+				</p>
+			</section>
+
+			<Divider label="·  projects  ·" />
+
+			<section aria-labelledby="projects-heading">
+				<h2 id="projects-heading" class="sr-only">Projects</h2>
+				<ProjectGrid projects={projects} />
+			</section>
+
+			<Divider label="·  /  ·" />
+
+			<section class="meta">
+				<p>
+					More soon. The writing moved to <a href="/">the front page</a>.
+					If you want to know who made all this, that's <a href="/about"
+					>over here</a>.
+				</p>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.hero {
+		margin-top: 1rem;
+		margin-bottom: 1.5rem;
+	}
+	.kicker {
+		font-family: 'Space Mono', ui-monospace, monospace;
+		font-size: 0.9rem;
+		color: var(--hot);
+		margin: 0 0 0.75rem;
+		letter-spacing: 0.02em;
+	}
+	.hero h1 {
+		margin-bottom: 0.5em;
+		max-width: 18ch;
+	}
+	.lede {
+		font-size: 1.15rem;
+		max-width: 52ch;
+		color: var(--ink-soft);
+	}
+	.meta {
+		margin-top: 1.5rem;
+	}
+</style>

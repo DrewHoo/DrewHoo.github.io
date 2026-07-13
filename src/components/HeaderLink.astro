@@ -8,7 +8,10 @@ const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
 const subpath = pathname.match(/[^\/]+/g);
 const hrefStr = typeof href === 'string' ? href : '';
 const isActive =
-	hrefStr === pathname || hrefStr === '/' + (subpath?.[0] || '');
+	hrefStr === pathname ||
+	hrefStr === '/' + (subpath?.[0] || '') ||
+	// post pages live under /blog/ but the blog index is the site root
+	(hrefStr === '/' && subpath?.[0] === 'blog');
 ---
 
 <a
