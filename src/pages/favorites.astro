@@ -1,0 +1,516 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE } from '../consts';
+
+const tabs = [
+	{ id: 'software', label: 'software' },
+	{ id: 'podcasts', label: 'podcasts' },
+	{ id: 'blogs', label: 'blogs' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`favorites — ${SITE_TITLE}`}
+			description="Software, podcasts, and blogs Drew actually uses and recommends."
+		/>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<article class="prose">
+				<p class="kicker">// favorites</p>
+				<h1>My Favorite Things</h1>
+
+				<p>
+					Tools I pay for, podcasts I keep up with, and blogs I actually
+					read.
+				</p>
+
+				<div class="tabs" data-tabs>
+					<div class="tablist" role="tablist" aria-label="Favorite things">
+						{
+							tabs.map((tab, i) => (
+								<button
+									role="tab"
+									id={`tab-${tab.id}`}
+									aria-controls={`panel-${tab.id}`}
+									aria-selected={i === 0 ? 'true' : 'false'}
+									tabindex={i === 0 ? undefined : -1}
+								>
+									{tab.label}
+								</button>
+							))
+						}
+					</div>
+
+					<section
+						class="panel"
+						id="panel-software"
+						role="tabpanel"
+						aria-labelledby="tab-software"
+					>
+						<h2>Software</h2>
+
+						<div class="entry">
+							<h3>
+								<img
+									src="/images/favorites/gifox.png"
+									alt=""
+									width="28"
+									height="28"
+								/>
+								<a href="https://gifox.app" rel="noopener">gifox</a>
+							</h3>
+							<p>
+								super easy and quick screen recorder that lets you create
+								and edit gifs. Your PR reviewers will love you. I paid $15
+								for a lifetime license. Amazing product.
+							</p>
+						</div>
+
+						<div class="entry">
+							<h3>
+								<img
+									src="/images/favorites/cleanshot.png"
+									alt=""
+									width="28"
+									height="28"
+								/>
+								<a href="https://cleanshot.com" rel="noopener">CleanShot X</a>
+							</h3>
+							<p>
+								the screenshot tool macOS should have shipped with.
+								Screenshots land in a little floating overlay instead of
+								littering my desktop, and the annotation tools are quick
+								enough that I actually use them. Scrolling capture alone is
+								worth the price.
+							</p>
+						</div>
+
+						<div class="entry">
+							<h3>
+								<img
+									src="/images/favorites/tableplus.png"
+									alt=""
+									width="28"
+									height="28"
+								/>
+								<a href="https://tableplus.com" rel="noopener">TablePlus</a>
+							</h3>
+							<p>
+								a fast, native database GUI that speaks Postgres, MySQL,
+								SQLite, and just about everything else. When I want to poke
+								at a database and get answers, this is where I go — no ORM
+								ceremony, just cmd+S to commit your edits like it's a text
+								file.
+							</p>
+						</div>
+
+						<div class="entry">
+							<h3>
+								<img
+									src="/images/favorites/meetingbar.png"
+									alt=""
+									width="28"
+									height="28"
+								/>
+								<a href="https://meetingbar.app" rel="noopener">MeetingBar</a>
+							</h3>
+							<p>
+								this app sits in your Mac OS menu bar and does 2 critical
+								things:
+							</p>
+							<ol>
+								<li>Tells you when your next meeting is</li>
+								<li>Lets you join that meeting with 2 clicks</li>
+							</ol>
+							<p>
+								I support this app through Patreon. It's made in Ukraine.
+								What more do you need to know?
+							</p>
+						</div>
+
+						<div class="entry">
+							<h3>
+								<img
+									src="/images/favorites/runjs.png"
+									alt=""
+									width="28"
+									height="28"
+								/>
+								<a href="https://runjs.app" rel="noopener">RunJS</a>
+							</h3>
+							<p>
+								just a nice standalone JavaScript repl. You can install
+								packages. I find it real handy when I need to remember just
+								how weird JavaScript is and want tight feedback loops.
+							</p>
+						</div>
+					</section>
+
+					<section
+						class="panel"
+						id="panel-podcasts"
+						role="tabpanel"
+						aria-labelledby="tab-podcasts"
+					>
+						<h2>Podcasts</h2>
+
+						<div class="entry">
+							<h3>
+								<img
+									src="/images/favorites/soft-skills.png"
+									alt=""
+									width="28"
+									height="28"
+								/>
+								<a href="https://softskills.audio" rel="noopener"
+									>Soft Skills Engineering</a
+								>
+							</h3>
+							<p>
+								this is one of my favorite podcasts; Dave and Jamison are
+								fun to listen to and they often have great advice for
+								navigating the non-technical aspects of building software
+							</p>
+						</div>
+
+						<div class="entry">
+							<h3>
+								<img
+									src="/images/favorites/in-depth.png"
+									alt=""
+									width="28"
+									height="28"
+								/>
+								<a href="https://review.firstround.com/podcast/" rel="noopener"
+									>In Depth</a
+								> <span class="byline">by First Round Review</span>
+							</h3>
+							<p>
+								they interview folks who have worked in various roles at
+								successful startups, and the conversations are always
+								illuminating. I've quoted them elsewhere on my blog!
+							</p>
+						</div>
+
+						<div class="entry">
+							<h3>
+								<img
+									src="/images/favorites/joy-of-why.png"
+									alt=""
+									width="28"
+									height="28"
+								/>
+								<a
+									href="https://www.quantamagazine.org/tag/the-joy-of-why/"
+									rel="noopener">The Joy of Why</a
+								> <span class="byline">by Quanta Magazine</span>
+							</h3>
+							<p>
+								Steven Strogatz and Janna Levin ask mathematicians and
+								physicists the big open questions in their fields and then
+								actually let them think out loud. It's science conversation
+								without the hype.
+							</p>
+						</div>
+					</section>
+
+					<section
+						class="panel"
+						id="panel-blogs"
+						role="tabpanel"
+						aria-labelledby="tab-blogs"
+					>
+						<h2>Blogs I like</h2>
+
+						<ul class="blogroll">
+							<li>
+								<img
+									src="/images/favorites/jvns.png"
+									alt=""
+									width="20"
+									height="20"
+								/>
+								<a href="https://jvns.ca" rel="noopener">Julia Evans</a>
+							</li>
+							<li>
+								<img
+									src="/images/favorites/chelsea-troy.png"
+									alt=""
+									width="20"
+									height="20"
+								/>
+								<a href="https://chelseatroy.com" rel="noopener"
+									>Chelsea Troy</a
+								>
+							</li>
+							<li>
+								<img
+									src="/images/favorites/lethain.png"
+									alt=""
+									width="20"
+									height="20"
+								/>
+								<a href="https://lethain.com" rel="noopener"
+									>irrational exuberance</a
+								>
+							</li>
+							<li>
+								<img
+									src="/images/favorites/charity-wtf.png"
+									alt=""
+									width="20"
+									height="20"
+								/>
+								<a
+									href="https://charity.wtf/author/mipsytipsy/"
+									rel="noopener">Charity Majors</a
+								>
+							</li>
+							<li>
+								<img
+									src="/images/favorites/elided-branches.png"
+									alt=""
+									width="20"
+									height="20"
+								/>
+								<a href="https://www.elidedbranches.com" rel="noopener"
+									>Elided Branches</a
+								>
+							</li>
+							<li>
+								<span class="glyph" aria-hidden="true">//</span>
+								<a
+									href="https://litonico.github.io/about-computers/"
+									rel="noopener">About Computers by Lito Nicolai</a
+								>
+							</li>
+							<li>
+								<img
+									src="/images/favorites/computers-and-people.png"
+									alt=""
+									width="20"
+									height="20"
+								/>
+								<a href="https://computersandpeople.com" rel="noopener"
+									>computers and people</a
+								>
+							</li>
+							<li>
+								<img
+									src="/images/favorites/dannorth.png"
+									alt=""
+									width="20"
+									height="20"
+								/>
+								<a href="https://dannorth.net/blog" rel="noopener"
+									>Dan North</a
+								>
+							</li>
+							<li>
+								<img
+									src="/images/favorites/zach-holman.png"
+									alt=""
+									width="20"
+									height="20"
+								/>
+								<span>
+									<a href="https://zachholman.com/about" rel="noopener"
+										>Zach Holman</a
+									> (especially <a
+										href="https://zachholman.com/talk/utc-is-enough-for-everyone-right"
+										rel="noopener">UTC is enough for everyone… right?</a
+									>)
+								</span>
+							</li>
+						</ul>
+					</section>
+				</div>
+
+				<aside class="porter-note">
+					<p>
+						<strong>A note from the movers:</strong> I'm the agent Drew runs
+						in Claude Code. Most of the words above are his, carried over
+						from his old Hashnode site. CleanShot X, TablePlus, and The Joy
+						of Why are new — he asked me to add them, so those descriptions
+						are mine until he rewrites them. The logos are just here to make
+						the list easier to skim.
+					</p>
+				</aside>
+			</article>
+		</main>
+		<Footer />
+
+		<script>
+			const container = document.querySelector('[data-tabs]');
+			if (container) {
+				const tabs = [...container.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+				const panels = [...container.querySelectorAll<HTMLElement>('[role="tabpanel"]')];
+
+				function select(tab: HTMLButtonElement, focus = true) {
+					for (const t of tabs) {
+						const active = t === tab;
+						t.setAttribute('aria-selected', String(active));
+						t.tabIndex = active ? 0 : -1;
+					}
+					for (const p of panels) {
+						p.hidden = p.id !== tab.getAttribute('aria-controls');
+					}
+					if (focus) tab.focus();
+					history.replaceState(
+						null,
+						'',
+						'#' + tab.id.replace('tab-', ''),
+					);
+				}
+
+				tabs.forEach((tab, i) => {
+					tab.addEventListener('click', () => select(tab, false));
+					tab.addEventListener('keydown', (e) => {
+						const delta =
+							e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+						if (delta) {
+							e.preventDefault();
+							select(tabs[(i + delta + tabs.length) % tabs.length]);
+						}
+					});
+				});
+
+				// panels start visible so the page works without JS;
+				// switching to tab mode hides all but the selected one
+				container.classList.add('tabs-ready');
+				const fromHash = tabs.find(
+					(t) => t.id === 'tab-' + location.hash.slice(1),
+				);
+				select(fromHash ?? tabs[0], false);
+			}
+		</script>
+	</body>
+</html>
+
+<style>
+	.kicker {
+		font-family: 'Space Mono', ui-monospace, monospace;
+		font-size: 0.9rem;
+		color: var(--hot);
+		margin: 0 0 0.5rem;
+	}
+	.prose {
+		max-width: 62ch;
+	}
+
+	.tablist {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin: 2rem 0;
+	}
+	.tablist button {
+		font-family: 'Space Mono', ui-monospace, monospace;
+		font-weight: 700;
+		font-size: 0.95rem;
+		padding: 0.5em 1.1em;
+		min-height: 44px;
+		color: var(--ink);
+		background-color: var(--paper-deep);
+		border: 2px solid var(--rule);
+		box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--rule);
+		cursor: pointer;
+	}
+	.tablist button:hover {
+		background-color: var(--acid);
+		color: var(--acid-ink);
+	}
+	.tablist button[aria-selected='true'] {
+		background-color: var(--acid);
+		color: var(--acid-ink);
+		box-shadow: var(--shadow-offset-pressed) var(--shadow-offset-pressed) 0
+			var(--rule);
+		transform: translate(
+			calc(var(--shadow-offset) - var(--shadow-offset-pressed)),
+			calc(var(--shadow-offset) - var(--shadow-offset-pressed))
+		);
+	}
+
+	/* tab labels replace the section headings once JS takes over */
+	.tabs-ready .panel > h2 {
+		position: absolute !important;
+		height: 1px;
+		width: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
+	.entry {
+		margin-bottom: 2rem;
+	}
+	.entry h3 {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		margin-bottom: 0.4em;
+	}
+	.entry img,
+	.blogroll img {
+		border: 2px solid var(--rule);
+		box-shadow: none;
+		background-color: #fff;
+		flex-shrink: 0;
+	}
+	.entry img {
+		width: 28px;
+		height: 28px;
+	}
+	.byline {
+		font-family: 'Atkinson', Georgia, serif;
+		font-weight: 400;
+		font-size: 1rem;
+		color: var(--ink-soft);
+	}
+
+	.blogroll {
+		list-style: none;
+		padding: 0;
+	}
+	.blogroll li {
+		display: flex;
+		align-items: baseline;
+		gap: 0.6rem;
+		margin-bottom: 0.75em;
+	}
+	.blogroll img,
+	.blogroll .glyph {
+		width: 20px;
+		height: 20px;
+		align-self: center;
+	}
+	.blogroll .glyph {
+		font-family: 'Space Mono', ui-monospace, monospace;
+		font-weight: 700;
+		font-size: 0.65rem;
+		line-height: 16px;
+		text-align: center;
+		color: var(--ink);
+		border: 2px solid var(--rule);
+		background-color: var(--paper-deep);
+		flex-shrink: 0;
+	}
+
+	.porter-note {
+		margin-top: 2.5rem;
+		padding: 1rem 1.25rem;
+		border: 2px solid var(--rule);
+		background-color: var(--paper-deep);
+		font-size: 0.95rem;
+	}
+	.porter-note p {
+		margin: 0;
+	}
+</style>
