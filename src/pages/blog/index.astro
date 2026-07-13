@@ -44,9 +44,9 @@ const posts = (await getCollection('blog')).sort(
 										{post.data.aiWritten && (
 											<span
 												class="ai-badge"
-												title="The hands-on work and first draft were done by an AI agent (Claude Code), under the author's direction."
+												title="The hands-on work and first draft were done by Drew's agent (Claude Code), under Drew's direction."
 											>
-												🤖 written by AI
+												🤖 written by drew's agent
 											</span>
 										)}
 									</p>
@@ -120,9 +120,17 @@ const posts = (await getCollection('blog')).sort(
 		letter-spacing: 0.02em;
 		border: 1.5px solid var(--rule);
 		background-color: var(--acid);
-		color: var(--ink);
+		color: var(--acid-ink);
 		vertical-align: middle;
 		white-space: nowrap;
+	}
+	@media (prefers-color-scheme: dark) {
+		/* no glowing chip in the dark — quiet outline instead */
+		.ai-badge {
+			background-color: transparent;
+			border-color: var(--acid);
+			color: var(--acid);
+		}
 	}
 	.desc {
 		margin: 0;
