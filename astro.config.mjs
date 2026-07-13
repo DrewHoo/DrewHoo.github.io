@@ -11,6 +11,9 @@ export default defineConfig({
 	redirects: {
 		// The blog listing moved to the site root; posts still live at /blog/<slug>/.
 		'/blog': '/',
+		// Hashnode-era static page URLs (drewhoover.com/page/<slug>).
+		'/page/about': '/about',
+		'/page/job-faq': '/job-faq',
 		'/questions-i-like-to-ask-my-interviewer':
 			'/blog/questions-i-like-to-ask-my-interviewer/',
 		'/going-deep-on-type-checking-mock-resolvers-for-graphql-test-fixtures':

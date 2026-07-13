@@ -1,0 +1,238 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`job faq — ${SITE_TITLE}`}
+			description="Who Drew is as an engineer, what he's good at, and what he's looking for — a FAQ for anyone thinking about working with him."
+		/>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<article class="prose">
+				<p class="kicker">// job faq</p>
+				<h1>Job FAQ</h1>
+
+				<h2>👤 Who am I?</h2>
+
+				<p>
+					I'm Drew! I'm a software engineer. I love building great products
+					and creating high-performing teams.
+				</p>
+
+				<p>
+					I have 10 years of experience across as many products. I have
+					experience with rapid growth, surviving layoffs, rewrites,
+					greenfield development, and legacy surgery.
+				</p>
+
+				<p>
+					Over time, my experience and interest has trended toward
+					early-stage startups because I thrive in cross-functional &amp;
+					lean environments.
+				</p>
+
+				<p>
+					My current tech stack includes React, TypeScript, Node / Hono,
+					Postgres, Langfuse, tRPC, tanstack, Drizzle, MiniIO, Railway, and
+					Tiptap, and I have plenty of experience with GraphQL, Python,
+					FastAPI, Flask, NextJS. Please note: I'd be happy to join a team
+					that includes none of these things in their tech stack; I care
+					about building great products much more than I care about using
+					specific tools.
+				</p>
+
+				<p>
+					Find me on LinkedIn <a
+						href="https://www.linkedin.com/in/drewhoov/"
+						rel="noopener">here</a
+					>. Download my <a
+						href="https://www.dropbox.com/scl/fi/prect2b3lllumcqtecvlr/drew-hoover-resume.pdf?rlkey=evscfgvyueazaousir4txq8zp&st=wlx30oza&dl=0"
+						rel="noopener">resumé</a
+					>.
+				</p>
+
+				<h2>🏋🏼‍♂️ What are my strengths?</h2>
+
+				<h3>Building intuitive web applications in complex domains</h3>
+
+				<p>
+					I am a product engineer, first and foremost. I am motivated by
+					putting powerful tools in the hands of people who need to solve
+					difficult problems. I've led fullstack development across a number
+					of frameworks &amp; domains.
+				</p>
+
+				<p>
+					I am also a huge nerd about software development practices —
+					testing and <a
+						href="https://www.zhenghao.io/posts/type-programming"
+						rel="noopener">type programming</a
+					> especially, since these things help teams build stuff faster &amp;
+					safer.
+				</p>
+
+				<p>
+					I balance these two passions by looking at everything through a
+					Lean lens. If you wanted to know my philosophy on building
+					software, <a
+						href="https://www.amazon.com/Lean-UX-Creating-Great-Products/dp/1098116305/"
+						rel="noopener">Lean UX</a
+					> best describes my views, and I highly recommend it! But also, we
+					could do a zoom call =)
+				</p>
+
+				<h3>Written communication</h3>
+
+				<p>
+					I love writing, and I think it's an important practice for
+					engineers! <a
+						href="https://review.firstround.com/podcast/episode-82"
+						rel="noopener">This podcast episode</a
+					> from First Round Review really resonates with me in how writing is
+					discussed as both an end and a means. To paraphrase Brie Wolfson,
+					"the act of writing about something crafts the way you think about
+					it".
+				</p>
+
+				<p>
+					I use writing to effect org-wide changes on things like code
+					review norms, <a
+						href="/blog/why-deadlines-are-hard-and-why-forecasts-are-better/"
+						>delivery forecasting</a
+					>, testing best practices, architecture changes, ux best
+					practices. The point is never to tell anyone what to do, but
+					rather to make our shared processes &amp; norms easier to engage
+					with and get alignment on (and change!).
+				</p>
+
+				<h3>Creating &amp; driving adoption of best practices</h3>
+
+				<p>
+					At past companies, I've put consistent effort into ensuring dev
+					feedback loops are fast and painless, and it shows! Over the last
+					year, the time it takes to run our tests has decreased by 90%
+					while the number of tests has doubled.
+				</p>
+
+				<p>
+					Without even running the tests, the type programming &amp; code
+					generation practices that I've led ensure that you'll know how API
+					changes affect our application, and how to deal with them.
+				</p>
+
+				<p>
+					I revamped our agile process to increase throughput and decrease
+					bugs by carefully dismantling the SAFe process I inherited and
+					empowering engineers to own and understand the value of their
+					work. You can read my (unpublished) blog post about this <s>here</s>
+					<em>(that link didn't survive the port — the post is still in
+						Drew's drafts)</em
+					>. (I kinda wish I had measured the throughput &amp; defect
+					impacts, but I had more valuable things to do with my time than
+					fool with Jira metrics).
+				</p>
+
+				<h3>Mentorship</h3>
+
+				<p>
+					You can read my <a href="/blog/drews-mentoring-maxims/">blog post
+						on mentorship</a
+					>, but suffice it to say this is something I care deeply about and
+					have put significant effort into getting good at, to significant
+					success! I've helped multiple engineers at GX get senior
+					promotions.
+				</p>
+
+				<h2>🔍 What am I looking for?</h2>
+
+				<ul>
+					<li>
+						An IC role, approximately a staff engineer, though the specific
+						title is not important to me.
+					</li>
+					<li>
+						I want to build a product that solves difficult, meaningful
+						problems for users. I want to make users say "thank god we have
+						&lt;product name here&gt;"
+					</li>
+					<li>
+						I want to work cross-functionally with folks who are really good
+						at their jobs &amp; learn from them.
+					</li>
+					<li>
+						I'm looking for a product culture that is compatible with lean
+						ways of working &amp; experiment-driven product development.
+						I've found that an evidence-based worldview is critical to the
+						success of product teams.
+					</li>
+					<li>
+						Adoption of (or just alignment on; we live in an imperfect
+						world) best practices that empower teams to move fast: CI/CD,
+						trunk-based development, lightweight planning processes.
+					</li>
+				</ul>
+
+				<h2>🤝 Signs we'd be a good fit</h2>
+
+				<p>
+					These don't have to be perfect matches, but I'm looking for them
+					as "good signal".
+				</p>
+
+				<ul>
+					<li>
+						There'd be at most 2 people in the hierarchy between me and the
+						C-suite.
+					</li>
+					<li>You are building an inclusive and equitable culture.</li>
+					<li>
+						You encourage engineers to take risks and also hold them
+						accountable for delivering value.
+					</li>
+					<li>
+						You care about working "out loud" (work visibility is vital to
+						healthy remote cultures) and recognizing <a
+							href="https://noidea.dog/glue"
+							rel="noopener">glue work</a
+						>.
+					</li>
+					<li>
+						You expect people to flex across roles and departments to work
+						together and get stuff done.
+					</li>
+				</ul>
+
+				<h2>📏 Constraints</h2>
+
+				<ul>
+					<li>I work remotely in the Eastern Time Zone.</li>
+					<li>
+						I'm currently employed, but interested in interviewing for the
+						right opportunity.
+					</li>
+				</ul>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.kicker {
+		font-family: 'Space Mono', ui-monospace, monospace;
+		font-size: 0.9rem;
+		color: var(--hot);
+		margin: 0 0 0.5rem;
+	}
+	.prose {
+		max-width: var(--measure);
+	}
+</style>

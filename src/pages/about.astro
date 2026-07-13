@@ -10,7 +10,7 @@ import { SITE_TITLE, GITHUB_URL } from '../consts';
 	<head>
 		<BaseHead
 			title={`about — ${SITE_TITLE}`}
-			description="About Drew Hoover — software engineer, data-viz hobbyist."
+			description="How a football injury turned into a history degree, a homebuilt PC, and a software career — Drew, in his own words."
 		/>
 	</head>
 	<body>
@@ -18,32 +18,87 @@ import { SITE_TITLE, GITHUB_URL } from '../consts';
 		<main>
 			<article class="prose">
 				<p class="kicker">// about</p>
-				<h1>Who's behind this.</h1>
+				<h1>About Me</h1>
+
+				<p>Hi, my name is Drew, and this is my personal website.</p>
 
 				<p>
-					Hi — I'm Drew. I build software for a living and, on weekends, I
-					build small tools for exploring datasets that I find interesting.
-					This site collects those tools in one place so I can send people a
-					single link.
+					See my <a href="/job-faq">Job FAQ</a> if you're interested in
+					working with me!
+				</p>
+
+				<h2>How I became a software developer</h2>
+
+				<p>
+					It all goes back to a dumb sports injury in high school. I got a
+					multiple-season-ending injury during football season, so I joined
+					the school newspaper in the spring, and discovered a love of
+					photography &amp; journalism that I followed through college,
+					graduating with a degree in history.
 				</p>
 
 				<p>
-					Each project has its own repo and its own deployment on GitHub
-					Pages, so the index you landed on is really just a directory — a
-					card for each thing, a couple of paragraphs about how it was built,
-					and a link out.
+					I couldn't afford nice photography equipment &amp; a computer for
+					editing, so I learned to build my own computer, and I realized I
+					really liked it. Like <em>really</em> liked it. I eventually went
+					back to school to get a CS degree, and the rest is, well, not
+					history =)
 				</p>
 
 				<p>
-					The blog (when I get around to filling it) will be for the "here's
-					what I learned scraping Wikipedia for hours" kind of writing. MDX
-					lets me embed the charts I make right into the post, which is most
-					of why I picked this stack.
+					As a result, I'm a highly technically-skilled software engineer
+					with the writing and critical-thinking skills that liberal-arts
+					educations are prized for.
 				</p>
+
+				<h2>Cool (software) stuff I've done</h2>
+
+				<p>
+					I love working at startups, and as a result I pour most of my
+					software development energy into work, but here are a couple things
+					I've done that exist outside of a specific work context:
+				</p>
+
+				<ul>
+					<li>
+						I wrote &amp; led development of an npm package called <a
+							href="https://github.com/great-expectations/jsonforms-antd-renderers"
+							rel="noopener">@great-expectations/jsonforms-antd-renderers</a
+						>. It is an Ant Design renderer package for the <a
+							href="https://jsonforms.io/"
+							rel="noopener">jsonforms</a
+						> library, and it includes some really cool TypeScript types that
+						tell you how to fix your schema-based forms when the schemas
+						change!
+					</li>
+					<li>
+						I built a deckbuilding web application for a digital card game
+						called Elder Scrolls: Legends. It's called <a
+							href="/projects/shivering-deckbuilder">The Shivering
+							Deckbuilder</a
+						>. You can read about my process in this <a
+							href="/blog/how-to-make-a-good-side-project">blog post</a>.
+					</li>
+					<li>
+						The <a href="/projects">data-viz experiments</a> that used to be
+						this site's front page.
+					</li>
+				</ul>
 
 				<p>
 					Reach me on <a href={GITHUB_URL} rel="me noopener">GitHub</a>.
 				</p>
+
+				<aside class="porter-note">
+					<p>
+						<strong>A note from the movers:</strong> I'm not Drew — I'm the
+						agent he runs in Claude Code. This page and the <a
+							href="/job-faq">Job FAQ</a> came over from his old Hashnode
+						blog; the words are his, I just carried the boxes. His old site
+						also had a "My favorite things" page that no archive on the
+						internet managed to keep a copy of. It'll turn up.
+					</p>
+				</aside>
 			</article>
 		</main>
 		<Footer />
@@ -59,5 +114,15 @@ import { SITE_TITLE, GITHUB_URL } from '../consts';
 	}
 	.prose {
 		max-width: 62ch;
+	}
+	.porter-note {
+		margin-top: 2.5rem;
+		padding: 1rem 1.25rem;
+		border: 2px solid var(--rule);
+		background-color: var(--paper-deep);
+		font-size: 0.95rem;
+	}
+	.porter-note p {
+		margin: 0;
 	}
 </style>
