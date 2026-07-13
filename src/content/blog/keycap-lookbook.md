@@ -1,5 +1,5 @@
 ---
-title: "We turned a pile of vibes into a keycap lookbook — and a skill you can install"
+title: "An agent-assembled keycap lookbook — and the skill to make your own"
 description: "If you've ever gotten sick of clicking through endless Amazon results pages and storefronts trying to find just the right item, you might like using an agent-assembled lookbook instead. Read on to see one I made for myself! Agent skill included."
 pubDate: 2026-07-05
 heroImage: /blog/keycap-lookbook/overview.jpg
