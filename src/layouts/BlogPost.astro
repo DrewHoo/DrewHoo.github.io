@@ -8,7 +8,8 @@ import { SITE_AUTHOR } from '../consts';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, tags, aiWritten } =
+	Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const imageURL = heroImage ? new URL(heroImage, Astro.site).href : undefined;
@@ -45,7 +46,11 @@ const jsonLd = {
 		<main>
 			<p class="back"><a href="/">← back to the blog</a></p>
 
-			<article>
+			<article
+				data-post-title={title}
+				data-post-tags={(tags ?? []).join(',')}
+				data-post-ai-written={String(aiWritten ?? false)}
+			>
 				<header class="post-head">
 					<p class="date">
 						<FormattedDate date={pubDate} />
@@ -93,6 +98,21 @@ const jsonLd = {
 			</section>
 		</main>
 		<Footer />
+		<script>
+			import { track } from '../scripts/analytics.js';
+
+			const article = document.querySelector('article');
+			if (article instanceof HTMLElement) {
+				track('Post viewed', {
+					slug: location.pathname,
+					title: article.dataset.postTitle,
+					tags: article.dataset.postTags
+						? article.dataset.postTags.split(',')
+						: [],
+					aiWritten: article.dataset.postAiWritten === 'true',
+				});
+			}
+		</script>
 	</body>
 </html>
 

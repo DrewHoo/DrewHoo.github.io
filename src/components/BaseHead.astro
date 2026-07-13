@@ -66,3 +66,7 @@ const ogImage = image ? new URL(image, Astro.url) : undefined;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 {ogImage && <meta property="twitter:image" content={ogImage} />}
+
+<script>
+	import '../scripts/analytics.js';
+</script>
