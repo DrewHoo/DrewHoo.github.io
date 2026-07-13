@@ -170,6 +170,12 @@ a:visited {
 	color: var(--cool);
 }
 
+/* a:visited has equal specificity to a:hover and comes later, so it would win on a
+   hovered visited link — leaving blue text on the acid hover background. Restore acid-ink. */
+a:visited:hover {
+	color: var(--acid-ink);
+}
+
 *:focus-visible {
 	outline: 3px solid var(--hot);
 	outline-offset: 2px;
