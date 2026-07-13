@@ -128,11 +128,16 @@ const jsonLd = {
 	}
 	/* On phones, images are capped by screen width and stay modest; on wider
 	   screens they'd fill the full prose column and tower over the text, so
-	   cap their height there instead. 721px matches global.css's breakpoint. */
+	   cap their height there instead. 721px matches global.css's breakpoint.
+	   Images may break out past the 68ch text column (centered on it), but
+	   the 100vw term keeps the spill inside the page gutter. */
 	@media (min-width: 721px) {
 		.prose :global(img) {
-			max-height: 40vh;
+			max-height: 60vh;
 			width: auto;
+			max-width: max(100%, min(920px, calc(100vw - 320px)));
+			margin-left: 50%;
+			transform: translateX(-50%);
 		}
 	}
 	.comments {
