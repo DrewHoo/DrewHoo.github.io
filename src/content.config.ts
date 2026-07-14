@@ -12,6 +12,9 @@ const blog = defineCollection({
 		pubDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),
 		heroImage: z.string().optional(),
+		// card thumbnail on the blog index when it should differ from the
+		// og:image (heroImage) — e.g. bfme2's box art vs its share card
+		cardImage: z.string().optional(),
 		tags: z.array(z.string()).default([]),
 		aiWritten: z.boolean().default(false),
 	}),

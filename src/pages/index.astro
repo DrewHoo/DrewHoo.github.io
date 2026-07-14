@@ -43,19 +43,29 @@ const posts = (await getCollection('blog')).sort(
 						{posts.map((post) => (
 							<li>
 								<a href={`/blog/${post.id}/`}>
-									<h3>{post.data.title}</h3>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-										{post.data.aiWritten && (
-											<span
-												class="ai-badge"
-												title="The hands-on work and first draft were done by Drew's agent (Claude Code), under Drew's direction."
-											>
-												🤖 written by drew's agent
-											</span>
-										)}
-									</p>
-									<p class="desc">{post.data.description}</p>
+									<div class="card-text">
+										<h3>{post.data.title}</h3>
+										<p class="date">
+											<FormattedDate date={post.data.pubDate} />
+											{post.data.aiWritten && (
+												<span
+													class="ai-badge"
+													title="The hands-on work and first draft were done by Drew's agent (Claude Code), under Drew's direction."
+												>
+													🤖 written by drew's agent
+												</span>
+											)}
+										</p>
+										<p class="desc">{post.data.description}</p>
+									</div>
+									{(post.data.cardImage ?? post.data.heroImage) && (
+										<img
+											class="card-thumb"
+											src={post.data.cardImage ?? post.data.heroImage}
+											alt=""
+											loading="lazy"
+										/>
+									)}
 								</a>
 							</li>
 						))}
@@ -97,7 +107,9 @@ const posts = (await getCollection('blog')).sort(
 		margin: 0;
 	}
 	.posts a {
-		display: block;
+		display: flex;
+		align-items: center;
+		gap: 1.25rem;
 		padding: 1rem 1.25rem;
 		border: 2px solid var(--rule);
 		background-color: var(--paper);
@@ -105,6 +117,38 @@ const posts = (await getCollection('blog')).sort(
 		text-decoration: none;
 		box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--rule);
 		transition: transform 120ms ease-out, box-shadow 120ms ease-out;
+	}
+	.card-text {
+		flex: 1;
+		min-width: 0;
+	}
+	.card-thumb {
+		flex-shrink: 0;
+		width: 150px;
+		height: 110px;
+		object-fit: cover;
+		border: 2px solid var(--rule);
+		box-shadow: none;
+	}
+	@media (max-width: 600px) {
+		.card-thumb {
+			width: 92px;
+			height: 92px;
+		}
+		.posts a {
+			gap: 0.9rem;
+		}
+		/* the nowrap badge is wider than the text column next to a thumb, so
+		   give it its own line and let its text wrap. (.date .ai-badge beats
+		   the base .ai-badge rule, which appears later in this stylesheet.) */
+		.date .ai-badge {
+			display: block;
+			width: fit-content;
+			margin-left: 0;
+			margin-top: 0.35rem;
+			white-space: normal;
+			line-height: 1.4;
+		}
 	}
 	.posts a:hover {
 		background-color: var(--paper);

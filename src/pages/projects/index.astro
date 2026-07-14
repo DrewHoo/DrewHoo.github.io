@@ -19,7 +19,7 @@ const projects = (await getCollection('projects')).sort((a, b) => {
 	<head>
 		<BaseHead
 			title={`projects — ${SITE_TITLE}`}
-			description="Mostly small data-viz sites, plus an npm package and a reverse-engineering saga — each with its own repo and its own deploy. Source included; take whatever's useful."
+			description="Projects built in public — data viz, an npm package, agent skills, a reverse-engineering saga. Each is its own repo and its own deploy; fork whatever's useful."
 		/>
 	</head>
 	<body>
@@ -29,11 +29,12 @@ const projects = (await getCollection('projects')).sort((a, b) => {
 				<p class="kicker">// projects</p>
 				<h1>source code included</h1>
 				<p class="lede">
-					Each card is its own repo and its own deploy. Most were roughly
-					one afternoon of poking at open data; a couple outgrew that — an
-					npm package with a real job, and a 2006 game dragged partway onto
-					Apple Silicon. If one of them is close to a thing you want, fork
-					it — that's what the source link is for.
+					Each card is its own repo and its own deploy. I build in public
+					for the same reason I mentor: watching someone actually make a
+					thing — the code, the design, the words, all of it — is the
+					fastest way to learn to make your own. If one of these is close
+					to a thing you want, fork it. That's what the source link is
+					for.
 				</p>
 			</section>
 
