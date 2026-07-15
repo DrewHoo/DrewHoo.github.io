@@ -5,7 +5,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import ProjectGrid from '../../components/ProjectGrid.astro';
 import Divider from '../../components/Divider.astro';
-import { SITE_TITLE } from '../../consts';
+import { SITE_TITLE, PROJECT_TAGS } from '../../consts';
 
 const projects = (await getCollection('projects')).sort((a, b) => {
 	if (a.data.pinned !== b.data.pinned) return a.data.pinned ? -1 : 1;
@@ -19,29 +19,45 @@ const projects = (await getCollection('projects')).sort((a, b) => {
 	<head>
 		<BaseHead
 			title={`projects — ${SITE_TITLE}`}
-			description="Projects built in public — data viz, an npm package, agent skills, a reverse-engineering saga. Each is its own repo and its own deploy; fork whatever's useful."
+			description="There are three things you can watch forever: a fire burning, water falling, and other people working. These are my projects, open-sourced so you (or your agent) can see how they work."
 		/>
 	</head>
 	<body>
 		<Header />
 		<main>
 			<section class="hero">
-				<p class="kicker">// projects</p>
 				<h1>source code included</h1>
+				<figure class="proverb">
+					<blockquote>
+						<p>
+							There are three things you can watch forever: a fire
+							burning, water falling, and other people working.
+						</p>
+					</blockquote>
+					<figcaption>— Russian proverb</figcaption>
+				</figure>
 				<p class="lede">
-					Each card is its own repo and its own deploy. I build in public
-					for the same reason I mentor: watching someone actually make a
-					thing — the code, the design, the words, all of it — is the
-					fastest way to learn to make your own. If one of these is close
-					to a thing you want, fork it. That's what the source link is
-					for.
+					These are my projects, open-sourced so you (or your agent) can
+					see how they work.
 				</p>
 			</section>
 
-			<Divider label="·  projects  ·" />
+			<Divider />
 
 			<section aria-labelledby="projects-heading">
 				<h2 id="projects-heading" class="sr-only">Projects</h2>
+				<div class="filters" role="group" aria-label="Filter projects by tag">
+					<button type="button" class="filter" data-filter="all" aria-pressed="true">
+						all
+					</button>
+					{
+						PROJECT_TAGS.map((tag) => (
+							<button type="button" class="filter" data-filter={tag} aria-pressed="false">
+								{tag}
+							</button>
+						))
+					}
+				</div>
 				<ProjectGrid projects={projects} />
 			</section>
 
@@ -56,6 +72,28 @@ const projects = (await getCollection('projects')).sort((a, b) => {
 			</section>
 		</main>
 		<Footer />
+
+		<script>
+			const buttons = Array.from(
+				document.querySelectorAll<HTMLButtonElement>('.filter'),
+			);
+			const cards = Array.from(
+				document.querySelectorAll<HTMLLIElement>('.grid > li'),
+			);
+			for (const button of buttons) {
+				button.addEventListener('click', () => {
+					const tag = button.dataset.filter ?? 'all';
+					for (const b of buttons) {
+						b.setAttribute('aria-pressed', String(b === button));
+					}
+					for (const card of cards) {
+						card.hidden =
+							tag !== 'all' &&
+							!(card.dataset.tags ?? '').split('|').includes(tag);
+					}
+				});
+			}
+		</script>
 	</body>
 </html>
 
@@ -64,21 +102,58 @@ const projects = (await getCollection('projects')).sort((a, b) => {
 		margin-top: 1rem;
 		margin-bottom: 1.5rem;
 	}
-	.kicker {
-		font-family: 'Space Mono', ui-monospace, monospace;
-		font-size: 0.9rem;
-		color: var(--hot);
-		margin: 0 0 0.75rem;
-		letter-spacing: 0.02em;
-	}
 	.hero h1 {
 		margin-bottom: 0.5em;
 		max-width: 18ch;
+	}
+	.proverb {
+		margin: 0 0 1rem;
+	}
+	.proverb blockquote {
+		margin: 0;
+		padding: 0.1rem 0 0.1rem 1rem;
+		border-left: 4px solid var(--hot);
+	}
+	.proverb blockquote p {
+		margin: 0;
+		font-size: 1.15rem;
+		font-style: italic;
+		max-width: 52ch;
+		color: var(--ink);
+	}
+	.proverb figcaption {
+		margin-top: 0.4rem;
+		padding-left: calc(1rem + 4px);
+		font-family: 'Space Mono', ui-monospace, monospace;
+		font-size: 0.85rem;
+		color: var(--ink-soft);
 	}
 	.lede {
 		font-size: 1.15rem;
 		max-width: 52ch;
 		color: var(--ink-soft);
+	}
+	.filters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin: 0 0 1.5rem;
+	}
+	.filter {
+		font-family: 'Space Mono', ui-monospace, monospace;
+		font-size: 0.8rem;
+		padding: 0.3em 0.75em;
+		border: 2px solid var(--rule);
+		background-color: var(--paper);
+		color: var(--ink);
+		cursor: pointer;
+	}
+	.filter:hover {
+		background-color: var(--paper-deep);
+	}
+	.filter[aria-pressed='true'] {
+		background-color: var(--acid);
+		color: var(--acid-ink);
 	}
 	.meta {
 		margin-top: 1.5rem;

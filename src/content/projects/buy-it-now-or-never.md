@@ -1,13 +1,18 @@
 ---
 title: Buy it now or never
-blurb: When a stock closes at a new all-time high, how often is that price gone for good? An adjusted-close chart marks every ATH close that was never undercut afterward — the "you missed it forever" days — for SMH, SOXQ, QQQ, SPY, and the major semis.
+blurb: "This is the prototype of Should You Buy an All Time High... I'm mostly keeping this one in public to demonstrate that ideas are iterative ¯\\_(ツ)_/¯"
 liveUrl: https://drewhoover.com/buy-it-now-or-never/
 repoUrl: https://github.com/DrewHoo/buy-it-now-or-never
+tags:
+  - data viz
+  - finance
 stack:
   - React
   - Vite
   - D3
   - Yahoo Finance
+cover: /projects/buy-it-now-or-never.png
+coverAlt: Detail of an adjusted-close chart with never-undercut all-time-high closes marked
 pinned: true
 order: 30
 updated: 2026-05-11

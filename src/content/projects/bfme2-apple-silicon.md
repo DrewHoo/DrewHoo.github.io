@@ -1,17 +1,21 @@
 ---
 title: BFME2 on Apple Silicon
-blurb: "Dragging The Battle for Middle-earth II — a 2006 DirectX 9 game — to a working main menu on an Apple Silicon Mac via CrossOver + Rosetta, no VM. The four fixes, a deep MoltenVK/DXVK rabbit hole, and clean-room tools — a SAGE .big archive tool and a minidump crash parser."
+blurb: My agent gave their best shot at getting BFME2 running natively on an m-series mac--it got farther than was documented elsewhere on the internet, so AFAICT this is the bleeding edge and I asked it to write this blog post and publish this repo in hopes it helps someone cross the finish line.
 liveUrl: https://drewhoover.com/blog/bfme2-apple-silicon/
 repoUrl: https://github.com/DrewHoo/battle-for-middle-earth-apple-silicon
+tags:
+  - video games
+  - engineering
 stack:
   - CrossOver / Wine
   - Rosetta 2
   - Python
   - Reverse engineering
+cover: /blog/bfme2-apple-silicon/box-art.jpg
+coverAlt: The Battle for Middle-earth II box art — an Elf and a Dwarf mid-battle
 pinned: true
 order: 40
 updated: 2026-06-19
-note: The menu boots with audio + ultra-wide; in-game units are the open problem.
 ---
 
 Not a data-viz experiment — a compatibility deep-dive. **The Lord of the Rings:

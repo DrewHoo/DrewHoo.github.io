@@ -1,14 +1,17 @@
 ---
 title: Get the Priest's Blessing
-blurb: A code-review skill for Claude Code. Really handy — I've been using it for a few weeks to great effect. It'll either exorcise the demons from your codebase or confess when it's unable to quench the evil, rather than mount an inquisition against good code.
+blurb: A code-review skill for Claude Code. Really handy — I've been using it for a few weeks to great effect. It'll either exorcise the demons from your codebase or confess when it's unable to quench the evil, rather than mount an inquisition against good code. Inspired by a First Round blogpost about the engineering archetype, a link to which is included in the skill!
 liveUrl: https://github.com/DrewHoo/get-priests-blessing
+tags:
+  - engineering
 stack:
   - Claude Code
   - Agent skill
+cover: /projects/get-priests-blessing.png
+coverAlt: The skill's README on GitHub
 pinned: true
 order: 38
 updated: 2026-07-13
-note: The archetype comes from First Round's engineering-superheroes article.
 ---
 
 An agent skill that audits a bounded section of code through the eyes of **the

@@ -22,7 +22,6 @@ const posts = (await getCollection('blog')).sort(
 	<body>
 		<Header />
 		<main>
-			<p class="kicker">// blog</p>
 			<h1>Figured out, written down.</h1>
 			<p class="lede">
 				Whether the post is written by my agent or by me, they all have fundamentally the same thing
@@ -78,12 +77,6 @@ const posts = (await getCollection('blog')).sort(
 </html>
 
 <style>
-	.kicker {
-		font-family: 'Space Mono', ui-monospace, monospace;
-		font-size: 0.9rem;
-		color: var(--hot);
-		margin: 0 0 0.5rem;
-	}
 	.lede {
 		font-size: 1.15rem;
 		max-width: 52ch;

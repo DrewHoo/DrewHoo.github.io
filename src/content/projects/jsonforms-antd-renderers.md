@@ -1,17 +1,20 @@
 ---
 title: jsonforms-antd-renderers
-blurb: An Ant Design renderer package for jsonforms I wrote & led at Great Expectations (Fivetran owns it now). My favorite part is a recursive TypeScript type that checks UISchema scope paths against your actual JSON Schema — change it, and the compiler shows you every form that broke.
+blurb: "An antd renderer package for jsonforms I wrote & led at Great Expectations (Fivetran owns it now). My favorite part is a DFS written inside TypeScript's type system which checks ui schema property paths against the data validation schema. tl;dr if your validation schemas change, the compiler tells you which forms broke!"
 liveUrl: https://fivetran.github.io/jsonforms-antd-renderers/
 repoUrl: https://github.com/fivetran/jsonforms-antd-renderers
+tags:
+  - engineering
 stack:
   - TypeScript
   - React
   - Ant Design
   - jsonforms
+cover: /projects/jsonforms-antd-renderers.png
+coverAlt: The renderer package's storybook — an Object Array form rendered with Ant Design components
 pinned: false
 order: 8
 updated: 2026-07-13
-note: Not a data-viz experiment — a real npm package, still in production at Fivetran.
 ---
 
 Not a data-viz experiment — an npm package I wrote & led development of at

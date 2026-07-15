@@ -1,16 +1,32 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { emphasize } from '../lib/blurb';
 
 interface Props {
 	project: CollectionEntry<'projects'>;
 }
 
 const { project } = Astro.props;
-const { title, blurb, liveUrl, repoUrl, stack, note } = project.data;
+const { title, blurb, liveUrl, repoUrl, tags, cover, coverAlt } = project.data;
 const liveHost = new URL(liveUrl).host + new URL(liveUrl).pathname.replace(/\/$/, '');
 ---
 
 <article class="card">
+	{
+		cover && (
+			<a class="cover" href={liveUrl} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+				<img
+					src={cover}
+					alt={coverAlt ?? `Screenshot of ${title}`}
+					loading="lazy"
+					decoding="async"
+					width="800"
+					height="500"
+				/>
+			</a>
+		)
+	}
+
 	<header class="card-head">
 		<h3 class="title">
 			<a href={liveUrl} target="_blank" rel="noopener">
@@ -21,13 +37,13 @@ const liveHost = new URL(liveUrl).host + new URL(liveUrl).pathname.replace(/\/$/
 		<p class="url"><span aria-hidden="true">→ </span>{liveHost}</p>
 	</header>
 
-	<p class="blurb">{blurb}</p>
+	<p class="blurb" set:html={emphasize(blurb)} />
 
 	{
-		stack.length > 0 && (
-			<ul class="stack" aria-label="Stack">
-				{stack.map((s) => (
-					<li>{s}</li>
+		tags.length > 0 && (
+			<ul class="tags" aria-label="Tags">
+				{tags.map((t) => (
+					<li>{t}</li>
 				))}
 			</ul>
 		)
@@ -35,16 +51,16 @@ const liveHost = new URL(liveUrl).host + new URL(liveUrl).pathname.replace(/\/$/
 
 	<footer class="card-foot">
 		<a class="primary" href={liveUrl} target="_blank" rel="noopener">
-			visit project
+			give it a go<span class="arrow" aria-hidden="true">&nbsp;↗</span>
+			<span class="sr-only">(opens in new tab)</span>
 		</a>
 		{
 			repoUrl && (
 				<a class="secondary" href={repoUrl} target="_blank" rel="noopener">
-					source
+					look at the source code
 				</a>
 			)
 		}
-		{note && <p class="note">{note}</p>}
 	</footer>
 </article>
 
@@ -72,6 +88,19 @@ const liveHost = new URL(liveUrl).host + new URL(liveUrl).pathname.replace(/\/$/
 		.card:focus-within {
 			transform: none;
 		}
+	}
+	.cover {
+		display: block;
+		margin: -1.25rem -1.25rem 0;
+		border-bottom: 2px solid var(--rule);
+		background-color: var(--paper-deep);
+	}
+	.cover img {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 8 / 5;
+		object-fit: cover;
 	}
 	.card-head {
 		display: flex;
@@ -111,7 +140,7 @@ const liveHost = new URL(liveUrl).host + new URL(liveUrl).pathname.replace(/\/$/
 		font-size: 1rem;
 		line-height: 1.55;
 	}
-	.stack {
+	.tags {
 		list-style: none;
 		padding: 0;
 		margin: 0;
@@ -120,7 +149,7 @@ const liveHost = new URL(liveUrl).host + new URL(liveUrl).pathname.replace(/\/$/
 		flex-wrap: wrap;
 		gap: 0.35rem;
 	}
-	.stack li {
+	.tags li {
 		font-family: 'Space Mono', ui-monospace, monospace;
 		font-size: 0.72rem;
 		padding: 0.15em 0.5em;
@@ -147,14 +176,6 @@ const liveHost = new URL(liveUrl).host + new URL(liveUrl).pathname.replace(/\/$/
 	.secondary {
 		font-family: 'Space Mono', ui-monospace, monospace;
 		font-size: 0.85rem;
-		color: var(--ink-soft);
-	}
-	.note {
-		flex-basis: 100%;
-		margin: 0.25rem 0 0;
-		max-width: none;
-		font-size: 0.8rem;
-		font-style: italic;
 		color: var(--ink-soft);
 	}
 </style>

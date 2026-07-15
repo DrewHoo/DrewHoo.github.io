@@ -12,7 +12,7 @@ const { projects } = Astro.props;
 <ul class="grid" role="list">
 	{
 		projects.map((project) => (
-			<li>
+			<li data-tags={project.data.tags.join('|')}>
 				<ProjectCard project={project} />
 			</li>
 		))
@@ -32,6 +32,9 @@ const { projects } = Astro.props;
 	.grid > li {
 		margin: 0;
 		display: flex;
+	}
+	.grid > li[hidden] {
+		display: none;
 	}
 	.grid > li > :global(.card) {
 		flex: 1;

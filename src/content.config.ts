@@ -1,5 +1,6 @@
 import { glob } from 'astro/loaders';
 import { defineCollection, z } from 'astro:content';
+import { PROJECT_TAGS } from './consts';
 
 // Posts are local Markdown/MDX under src/content/blog. (Previously sourced from
 // the Hashnode GraphQL API, which became a paid-only offering in May 2026 — see
@@ -24,15 +25,17 @@ const projects = defineCollection({
 	loader: glob({ base: './src/content/projects', pattern: '**/*.{md,mdx}' }),
 	schema: z.object({
 		title: z.string(),
-		blurb: z.string().max(280),
+		// *single asterisks* in a blurb render as <em> on cards and detail pages
+		blurb: z.string().max(500),
 		liveUrl: z.string().url(),
 		repoUrl: z.string().url().optional(),
+		tags: z.array(z.enum(PROJECT_TAGS)).default([]),
 		stack: z.array(z.string()).default([]),
 		cover: z.string().optional(),
+		coverAlt: z.string().optional(),
 		pinned: z.boolean().default(false),
 		order: z.number().default(0),
 		updated: z.coerce.date(),
-		note: z.string().optional(),
 	}),
 });
 

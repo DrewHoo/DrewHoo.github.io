@@ -4,6 +4,7 @@ import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
+import { emphasize, plainBlurb } from '../../lib/blurb';
 
 export async function getStaticPaths() {
 	const projects = await getCollection('projects');
@@ -16,14 +17,14 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<'projects'>;
 
 const project = Astro.props;
-const { title, blurb, liveUrl, repoUrl, stack, updated, note } = project.data;
+const { title, blurb, liveUrl, repoUrl, stack, updated } = project.data;
 const { Content } = await render(project);
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={`${title} — drewhoover.com`} description={blurb} />
+		<BaseHead title={`${title} — drewhoover.com`} description={plainBlurb(blurb)} />
 	</head>
 	<body>
 		<Header />
@@ -32,9 +33,8 @@ const { Content } = await render(project);
 
 			<article>
 				<header class="proj-head">
-					<p class="kicker">// project</p>
 					<h1>{title}</h1>
-					<p class="blurb">{blurb}</p>
+					<p class="blurb" set:html={emphasize(blurb)} />
 
 					<dl class="facts">
 						<dt>live</dt>
@@ -67,7 +67,6 @@ const { Content } = await render(project);
 						<dd><FormattedDate date={updated} /></dd>
 					</dl>
 
-					{note && <p class="note">{note}</p>}
 				</header>
 
 				<div class="prose">
@@ -87,12 +86,6 @@ const { Content } = await render(project);
 	}
 	.proj-head {
 		margin-bottom: 2rem;
-	}
-	.kicker {
-		font-family: 'Space Mono', ui-monospace, monospace;
-		font-size: 0.85rem;
-		color: var(--hot);
-		margin: 0 0 0.5rem;
 	}
 	.blurb {
 		font-size: 1.15rem;
@@ -119,11 +112,6 @@ const { Content } = await render(project);
 	.facts dd {
 		margin: 0;
 		word-break: break-word;
-	}
-	.note {
-		font-style: italic;
-		color: var(--ink-soft);
-		font-size: 0.95rem;
 	}
 	.prose :global(p),
 	.prose :global(ul),
