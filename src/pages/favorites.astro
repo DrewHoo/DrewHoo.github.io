@@ -279,7 +279,12 @@ const tabs = [
 									width="20"
 									height="20"
 								/>
-								<a href="https://jvns.ca" rel="noopener">Julia Evans</a>
+								<span>
+									<a href="https://jvns.ca" rel="noopener">Julia Evans</a> (be
+									sure to read <a href="https://wizardzines.com" rel="noopener"
+										>Wizard Zines</a
+									>)
+								</span>
 							</li>
 							<li>
 								<img
@@ -299,9 +304,11 @@ const tabs = [
 									width="20"
 									height="20"
 								/>
-								<a href="https://lethain.com" rel="noopener"
-									>irrational exuberance</a
-								>
+								<span>
+									<a href="https://lethain.com" rel="noopener"
+										>irrational exuberance</a
+									> by Will Larson
+								</span>
 							</li>
 							<li>
 								<img
@@ -310,10 +317,12 @@ const tabs = [
 									width="20"
 									height="20"
 								/>
-								<a
-									href="https://charity.wtf/author/mipsytipsy/"
-									rel="noopener">Charity Majors</a
-								>
+								<span>
+									<a
+										href="https://charity.wtf/author/mipsytipsy/"
+										rel="noopener">charity.wtf</a
+									> by Charity Majors
+								</span>
 							</li>
 							<li>
 								<img
@@ -322,16 +331,20 @@ const tabs = [
 									width="20"
 									height="20"
 								/>
-								<a href="https://www.elidedbranches.com" rel="noopener"
-									>Elided Branches</a
-								>
+								<span>
+									<a href="https://www.elidedbranches.com" rel="noopener"
+										>Elided Branches</a
+									> by Camille Fournier
+								</span>
 							</li>
 							<li>
 								<span class="glyph" aria-hidden="true">//</span>
-								<a
-									href="https://litonico.github.io/about-computers/"
-									rel="noopener">About Computers by Lito Nicolai</a
-								>
+								<span>
+									<a
+										href="https://litonico.github.io/about-computers/"
+										rel="noopener">About Computers</a
+									> by Lito Nicolai
+								</span>
 							</li>
 							<li>
 								<img
@@ -340,9 +353,11 @@ const tabs = [
 									width="20"
 									height="20"
 								/>
-								<a href="https://computersandpeople.com" rel="noopener"
-									>computers and people</a
-								>
+								<span>
+									<a href="https://computersandpeople.com" rel="noopener"
+										>computers and people</a
+									> by Martin Hertz
+								</span>
 							</li>
 							<li>
 								<img
@@ -363,10 +378,12 @@ const tabs = [
 									height="20"
 								/>
 								<span>
-									<a
+									<a href="https://www.fromjason.xyz" rel="noopener"
+										>From Jason</a
+									> by Jason Velazquez (be sure to read <a
 										href="https://www.fromjason.xyz/p/notebook/where-have-all-the-websites-gone/"
 										rel="noopener">Where have all the websites gone?</a
-									> by Jason Velazquez
+									>)
 								</span>
 							</li>
 							<li>
@@ -377,10 +394,11 @@ const tabs = [
 									height="20"
 								/>
 								<span>
-									<a
+									<a href="https://aphyr.com" rel="noopener">Aphyr</a> by Kyle
+									Kingsbury (I loved <a
 										href="https://aphyr.com/posts/341-hexing-the-technical-interview"
 										rel="noopener">Hexing the technical interview</a
-									> by Kyle Kingsbury
+									>)
 								</span>
 							</li>
 							<li>
@@ -469,6 +487,7 @@ const tabs = [
 								mandatory.
 							</p>
 						</div>
+
 					</section>
 				</div>
 			</article>
@@ -612,7 +631,12 @@ const tabs = [
 	.blogroll .glyph {
 		width: 20px;
 		height: 20px;
-		align-self: center;
+		/* stay with the first line when the entry wraps, rather than
+		   centering against the whole block. ≈ (line box − icon) / 2, so
+		   single-line entries look unchanged. rem, not em: .glyph sets its
+		   own smaller font-size and would otherwise ride ~2px high. */
+		align-self: flex-start;
+		margin-top: 0.31rem;
 	}
 	.glyph {
 		font-family: 'Space Mono', ui-monospace, monospace;
