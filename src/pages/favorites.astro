@@ -438,6 +438,23 @@ const tabs = [
 								lands at noon UTC the next day.
 							</p>
 						</div>
+
+						<div class="entry">
+							<h3>
+								<span class="glyph" aria-hidden="true">&lt;&gt;</span>
+								<a href="https://motherfuckingwebsite.com" rel="noopener"
+									>Motherfucking Website</a
+								> <span class="byline">by @thebarrytone</span>
+							</h3>
+							<p>
+								The whole case for plain HTML, shouted, in 4.9 KB. It's a bit,
+								but it's also just correct: semantic markup is responsive,
+								accessible, and fast before you touch it, and everything you
+								add after that is a choice you're making on someone else's
+								behalf. Worth re-reading any time a framework starts to feel
+								mandatory.
+							</p>
+						</div>
 					</section>
 				</div>
 			</article>
@@ -552,7 +569,8 @@ const tabs = [
 		background-color: #fff;
 		flex-shrink: 0;
 	}
-	.entry img {
+	.entry img,
+	.entry .glyph {
 		display: inline-block;
 		width: 28px;
 		height: 28px;
@@ -582,16 +600,23 @@ const tabs = [
 		height: 20px;
 		align-self: center;
 	}
-	.blogroll .glyph {
+	.glyph {
 		font-family: 'Space Mono', ui-monospace, monospace;
 		font-weight: 700;
-		font-size: 0.65rem;
-		line-height: 16px;
 		text-align: center;
 		color: var(--ink);
 		border: 2px solid var(--rule);
 		background-color: var(--paper-deep);
 		flex-shrink: 0;
+	}
+	/* content box is 16px/24px once the 2px border is subtracted */
+	.blogroll .glyph {
+		font-size: 0.65rem;
+		line-height: 16px;
+	}
+	.entry .glyph {
+		font-size: 0.8rem;
+		line-height: 24px;
 	}
 
 	.porter-note {
