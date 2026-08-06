@@ -1,6 +1,6 @@
 ---
 title: Breathing Index
-blurb: "A personal air quality index. Shows each pollutant separately, learns which ones affect you from your symptom diary, and predicts your day on a four-level scale, from 1 (clear) to 4 (dangerous)."
+blurb: "A personal air quality index. Shows each pollutant separately, learns which ones affect you from your symptom diary, and predicts your day on a four-level scale, from 1 (excellent) to 4 (dangerous)."
 liveUrl: https://drewhoover.com/breathing-index/
 repoUrl: https://github.com/DrewHoo/breathing-index
 tags:
@@ -28,7 +28,7 @@ CT under a US AQI of 70, labeled "Moderate."
 
 Breathing Index shows every exposure variable (pollutants, heat, humidity) and marks each by
 what the user's symptom diary establishes about it: confirmed trigger, suspected, or tolerated.
-It predicts the day on a four-level behavioral scale, 1 (Clear) to 4 (Dangerous). When several
+It predicts the day on a four-level behavioral scale, 1 (Excellent) to 4 (Dangerous). When several
 candidates are elevated at once, it reports the ambiguity instead of attributing the day to one
 of them; later diary entries resolve it. A scoreboard view compares the official composite
 indices against the logged ratings.
