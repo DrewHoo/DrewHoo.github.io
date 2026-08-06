@@ -1,6 +1,6 @@
 ---
 title: Breathing Index
-blurb: "A personal air index, born the week the official AQI called a smoke day 'Moderate.' Shows every pollutant separately, learns which ones are yours from your symptom diary, and predicts your day on a scale of 1 (do anything) to 4 (stay inside)."
+blurb: "A personal air quality index. Shows each pollutant separately, learns which ones affect you from your symptom diary, and predicts your day on a four-level scale, from 1 (clear) to 4 (indoors)."
 liveUrl: https://drewhoover.com/breathing-index/
 repoUrl: https://github.com/DrewHoo/breathing-index
 tags:
@@ -21,15 +21,14 @@ order: 25
 updated: 2026-08-06
 ---
 
-In Amsterdam, the Dutch air index read 7–8 — "insufficient" — and my asthmatic lungs worked
-harder than usual but worked. Back home in Hamden, Connecticut, the US AQI read 70 out of 500,
-"Moderate," and I couldn't finish a lap of the block. The composite AQI is a `max()` over
-pollutant sub-indices: it hides what's in the air, and its labels are calibrated to the average
-lung, which nobody has.
+The composite AQI collapses every pollutant into one number with population-calibrated labels.
+The project started with a concrete failure of that design: air labeled "insufficient" in
+Amsterdam (Dutch LKI 7–8) was manageable for the same asthmatic lungs that struggled in Hamden,
+CT under a US AQI of 70, labeled "Moderate."
 
-Breathing Index goes the other way. Every exposure variable on one screen — pollutants, heat,
-humidity — each marked by what your own symptom diary has proven about it, and your day
-predicted on a four-level scale defined by behavior, from 1 (do anything) to 4 (stay inside).
-On a day when smoke and ozone spike together, it admits it doesn't know which one got you and
-waits for the diary to settle it. There's also a scoreboard comparing what officials said to
-what your lungs said. The officials are not doing great.
+Breathing Index shows every exposure variable (pollutants, heat, humidity) and marks each by
+what the user's symptom diary establishes about it: confirmed trigger, suspected, or tolerated.
+It predicts the day on a four-level behavioral scale, 1 (Clear) to 4 (Indoors). When several
+candidates are elevated at once, it reports the ambiguity instead of attributing the day to one
+of them; later diary entries resolve it. A scoreboard view compares the official composite
+indices against the logged ratings.
