@@ -1,7 +1,7 @@
 ---
 title: Breathing Index
 blurb: "A personal air quality index. Shows each pollutant separately, learns which ones affect you from your symptom diary, and predicts your day on a four-level scale, from 1 (excellent) to 4 (dangerous)."
-liveUrl: https://drewhoover.com/breathing-index/
+liveUrl: https://breathingindex.com/
 repoUrl: https://github.com/DrewHoo/breathing-index
 tags:
   - data viz
@@ -18,7 +18,7 @@ cover: /projects/breathing-index.png
 coverAlt: Breathing Index share card showing the four colored levels and an hourly prediction curve
 pinned: false
 order: 25
-updated: 2026-08-06
+updated: 2026-08-07
 ---
 
 The composite AQI collapses every pollutant into one number with population-calibrated labels.
