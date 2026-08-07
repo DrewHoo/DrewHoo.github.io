@@ -6,16 +6,16 @@ repoUrl: https://github.com/DrewHoo/breathing-index
 tags:
   - data viz
   - health
-  - PWA
 stack:
   - TypeScript
   - React
   - Vite
   - TanStack Router
+  - PWA
   - Open-Meteo
   - AirNow
 cover: /projects/breathing-index.png
-coverAlt: Breathing Index share card showing the four colored levels and an hourly prediction curve
+coverAlt: "Breathing Index share card: a bar chart of one day's hourly air readings rising to a single red peak, above the scale from 1 Easy to 4 Dangerous"
 pinned: false
 order: 25
 updated: 2026-08-07

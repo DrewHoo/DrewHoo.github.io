@@ -9,6 +9,7 @@ export const PROJECT_TAGS = [
 	'data viz',
 	'engineering',
 	'finance',
+	'health',
 	'sports',
 	'video games',
 ] as const;
