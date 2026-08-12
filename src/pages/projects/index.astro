@@ -8,9 +8,11 @@ import Divider from '../../components/Divider.astro';
 import { SITE_TITLE, PROJECT_TAGS } from '../../consts';
 
 const projects = (await getCollection('projects')).sort((a, b) => {
-	if (a.data.pinned !== b.data.pinned) return a.data.pinned ? -1 : 1;
-	if (a.data.order !== b.data.order) return b.data.order - a.data.order;
-	return b.data.updated.valueOf() - a.data.updated.valueOf();
+	// Descending chronological: newest `updated` first. `order` is only a
+	// same-day tiebreak so equal-date entries stay deterministic across builds.
+	if (a.data.updated.valueOf() !== b.data.updated.valueOf())
+		return b.data.updated.valueOf() - a.data.updated.valueOf();
+	return b.data.order - a.data.order;
 });
 ---
 
