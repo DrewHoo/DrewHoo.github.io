@@ -7,13 +7,11 @@ import ProjectGrid from '../../components/ProjectGrid.astro';
 import Divider from '../../components/Divider.astro';
 import { SITE_TITLE, PROJECT_TAGS } from '../../consts';
 
-const projects = (await getCollection('projects')).sort((a, b) => {
-	// Descending chronological: newest `updated` first. `order` is only a
-	// same-day tiebreak so equal-date entries stay deterministic across builds.
-	if (a.data.updated.valueOf() !== b.data.updated.valueOf())
-		return b.data.updated.valueOf() - a.data.updated.valueOf();
-	return b.data.order - a.data.order;
-});
+// Default order: newest repo first, by `created`. The client-side sort toggle
+// below can re-sort the grid by `updated` (recently updated) without a reload.
+const projects = (await getCollection('projects')).sort(
+	(a, b) => b.data.created.valueOf() - a.data.created.valueOf(),
+);
 ---
 
 <!doctype html>
@@ -60,6 +58,15 @@ const projects = (await getCollection('projects')).sort((a, b) => {
 						))
 					}
 				</div>
+				<div class="sort" role="group" aria-label="Sort projects">
+					<span class="sort-label">sort:</span>
+					<button type="button" class="sort-btn" data-sort="created" aria-pressed="true">
+						newest
+					</button>
+					<button type="button" class="sort-btn" data-sort="updated" aria-pressed="false">
+						recently updated
+					</button>
+				</div>
 				<ProjectGrid projects={projects} />
 			</section>
 
@@ -93,6 +100,24 @@ const projects = (await getCollection('projects')).sort((a, b) => {
 							tag !== 'all' &&
 							!(card.dataset.tags ?? '').split('|').includes(tag);
 					}
+				});
+			}
+
+			const grid = document.querySelector<HTMLUListElement>('.grid');
+			const sortButtons = Array.from(
+				document.querySelectorAll<HTMLButtonElement>('.sort-btn'),
+			);
+			for (const button of sortButtons) {
+				button.addEventListener('click', () => {
+					const key = button.dataset.sort === 'updated' ? 'updated' : 'created';
+					for (const b of sortButtons) {
+						b.setAttribute('aria-pressed', String(b === button));
+					}
+					const sorted = [...cards].sort(
+						(a, b) =>
+							Number(b.dataset[key] ?? 0) - Number(a.dataset[key] ?? 0),
+					);
+					for (const card of sorted) grid?.appendChild(card);
 				});
 			}
 		</script>
@@ -154,6 +179,34 @@ const projects = (await getCollection('projects')).sort((a, b) => {
 		background-color: var(--paper-deep);
 	}
 	.filter[aria-pressed='true'] {
+		background-color: var(--acid);
+		color: var(--acid-ink);
+	}
+	.sort {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem;
+		margin: 0 0 1.5rem;
+	}
+	.sort-label {
+		font-family: 'Space Mono', ui-monospace, monospace;
+		font-size: 0.8rem;
+		color: var(--ink-soft);
+	}
+	.sort-btn {
+		font-family: 'Space Mono', ui-monospace, monospace;
+		font-size: 0.8rem;
+		padding: 0.3em 0.75em;
+		border: 2px solid var(--rule);
+		background-color: var(--paper);
+		color: var(--ink);
+		cursor: pointer;
+	}
+	.sort-btn:hover {
+		background-color: var(--paper-deep);
+	}
+	.sort-btn[aria-pressed='true'] {
 		background-color: var(--acid);
 		color: var(--acid-ink);
 	}

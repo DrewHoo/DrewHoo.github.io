@@ -11,6 +11,7 @@ cover: /projects/get-priests-blessing.png
 coverAlt: The skill's README on GitHub
 pinned: true
 order: 38
+created: 2026-07-05
 updated: 2026-07-13
 ---
 

@@ -14,5 +14,6 @@ cover: /projects/collegiate-championships.jpg
 coverAlt: Detail of the championship grid — school logos arranged by sport and year
 pinned: true
 order: 20
+created: 2026-07-15
 updated: 2026-07-15
 ---

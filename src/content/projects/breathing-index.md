@@ -18,6 +18,7 @@ cover: /projects/breathing-index.png
 coverAlt: "Breathing Index share card: a bar chart of one day's hourly air readings rising to a single red peak, above the scale from 1 Easy to 4 Dangerous"
 pinned: false
 order: 25
+created: 2026-08-06
 updated: 2026-08-07
 ---
 

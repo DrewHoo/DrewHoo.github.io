@@ -13,5 +13,6 @@ cover: /projects/cfb-football-records.png
 coverAlt: Detail of the sortable all-time records table
 pinned: false
 order: 10
+created: 2026-03-24
 updated: 2026-04-19
 ---

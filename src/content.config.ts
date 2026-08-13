@@ -35,6 +35,8 @@ const projects = defineCollection({
 		coverAlt: z.string().optional(),
 		pinned: z.boolean().default(false),
 		order: z.number().default(0),
+		// repo creation date — the default sort key for the projects grid
+		created: z.coerce.date(),
 		updated: z.coerce.date(),
 	}),
 });

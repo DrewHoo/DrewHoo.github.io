@@ -15,5 +15,6 @@ cover: /projects/meteorite-explorer.jpg
 coverAlt: World map of meteorite landings with filter controls
 pinned: true
 order: 30
+created: 2026-03-01
 updated: 2026-04-19
 ---

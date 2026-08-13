@@ -15,5 +15,6 @@ cover: /projects/buy-it-now-or-never.png
 coverAlt: Detail of an adjusted-close chart with never-undercut all-time-high closes marked
 pinned: true
 order: 30
+created: 2026-05-11
 updated: 2026-05-11
 ---

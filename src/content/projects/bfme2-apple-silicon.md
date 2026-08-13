@@ -15,6 +15,7 @@ cover: /blog/bfme2-apple-silicon/box-art.jpg
 coverAlt: The Battle for Middle-earth II box art — an Elf and a Dwarf mid-battle
 pinned: true
 order: 40
+created: 2026-06-20
 updated: 2026-06-19
 ---
 

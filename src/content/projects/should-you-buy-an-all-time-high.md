@@ -14,5 +14,6 @@ cover: /projects/should-you-buy-an-all-time-high.jpg
 coverAlt: Detail of the all-time-high timeline, peaks colored by how long the price stayed underwater afterward
 pinned: true
 order: 35
+created: 2026-05-12
 updated: 2026-07-15
 ---

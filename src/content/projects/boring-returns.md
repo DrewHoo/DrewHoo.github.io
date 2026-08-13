@@ -15,5 +15,6 @@ cover: /projects/boring-returns.png
 coverAlt: Detail of the leaderboard — forty-year strips of monthly squares colored by annualized return
 pinned: true
 order: 25
+created: 2026-05-13
 updated: 2026-05-13
 ---

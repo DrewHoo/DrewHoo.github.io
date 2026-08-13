@@ -14,5 +14,6 @@ cover: /projects/shivering-deckbuilder.png
 coverAlt: The deckbuilder's card search drawer, deck rules, and quick stats
 pinned: false
 order: 5
+created: 2021-04-13
 updated: 2026-04-19
 ---

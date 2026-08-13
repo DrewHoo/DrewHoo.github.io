@@ -12,7 +12,11 @@ const { projects } = Astro.props;
 <ul class="grid" role="list">
 	{
 		projects.map((project) => (
-			<li data-tags={project.data.tags.join('|')}>
+			<li
+				data-tags={project.data.tags.join('|')}
+				data-created={project.data.created.valueOf()}
+				data-updated={project.data.updated.valueOf()}
+			>
 				<ProjectCard project={project} />
 			</li>
 		))
