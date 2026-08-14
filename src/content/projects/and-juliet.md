@@ -5,7 +5,6 @@ liveUrl: https://drewhoover.com/and-juliet/
 repoUrl: https://github.com/DrewHoo/and-juliet
 tags:
   - data viz
-  - music
 stack:
   - React
   - Vite
