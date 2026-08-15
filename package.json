@@ -1,18 +1,19 @@
 {
-  "name": "drewhoover-com",
-  "type": "module",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-  },
-  "dependencies": {
-    "@astrojs/mdx": "^4.3.14",
-    "@astrojs/rss": "^4.0.18",
-    "@astrojs/sitemap": "^3.7.2",
-    "astro": "^5.18.1",
-    "mixpanel-browser": "^2.81.0"
-  }
+	"name": "drewhoover-com",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"astro": "astro",
+		"gen:embed": "esbuild src/scripts/embed-analytics.js --bundle --minify --format=iife --target=es2019 --outfile=public/embed/analytics.js"
+	},
+	"dependencies": {
+		"@astrojs/mdx": "^4.3.14",
+		"@astrojs/rss": "^4.0.18",
+		"@astrojs/sitemap": "^3.7.2",
+		"astro": "^5.18.1",
+		"mixpanel-browser": "^2.81.0"
+	}
 }
