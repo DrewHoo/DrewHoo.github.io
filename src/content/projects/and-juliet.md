@@ -1,6 +1,6 @@
 ---
 title: Who wrote & Juliet?
-blurb: "Every number in & Juliet is a Max Martin co-write — 29 borrowed pop hits plus one written for the show. A timeline of the originals: Backstreet Boys lead with six, Britney close behind, and the boy-band era supplies nearly half the score. Bubbles sized by streams today."
+blurb: "*& Juliet* is a brilliant Broadway musical that picks up where Romeo and Juliet would have ended — Juliet doesn't take the dagger, and instead goes on a journey of self-discovery aided by the pop-iest pop songs of the late 90s and early aughts. It's utterly delightful. Every one of them is a Max Martin co-write, so here they are on a timeline in release order, with the chart peak each one hit… because I want it that way."
 liveUrl: https://drewhoover.com/and-juliet/
 repoUrl: https://github.com/DrewHoo/and-juliet
 tags:
@@ -9,9 +9,9 @@ stack:
   - React
   - Vite
 cover: /projects/and-juliet.png
-coverAlt: Neon pink bubble timeline of the original pop songs behind the musical & Juliet
+coverAlt: Neon marquee listing the pop songs behind the musical & Juliet in release order, each with its chart peak
 pinned: false
 order: 42
 created: 2026-08-14
-updated: 2026-08-14
+updated: 2026-08-15
 ---
