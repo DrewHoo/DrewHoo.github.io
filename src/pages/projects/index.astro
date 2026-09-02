@@ -70,15 +70,6 @@ const projects = (await getCollection('projects')).sort(
 				<ProjectGrid projects={projects} />
 			</section>
 
-			<Divider label="·  /  ·" />
-
-			<section class="meta">
-				<p>
-					More soon. The writing moved to <a href="/">the front page</a>.
-					If you want to know who made all this, that's <a href="/about"
-					>over here</a>.
-				</p>
-			</section>
 		</main>
 		<Footer />
 
@@ -209,8 +200,5 @@ const projects = (await getCollection('projects')).sort(
 	.sort-btn[aria-pressed='true'] {
 		background-color: var(--acid);
 		color: var(--acid-ink);
-	}
-	.meta {
-		margin-top: 1.5rem;
 	}
 </style>
