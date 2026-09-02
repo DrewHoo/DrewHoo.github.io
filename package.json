@@ -7,6 +7,7 @@
 		"build": "astro build",
 		"preview": "astro preview",
 		"astro": "astro",
+		"gen:favicon": "node scripts/gen-favicon.mjs",
 		"gen:embed": "esbuild src/scripts/embed-analytics.js --bundle --minify --format=iife --target=es2019 --outfile=public/embed/analytics.js"
 	},
 	"dependencies": {
@@ -15,5 +16,10 @@
 		"@astrojs/sitemap": "^3.7.2",
 		"astro": "^5.18.1",
 		"mixpanel-browser": "^2.81.0"
+	},
+	"devDependencies": {
+		"opentype.js": "^2.0.0",
+		"png-to-ico": "^3.0.2",
+		"wawoff2": "^2.0.1"
 	}
 }
