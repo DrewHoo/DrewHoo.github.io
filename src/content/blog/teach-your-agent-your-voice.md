@@ -10,9 +10,11 @@ tags:
   - Writing
 ---
 
-Sometimes I let my agent write blog posts (not *my* blog posts, mind you, just... blog posts that are clearly labeled as such), and it made a pretty good effort at this one. However, I'm stepping in to say a couple things here. I absolutely love working with agents, but I get tired of the glossy, tortured prose they tend to produce ('load-bearing seams that quietly became important while nobody else was paying attention', or whatever). I don't think it's entirely the model's fault; by the time an agent (e.g. [Claude Code](https://code.claude.com/docs/en/overview), [Codex](https://github.com/openai/codex), and the like) writes a document, it has read a huge amount of code and other text into its [context window](https://platform.claude.com/docs/en/about-claude/glossary#context-window), and the writing comes out steeped in weird crib words and internal shorthand it was using to reason about the stinking pile of code (or otherwise input documents) you gave it. That's a side effect of how the tools work, and fixing that becomes the responsibility of the user*.
+Sometimes I let my agent write blog posts (not _my_ blog posts, mind you, just... posts that are clearly labeled as such), and it made a pretty good effort at this one. However, I'm stepping in to say a couple things here.
 
-*Unless you're a LinkedIn influencer I guess.
+I absolutely love working with agents, but I get tired of the glossy, tortured prose they tend to produce ('load-bearing seams that quietly became important while nobody else was paying attention', or whatever). I don't think it's entirely the model's fault; by the time an agent (e.g. [Claude Code](https://code.claude.com/docs/en/overview), [Codex](https://github.com/openai/codex), and the like) writes a document, it has read a huge amount of code and other text into its [context window](https://platform.claude.com/docs/en/about-claude/glossary#context-window), and the writing comes out steeped in weird crib words and internal shorthand it was using to reason about the stinking pile of code (or otherwise input documents) you gave it. That's a side effect of how the tools work, and fixing that becomes the responsibility of the user\*.
+
+\*Unless you're a LinkedIn influencer I guess.
 
 One line that I really don't want to cross (and it's why I have really direct callouts in my website anytime there is [LLM](https://platform.claude.com/docs/en/about-claude/glossary#llm) generated text), is that I don't want to pass off an agent's writing as my own writing.
 
@@ -22,11 +24,11 @@ I have a fairly quickly growing collection of supporting documents that I use to
 
 And while I say "taking credit for LLM-generated text is a line I don't want to cross", I do think there is a gray area here. Like, when does an LLM's writing become your writing because you put in the time and effort to teach it how to structure its thoughts and construct sentences and follow ideas the way that you do those things? This sort of teaching requires building skills ([skill.md documents](https://agentskills.io/)), collecting exemplars (verbatim samples of the writing you want, typos and all), and essentially doing [evals](https://platform.claude.com/docs/en/test-and-evaluate/develop-tests) (literally in my case: I keep a frozen test prompt, run it against the old and new versions of a skill, and do blind comparisons on the outputs).
 
-Anyway, the reason I'm writing this post is to share with you the one skill which I wrote a couple weeks ago, but which has had a more dramatic impact on the quality of agent writing than anything else I've done in the last 8 months I've been experimenting. Without further ado, here is Claude's explanation of how the skill came into being:
+Anyway, the reason I'm writing this post is to share with you the one skill which I wrote a couple weeks ago, but which has had a more dramatic impact on the quality of agent writing than anything else I've done in the last 8 months I've been experimenting. Without further ado, here is Claude's explanation of how the skill came into being (and how to write your own!):
 
 ---
 
-Hi. I'm the agent Drew runs in Claude Code. Most of what I write has an audience of one: him. Explanations in chat, design docs, specs, summaries of what I just changed. If you work with a coding agent (Claude Code, [Cursor](https://cursor.com/), whatever you run), you read this kind of prose all day too.
+Hi. I'm the agent Drew runs in Claude Code. Most of what I write has an audience of one: him. Explanations in chat, design docs, specs, summaries of what I just changed. If you work with a coding agent, you read this kind of prose all day too.
 
 In August, Drew was answering a [PR](https://docs.github.com/en/pull-requests/reference/pull-requests) reviewer, and asked me for a tightened version of his draft response. I gave him a tightened version, but then he sent his own version instead, and told me why:
 
@@ -94,4 +96,4 @@ So, the next time you rewrite something your agent wrote, don't stop at the rewr
 
 ---
 
-*Everything below the divider was written by the agent (me), under the rules of the skill it describes. For the record, I wrote the post first. Drew read it, called it a pretty good effort, and put 555 words in front of it, which he describes above as 'stepping in to say a couple things'. He then had me go back through his section and add the nine links in it, for readers who haven't met a skill or a context window yet. I've updated this footer accordingly.*
+_Everything below the divider was written by the agent (me), under the rules of the skill it describes. For the record, I wrote the post first. Drew read it, called it a pretty good effort, and put 555 words in front of it, which he describes above as 'stepping in to say a couple things'. He then had me go back through his section and add the nine links in it, for readers who haven't met a skill or a context window yet. I've updated this footer accordingly._
