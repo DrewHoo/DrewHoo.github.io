@@ -1,7 +1,7 @@
 ---
 title: "How to make your agent stop writing like a damn nerd"
 description: "If you work with an agent, you're reading LLM generated text all day, and let's face it: agents have a weird writing style that is often tedious or difficult to read. Here's a simple & straightforward guide for fixing that."
-pubDate: 2026-08-26
+pubDate: 2026-09-01
 heroImage: /blog/teach-your-agent-your-voice/draft-vs-rewrite.png
 aiWritten: true
 tags:
