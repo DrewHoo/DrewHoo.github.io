@@ -15,6 +15,7 @@
   third-party CDN on every project page), and leaves this source readable.
 */
 import mixpanel from 'mixpanel-browser';
+import { isAutomated, clientProps, trackPageviews } from './analytics-common.js';
 
 // Public by design: write-only event ingestion, no PII.
 const TOKEN = '1c6a0f45b8a5768185a8d9a2f4d65452';
@@ -25,6 +26,7 @@ if (
 	typeof window !== 'undefined' &&
 	!optOut(document.documentElement) &&
 	!optOut(document.body) &&
+	!isAutomated() &&
 	// A page that bundles mixpanel-browser itself would otherwise double-count
 	// every pageview.
 	!window.dhAnalytics
@@ -48,16 +50,19 @@ if (
 
 	try {
 		mixpanel.init(TOKEN, {
-			// One pageview on load and one per history change — the shareable
-			// ?state= URLs on these sites are written with replaceState.
-			track_pageview: 'url-with-path-and-query-string',
+			// Pageviews are fired by trackPageviews() below, after register().
+			track_pageview: false,
 			persistence: 'localStorage',
 		});
 		// Same origin as drewhoover.com, so distinct_id carries over from the
 		// index site and a visit that starts on the homepage and continues into
 		// a project reads as one person. `site` splits them back apart in
 		// reports without anyone parsing pathnames.
-		mixpanel.register({ site: location.pathname.split('/')[1] || 'index' });
+		mixpanel.register({
+			site: location.pathname.split('/')[1] || 'index',
+			...clientProps(),
+		});
+		trackPageviews(mixpanel);
 		ready = true;
 		for (const [name, props] of queue) {
 			try {

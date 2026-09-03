@@ -3,6 +3,8 @@
 // The token is public by design: write-only event ingestion, no PII.
 const TOKEN = '1c6a0f45b8a5768185a8d9a2f4d65452';
 
+import { isAutomated, clientProps, trackPageviews } from './analytics-common.js';
+
 let mp = null;
 const queue = [];
 
@@ -15,13 +17,16 @@ function flush() {
 	queue.length = 0;
 }
 
-if (typeof window !== 'undefined') {
+if (typeof window !== 'undefined' && !isAutomated()) {
 	import('mixpanel-browser')
 		.then((m) => {
 			mp = m.default;
 			mp.init(TOKEN, {
-				track_pageview: 'url-with-path-and-query-string',
+				// Pageviews are fired by trackPageviews() below, after register().
+				track_pageview: false,
 			});
+			mp.register(clientProps());
+			trackPageviews(mp);
 			flush();
 		})
 		.catch(() => {
