@@ -2,13 +2,18 @@
 // sites). Kept dependency-free so esbuild can inline it into the embed.
 
 // Headless Chrome, Puppeteer, Playwright and Selenium all set
-// navigator.webdriver. Real browsers leave it false. Bots that spoof a
-// referrer (a headless crawler in AWS us-east-1 hit one post ~75 times in
-// one night claiming to come from kagi.com) show up in reports as visitors
-// otherwise, and Mixpanel has no server-side bot filter for free plans.
+// navigator.webdriver. Real browsers leave it false. Crawlers that execute
+// JavaScript without setting it (Meta's meta-externalagent loaded the voice
+// post ~80 times a day through Kagi's Small Web, a fresh identity each time,
+// referrer kagi.com) are only recognizable by user agent. Mixpanel has no
+// server-side bot filter on free plans, so both checks live here.
+const CRAWLER_UA =
+	/bot|crawl|spider|slurp|externalagent|externalhit|externalfetcher|headless|lighthouse|python-requests|curl\/|wget\//i;
+
 export function isAutomated() {
 	try {
-		return navigator.webdriver === true;
+		if (navigator.webdriver === true) return true;
+		return CRAWLER_UA.test(navigator.userAgent);
 	} catch {
 		return false;
 	}
@@ -17,12 +22,22 @@ export function isAutomated() {
 // Mixpanel parses the user agent into $browser/$os and drops the raw
 // string, so an unrecognized client is just blank in reports. Keeping the
 // raw string lets us name a bot instead of guessing.
+//
+// `framed` is true when the page is loaded inside another site's iframe.
+// Kagi's Small Web (kagi.com/smallweb) embeds every listed blog's new posts
+// that way, and every Kagi surface sends the bare origin as the referrer,
+// so a kagi.com referrer alone can't tell an embed from a search click.
 export function clientProps() {
+	const props = {};
 	try {
-		return { user_agent: navigator.userAgent };
+		props.user_agent = navigator.userAgent;
+	} catch {}
+	try {
+		props.framed = window.self !== window.top;
 	} catch {
-		return {};
+		props.framed = true;
 	}
+	return props;
 }
 
 // Mixpanel's own `track_pageview` config fires the first pageview inside
