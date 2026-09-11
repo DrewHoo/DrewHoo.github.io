@@ -7,6 +7,13 @@
 //   favicon-192.png      — Android / PWA
 //   apple-touch-icon.png — iOS home screen (180x180)
 //
+// Filenames are fixed: favicon.ico and apple-touch-icon.png are probed at those
+// exact root paths by clients that never read our HTML, so they can't be renamed.
+// That means a redesigned mark reuses the same URLs, and Safari's favicon cache
+// (~/Library/Safari/Favicon Cache) will keep serving the old bitmap for months --
+// it ignores reloads and Cache-Control. After changing the mark, bump the ?v= on
+// every icon link in src/components/BaseHead.astro to force a new cache key.
+//
 // The mark is the "dh" monogram set in Space Mono Bold (the wordmark font),
 // on an opaque ink plate with the wordmark's orange underline. Letters are
 // converted to path outlines here so the SVG never depends on installed fonts.
