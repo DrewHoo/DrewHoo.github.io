@@ -69,6 +69,16 @@ Apex (`drewhoover.com`) — four `A` records to GitHub Pages' IPs:
 
 Any other repo owned by `DrewHoo` that has Pages enabled is automatically served under this domain as `drewhoover.com/<repo-name>/`. No per-project DNS needed. So `DrewHoo/space-rock` appears at `drewhoover.com/space-rock/` as soon as `drewhoover.com` is the custom domain on the User Site repo.
 
+## Search engines
+
+- **Google Search Console** — verified as a *Domain* property via a DNS `TXT` record at the registrar. That covers `http`/`https`, apex/`www`, and every subpath, so the sibling project sites are included and need no registration of their own. There is deliberately no `google-site-verification` meta tag; adding one would only create a second, narrower URL-prefix property.
+- **Bing Webmaster Tools** — import the verified site from Search Console rather than re-verifying. Submit `https://drewhoover.com/sitemap-index.xml` (the index, not `sitemap-0.xml`). Bing's index is also what feeds DuckDuckGo, Yahoo, Ecosia and Copilot.
+- **IndexNow** — `scripts/indexnow.mjs`, run by the `indexnow` job in `deploy.yml` after each deploy. It maps the push's changed files onto URLs, intersects them with the live sitemap, and submits only that set. Reaches Bing, Yandex, Naver and Seznam; Google ignores the protocol.
+
+The IndexNow key lives at `public/<key>.txt` and is duplicated in `scripts/indexnow.mjs`. It is public by design — serving the key back from the site root *is* the ownership proof — so it is not a secret and there is nothing to configure in GitHub. Rotating it means changing the filename and the `KEY` constant together.
+
+To resubmit every URL (seeding a newly registered engine, or a template change that rewrote every page), run the workflow manually from the Actions tab with **Also resubmit every sitemap URL to IndexNow** checked. Don't wire that into the push path: repeatedly submitting unchanged URLs is what the protocol asks you not to do.
+
 ## "Back to the index" bar on project sites
 
 `public/embed/back-bar.js` is a ~50-line standalone script that any project site can include to add a sticky top strip linking home. To wire it up in a sibling repo (e.g. `cfb-all-time-records`), add this to the project's HTML head:
