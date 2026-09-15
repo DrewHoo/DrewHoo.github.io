@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      indexnow_all:
+        description: 'Also resubmit every sitemap URL to IndexNow'
+        type: boolean
+        default: false
   repository_dispatch:
     types: [hashnode-post-published]
 
@@ -35,3 +40,42 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  # Tell Bing what changed, once the change is actually live. Runs after the
+  # deploy because IndexNow verifies ownership by fetching the key file off the
+  # site, and the script re-reads the live sitemap to decide what to submit.
+  # A failure here never means a bad deploy — the site is already up — but it
+  # is left failing rather than swallowed so a broken ping is visible.
+  indexnow:
+    needs: deploy
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # The push diff is what decides which URLs to submit, so the job
+          # needs both ends of it, not the default single-commit checkout.
+          fetch-depth: 0
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Ping IndexNow
+        env:
+          BEFORE: ${{ github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+          SUBMIT_ALL: ${{ inputs.indexnow_all }}
+        run: |
+          set -euo pipefail
+          if [ "${SUBMIT_ALL:-false}" = "true" ]; then
+            node scripts/indexnow.mjs --all
+          elif [ -n "${BEFORE:-}" ] && [ "${BEFORE}" != "0000000000000000000000000000000000000000" ]; then
+            node scripts/indexnow.mjs --since "$BEFORE" --head "$HEAD_SHA"
+          else
+            # workflow_dispatch and repository_dispatch carry no before/after
+            # pair, so there is no diff to read. Re-run with the input checked
+            # if this deploy really did change published content.
+            echo "No push diff on this event; nothing submitted."
+          fi
