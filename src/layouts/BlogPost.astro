@@ -21,6 +21,7 @@ const jsonLd = {
 	datePublished: pubDate.toISOString(),
 	...(updatedDate ? { dateModified: updatedDate.toISOString() } : {}),
 	...(imageURL ? { image: imageURL } : {}),
+	...(tags && tags.length ? { keywords: tags.join(', ') } : {}),
 	author: {
 		'@type': 'Person',
 		name: SITE_AUTHOR,
