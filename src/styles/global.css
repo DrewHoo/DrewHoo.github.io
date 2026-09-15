@@ -245,6 +245,12 @@ img {
 	box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--rule);
 }
 
+/* keep subscripts (PM<sub>2.5</sub>) from stretching the line box */
+sub,
+sup {
+	line-height: 0;
+}
+
 table {
 	width: 100%;
 	border-collapse: collapse;
@@ -284,6 +290,11 @@ select {
 }
 
 @media (max-width: 720px) {
+	/* wide markdown tables scroll inside themselves instead of the whole page */
+	table {
+		display: block;
+		overflow-x: auto;
+	}
 	html {
 		font-size: 17px;
 	}
