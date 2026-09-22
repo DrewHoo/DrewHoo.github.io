@@ -73,7 +73,10 @@ const d = layout(dx, dy).toPathData(2);
 const barY = top + glyphH + gap;
 const barX = (SIZE - glyphW) / 2;
 
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SIZE} ${SIZE}">
+// width/height are required, not decorative: Safari will not rasterize an SVG
+// favicon that only carries a viewBox, and renders a broken-image glyph in the
+// tab bar instead. Chromium infers the size and hides the bug.
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${SIZE}" height="${SIZE}" viewBox="0 0 ${SIZE} ${SIZE}">
   <rect width="${SIZE}" height="${SIZE}" rx="12" fill="${INK}"/>
   <path d="${d}" fill="${PAPER}"/>
   <rect x="${barX.toFixed(2)}" y="${barY.toFixed(2)}" width="${glyphW.toFixed(2)}" height="${barH}" fill="${HOT}"/>
