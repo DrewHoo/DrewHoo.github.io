@@ -4,7 +4,7 @@
 
 ## What happened
 
-Someone posted [Hostile Territory](https://drewhoover.com/hostile-territory/) to r/CFB on Friday 9/19 as a link post titled "How bad is Kiffin's 1-8 record against top 10 teams" (thread `1wl12tw`). The site had done 27 unique visitors on Thursday. It did 5,646 on Friday and 5,858 on Saturday.
+Drew posted [Hostile Territory](https://drewhoover.com/hostile-territory/) to r/CFB on Friday 9/19 as a link post titled "How bad is Kiffin's 1-8 record against top 10 teams on the road? Here's every other coach's record." (thread `1wl12tw`, 726 points, 97% upvoted, 189 comments). The site had done 27 unique visitors on Thursday. It did 5,646 on Friday and 5,858 on Saturday.
 
 | Day | Unique visitors | Hostile Territory page views |
 |---|---|---|
@@ -29,7 +29,7 @@ The first wave peaked one hour after posting at about 2,000 visitors in the hour
 
 5. **No spillover.** 64 of ~13k Hostile Territory visitors viewed any other page. 62 of those hit the home page. The projects index got 75 views all week.
 
-6. **The Kiffin post was not discovered by reddit.** `/blog/lane-kiffin-road-record-vs-top-10/` got 77 views: 34 from the kagi crawler (see below), 32 from the home page, 6 direct, 5 from Google. The r/CFB thread linked the project, not the post, and its title happened to match the post. Old-reddit listing pages show up as referrers, which only happens for link posts.
+6. **The Kiffin blog post was not discovered by reddit.** `/blog/lane-kiffin-road-record-vs-top-10/` got 77 views: 34 from the kagi crawler (see below), 32 from the home page, 6 direct, 5 from Google. The thread linked the project directly, so the post only got the handful of reddit visitors who wandered to the home page first.
 
 7. **Other referrers to Hostile Territory,** unique visitors: 247sports.com 76, tidefans.com 8, Substack 3, a Microsoft Teams link 1, Facebook 4, Google 19.
 
@@ -46,6 +46,19 @@ Kagi Small Web is a real product humans use, and it loads posts in an iframe, so
 
 The 3 Firefox hits at 2,560 wide are plausibly real people, or Drew.
 
+## What the thread said about the tool
+
+Read from the comments on 9/23. Repeated asks first.
+
+- **The default filter hides coaches people look for.** At least six comments said a coach was missing (Kirby Smart, Josh Heupel, Kalani Sitake, Nick Saban, Pete Carroll, Dan Lanning). Each time the answer was "he's there, the minimum-games filter or the current-coaches box hides him." The `min` and `all` query params being the most-used controls is the same finding from the other side.
+- **The neutral-site rule needs to be on the page.** Four separate threads asked why a playoff or bowl win didn't count (Cristobal over Ohio State, DeBoer over Harbaugh, Lanning) or should (Cignetti over Miami, which Drew granted mid-thread with credit). The rule is "home game for the top-10 team" and readers had to ask for it.
+- **"True road games" wasn't clear at a glance.** One reader called the data "almost all just straight up wrong" and then edited: "true road games, I can't read."
+- **0-x records sort the wrong way.** One reader said 0-10 should read as worse than 0-1. Drew agreed and explained the current sort exists to keep well-known coaches easy to find.
+- **Game-time rank vs final rank.** Two readers pointed out that ranking at kickoff credits wins over teams that finished unranked. A methodology note or a final-rank toggle would answer it.
+- Small: the tiny Kansas logo reads as the old Florida logo.
+- Praise: "sick website my dude", "Big fan of your site. I really like the visuals."
+- Follow-up post idea Drew surfaced in the thread: Saban was 0-6 at Auburn when Auburn was ranked, LSU years included.
+
 ## Housekeeping spotted
 
 Fixed the same day in `src/scripts/analytics-common.js` and `src/layouts/BlogPost.astro`: local hostnames and the Small Web iframe no longer init Mixpanel, and blog posts send a `Post read` event once the reader has spent 15 seconds on the page and scrolled the article's end into view. `Post viewed` keeps its load-time meaning so older comparisons still hold. The two items below remain.
@@ -54,4 +67,4 @@ Fixed the same day in `src/scripts/analytics-common.js` and `src/layouts/BlogPos
 
 ## Open questions
 
-- Who posted the thread, and did the comments say anything about the controls or the phone layout? Reddit was unreachable from the agent session.
+- Nobody in the thread mentioned the phone layout, good or bad, with 91% of visitors on phones.
