@@ -48,11 +48,10 @@ The 3 Firefox hits at 2,560 wide are plausibly real people, or Drew.
 
 ## Housekeeping spotted
 
+Fixed the same day in `src/scripts/analytics-common.js` and `src/layouts/BlogPost.astro`: local hostnames and the Small Web iframe no longer init Mixpanel, and blog posts send a `Post read` event once the reader has spent 15 seconds on the page and scrolled the article's end into view. `Post viewed` keeps its load-time meaning so older comparisons still hold. The two items below remain.
+
 - `/blog/should-you-buy-at-an-all-time-high/` still gets hits alongside the project path, and `Post viewed` records two different titles for it.
-- localhost dev sessions leak into the project: 30 page views this week from `localhost:5173` and `localhost:4321`.
-- `Post viewed` fires on load in `src/layouts/BlogPost.astro`, so it duplicates the page view and can't distinguish a read from a bot load.
 
 ## Open questions
 
 - Who posted the thread, and did the comments say anything about the controls or the phone layout? Reddit was unreachable from the agent session.
-- Whether the crawler should be filtered at init (screen width 1,366 + framed + kagi referrer) or just excluded in queries.

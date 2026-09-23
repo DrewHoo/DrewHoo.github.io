@@ -3,20 +3,42 @@
 
 // Headless Chrome, Puppeteer, Playwright and Selenium all set
 // navigator.webdriver. Real browsers leave it false. Crawlers that execute
-// JavaScript without setting it (Meta's meta-externalagent loaded the voice
-// post ~80 times a day through Kagi's Small Web, a fresh identity each time,
-// referrer kagi.com) are only recognizable by user agent. Mixpanel has no
-// server-side bot filter on free plans, so both checks live here.
+// JavaScript without setting it are only recognizable by user agent.
+// Mixpanel has no server-side bot filter on free plans, so the checks live
+// here.
 const CRAWLER_UA =
 	/bot|crawl|spider|slurp|externalagent|externalhit|externalfetcher|headless|lighthouse|python-requests|curl\/|wget\//i;
 
+// Kagi's Small Web (kagi.com/smallweb) embeds every listed blog's new posts
+// in an iframe, and a crawler loads that page around the clock: in Sept 2026
+// it was ~230 loads in two weeks, each a fresh identity, all one user agent
+// string and one screen width, none scrolling. It changed its user agent
+// once already (meta-externalagent, then plain Chrome), so it is matched by
+// where it loads from, not what it claims to be. A person who finds a post
+// through Small Web and clicks through to the site is a top-level load and
+// still counts.
+const EMBED_REFERRERS = /^https?:\/\/([^/]+\.)?kagi\.com\//i;
+
+const LOCAL_HOSTS = /^(localhost|127\.0\.0\.1|\[::1\]|.*\.local|.*\.localhost)$/i;
+
+function framed() {
+	try {
+		return window.self !== window.top;
+	} catch {
+		return true;
+	}
+}
+
+// True when nothing about this load should reach Mixpanel: local dev
+// servers, automated clients, and the Small Web embed above.
 export function isAutomated() {
 	try {
+		if (LOCAL_HOSTS.test(location.hostname) || location.hostname === '') return true;
 		if (navigator.webdriver === true) return true;
-		return CRAWLER_UA.test(navigator.userAgent);
-	} catch {
-		return false;
-	}
+		if (CRAWLER_UA.test(navigator.userAgent)) return true;
+		if (framed() && EMBED_REFERRERS.test(document.referrer)) return true;
+	} catch {}
+	return false;
 }
 
 // Mixpanel parses the user agent into $browser/$os and drops the raw
@@ -32,11 +54,7 @@ export function clientProps() {
 	try {
 		props.user_agent = navigator.userAgent;
 	} catch {}
-	try {
-		props.framed = window.self !== window.top;
-	} catch {
-		props.framed = true;
-	}
+	props.framed = framed();
 	return props;
 }
 

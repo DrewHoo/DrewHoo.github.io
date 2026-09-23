@@ -104,14 +104,70 @@ const jsonLd = {
 
 			const article = document.querySelector('article');
 			if (article instanceof HTMLElement) {
-				track('Post viewed', {
+				const post = {
 					slug: location.pathname,
 					title: article.dataset.postTitle,
 					tags: article.dataset.postTags
 						? article.dataset.postTags.split(',')
 						: [],
 					aiWritten: article.dataset.postAiWritten === 'true',
-				});
+				};
+
+				// Fires on load, so it counts every client that runs the script,
+				// crawlers included. It carries the post's title and tags, which
+				// the auto pageview does not.
+				track('Post viewed', post);
+
+				// Fires once, when the reader has had the page open for at least
+				// READ_SECONDS and the end of the article has been on screen. A
+				// headless load never scrolls, so this separates reading from
+				// loading. `seconds` is wall-clock time since the script ran and
+				// `max_scroll_percent` is how far down the article the reader got,
+				// both as of the moment the event fires.
+				const READ_SECONDS = 15;
+				const start = performance.now();
+				let maxScroll = 0;
+				let reachedEnd = false;
+				let sent = false;
+
+				const scrollPercent = () => {
+					const rect = article.getBoundingClientRect();
+					const top = rect.top + window.scrollY;
+					const seen = window.scrollY + window.innerHeight - top;
+					return Math.max(0, Math.min(100, Math.round((seen / rect.height) * 100)));
+				};
+				const onScroll = () => {
+					maxScroll = Math.max(maxScroll, scrollPercent());
+				};
+				window.addEventListener('scroll', onScroll, { passive: true });
+				onScroll();
+
+				const maybeSend = () => {
+					if (sent || !reachedEnd) return;
+					if (performance.now() - start < READ_SECONDS * 1000) return;
+					if (document.visibilityState !== 'visible') return;
+					sent = true;
+					window.removeEventListener('scroll', onScroll);
+					track('Post read', {
+						...post,
+						seconds: Math.round((performance.now() - start) / 1000),
+						max_scroll_percent: maxScroll,
+					});
+				};
+
+				const prose = article.querySelector('.prose');
+				const end = prose?.lastElementChild ?? article;
+				new IntersectionObserver(
+					(entries) => {
+						if (entries.some((e) => e.isIntersecting)) {
+							reachedEnd = true;
+							maybeSend();
+						}
+					},
+					{ threshold: 0 },
+				).observe(end);
+				setTimeout(maybeSend, READ_SECONDS * 1000);
+				document.addEventListener('visibilitychange', maybeSend);
 			}
 		</script>
 	</body>
