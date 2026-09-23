@@ -46,16 +46,16 @@ Kagi Small Web is a real product humans use, and it loads posts in an iframe, so
 
 The 3 Firefox hits at 2,560 wide are plausibly real people, or Drew.
 
-## What the thread said about the tool
+## Where confusion surfaced in the thread
 
-Read from the comments on 9/23. Repeated asks first.
+Read from the comments on 9/23. These are places some readers got confused, not a change list. The denominator: ~13k visitors, 189 comments, and the confused comments below come from about a dozen people. The thread itself (726 points, 97% upvoted), the volume of shared `?coach=` and `?min=` links, and one in twelve visitors opening coach cards all say the interface worked for most people as it was. The Franklin jokes are most of the thread.
 
-- **The default filter hides coaches people look for.** At least six comments said a coach was missing (Kirby Smart, Josh Heupel, Kalani Sitake, Nick Saban, Pete Carroll, Dan Lanning). Each time the answer was "he's there, the minimum-games filter or the current-coaches box hides him." The `min` and `all` query params being the most-used controls is the same finding from the other side.
-- **The neutral-site rule needs to be on the page.** Four separate threads asked why a playoff or bowl win didn't count (Cristobal over Ohio State, DeBoer over Harbaugh, Lanning) or should (Cignetti over Miami, which Drew granted mid-thread with credit). The rule is "home game for the top-10 team" and readers had to ask for it.
-- **"True road games" wasn't clear at a glance.** One reader called the data "almost all just straight up wrong" and then edited: "true road games, I can't read."
-- **0-x records sort the wrong way.** One reader said 0-10 should read as worse than 0-1. Drew agreed and explained the current sort exists to keep well-known coaches easy to find.
-- **Game-time rank vs final rank.** Two readers pointed out that ranking at kickoff credits wins over teams that finished unranked. A methodology note or a final-rank toggle would answer it.
-- Small: the tiny Kansas logo reads as the old Florida logo.
+- **Default filter.** About six readers said a coach was missing (Smart, Heupel, Sitake, Saban, Carroll, Lanning); each was behind the minimum-games filter or the current-coaches box, and other readers answered them before Drew did. The same filter is what makes the default view readable, and `min` and `all` were the most-used controls, so plenty of people found it on their own.
+- **Neutral-site rule.** Four threads asked why a playoff or bowl result did or didn't count (Cristobal over Ohio State, DeBoer over Harbaugh, Lanning; Cignetti over Miami was petitioned and granted mid-thread). The rule is "home game for the top-10 team."
+- **"True road games."** One reader called the data "almost all just straight up wrong," then edited: "true road games, I can't read."
+- **0-x sort order.** One reader expected 0-10 to read as worse than 0-1. Drew explained the current order keeps well-known coaches easy to find.
+- **Game-time rank vs final rank.** Two readers noted kickoff ranking credits wins over teams that finished unranked. Methodology, not a bug.
+- Small: one reader read the tiny Kansas logo as the old Florida logo.
 - Praise: "sick website my dude", "Big fan of your site. I really like the visuals."
 - Follow-up post idea Drew surfaced in the thread: Saban was 0-6 at Auburn when Auburn was ranked, LSU years included.
 
