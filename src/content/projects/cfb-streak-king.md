@@ -10,9 +10,9 @@ stack:
   - Vite
   - React
 cover: /projects/cfb-streak-king.png
-coverAlt: Dark poster titled College Football Streak King with a rising streak line chart in burnt orange
+coverAlt: Dark poster titled Streak King showing the real streak board — columns of cream win chips with team marks under each leader’s count
 pinned: false
 order: 45
 created: 2026-09-26
-updated: 2026-09-26
+updated: 2026-09-27
 ---
