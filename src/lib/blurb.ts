@@ -5,12 +5,14 @@ const escapeHtml = (s: string) =>
 		.replace(/>/g, '&gt;')
 		.replace(/"/g, '&quot;');
 
-/** Escape HTML, then render *single-asterisk* spans as <em> (for set:html). */
+/** Escape HTML, then render *single-asterisk* spans as <em> and ~~tilde~~ spans as <s> (for set:html). */
 export function emphasize(text: string): string {
-	return escapeHtml(text).replace(/\*([^*]+)\*/g, '<em>$1</em>');
+	return escapeHtml(text)
+		.replace(/~~([^~]+)~~/g, '<s>$1</s>')
+		.replace(/\*([^*]+)\*/g, '<em>$1</em>');
 }
 
-/** Strip the emphasis markers for plain-text contexts like meta descriptions. */
+/** Strip the markers for plain-text contexts like meta descriptions; struck text drops out. */
 export function plainBlurb(text: string): string {
-	return text.replace(/\*([^*]+)\*/g, '$1');
+	return text.replace(/~~[^~]+~~ ?/g, '').replace(/\*([^*]+)\*/g, '$1');
 }
