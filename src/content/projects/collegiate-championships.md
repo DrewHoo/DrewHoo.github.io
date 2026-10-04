@@ -11,9 +11,9 @@ stack:
   - Vite
   - Wikipedia scrape
 cover: /projects/collegiate-championships.jpg
-coverAlt: Detail of the championship grid — school logos arranged by sport and year
+coverAlt: The redesigned championship board — grey school logos by sport and year, with Stanford lit in red and UCLA in blue beside the Most Titles leaderboard
 pinned: true
 order: 20
 created: 2026-07-15
-updated: 2026-07-15
+updated: 2026-10-03
 ---
