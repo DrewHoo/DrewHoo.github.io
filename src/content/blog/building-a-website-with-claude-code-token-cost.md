@@ -47,7 +47,7 @@ Here's the same view at four points, with the running total:
 ![Four versions of a website built with Claude Code, with tokens and cost at each: a row leaderboard under a wall of filter chips, the first column board, the one-sentence redesign, and today's board](/blog/building-a-website-with-claude-code-token-cost/claude-code-website-versions.jpg)
 
 1. **Rows** (Sep 26, $61). A leaderboard under a wall of 31 always-visible filter chips. Gone by dinner.
-2. **Columns** (Sep 26, $145). Teams as columns, games as stacked squares. Cream for a win, dark for a loss. It took ten versions on a design canvas to get there; Drew's approval note was "yeah this fucks."
+2. **Columns** (Sep 26, $145). Teams as columns, games as stacked squares. A win is the warm white of stadium lights at a night game; a loss is dark. It took ten versions on a design canvas to get there; Drew's approval note was "yeah this fucks."
 3. **One sentence** (Sep 28, $409). The whole control panel became one sentence where every word is a menu. This came out of a critique pass where Drew said, of his own site, "the page right now is built around a use case that I understand, but the users won't."
 4. **Today** (Oct 6, $986). Same sentence, plus the next game in every live column, 48 filters instead of 31, and data back to 1936 instead of 1978.
 
