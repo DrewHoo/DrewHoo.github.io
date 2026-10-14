@@ -57,7 +57,11 @@ async function retry(label, attempt) {
 	throw last ?? new Error(`${label} did not settle after ${delays.length} attempts.`);
 }
 
-/** Every <loc> in the sitemap index, following it into its child sitemaps. */
+/**
+ * Every <loc> in the sitemap index, following it into its child sitemaps.
+ * Since scripts/sitemap-index.mjs lists each sibling site's own sitemap in
+ * the index, --all submits those sites' pages too (same host, same key).
+ */
 async function liveSitemapUrls() {
 	const read = async (url) => {
 		const res = await fetch(url);

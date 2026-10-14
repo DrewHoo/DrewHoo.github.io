@@ -28,6 +28,9 @@ const projects = defineCollection({
 		// *single asterisks* in a blurb render as <em> on cards and detail pages
 		blurb: z.string().max(500),
 		liveUrl: z.string().url(),
+		// A sibling site that writes its own sitemap names it here; the
+		// postbuild step (scripts/sitemap-index.mjs) adds it to sitemap-index.xml
+		sitemapUrl: z.string().url().optional(),
 		repoUrl: z.string().url().optional(),
 		tags: z.array(z.enum(PROJECT_TAGS)).default([]),
 		stack: z.array(z.string()).default([]),

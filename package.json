@@ -4,7 +4,7 @@
 	"version": "0.0.1",
 	"scripts": {
 		"dev": "astro dev",
-		"build": "astro build",
+		"build": "astro build && node scripts/sitemap-index.mjs",
 		"preview": "astro preview",
 		"astro": "astro",
 		"gen:favicon": "node scripts/gen-favicon.mjs",

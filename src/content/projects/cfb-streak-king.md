@@ -2,6 +2,7 @@
 title: Streak King
 blurb: "Kansas once lost 46 straight road games; Alabama once beat 100 straight unranked teams. Build your own streak definition from up to four constraints — on the road, vs ranked, as an underdog, in November, after a bye — and see which FBS team owns the longest active winning or losing run under it, over every game since 1978. Famous streaks reproduce as build checks, and a This Week panel shows whose streak is on the line next."
 liveUrl: https://drewhoover.com/cfb-streak-king/
+sitemapUrl: https://drewhoover.com/cfb-streak-king/sitemap.xml
 repoUrl: https://github.com/DrewHoo/cfb-streak-king
 tags:
   - data viz

@@ -2,6 +2,7 @@
 title: Full-frame M-mount buying guide
 blurb: "Every full-frame digital M-mount camera, M9 through M11, M EV1 and Pixii Max, on a timeline and in one table: CCD vs CMOS, usable ISO, shutter, screen, cards, sealing, close focus, reliability history, size, and what each sells for used at B&H, KEH and Adorama. Built because Leica's names (M-P, Typ 240, M-E, M-D, M10-R) hide which bodies actually differ."
 liveUrl: https://drewhoover.com/m-mount-buying-guide/
+sitemapUrl: https://drewhoover.com/m-mount-buying-guide/sitemap.xml
 repoUrl: https://github.com/DrewHoo/m-mount-buying-guide
 tags:
   - data viz
