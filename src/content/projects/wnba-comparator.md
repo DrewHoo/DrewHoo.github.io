@@ -1,12 +1,15 @@
 ---
 title: WNBA Comparator
-blurb: "Cynthia Cooper has 2,187 points through her first 100 games; Seimone Augustus had 2,127. Compare WNBA players at the same point in their careers: set the sentence — who, which stat or per-game test, how it adds up, through how many games or starts or seasons — and the board ranks every career or player-season at that window, back to the league's first season in 1997. Every player carries a position, researched with receipts where no feed names one. Open a row to read it against a peer: where their curves crossed, and what the player needs over the next five games to match."
+section: sports
+league: WNBA
+span: 1997–present
+line: "Compare WNBA players at the same point in their careers: who, which stat, through how many games or starts."
+blurb: "Cynthia Cooper has 2,187 points through her first 100 games; Seimone Augustus had 2,127. Compare WNBA players at the same point in their careers: set the sentence — who, which stat or per-game test, how it adds up, through how many games or starts or seasons — and the board ranks every career or player-season at that window, back to the league's first season in 1997. Open a row to read it against a peer: where their curves crossed, and what the player needs over the next five games to match."
 liveUrl: https://drewhoover.com/wnba-comparator/
 sitemapUrl: https://drewhoover.com/wnba-comparator/sitemap.xml
 repoUrl: https://github.com/DrewHoo/wnba-comparator
 tags:
   - data viz
-  - sports
 stack:
   - Vite
   - React
