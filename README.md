@@ -27,6 +27,19 @@ Built with [Astro](https://astro.build/) and deployed as a GitHub Pages **User S
 3. Optionally add an MDX body under the frontmatter for a longer writeup — it will render at `/projects/<slug>/`.
 4. `git push`. The GitHub Action rebuilds and redeploys.
 
+### Sports sites
+
+A sports site is a project entry with `section: sports`. It is listed on `/sports` instead of `/projects`, as a row rather than a card, and it has no `/projects/<slug>/` detail page: the row links straight to the live site, and `astro.config.mjs` redirects the old detail URL there. A sports entry adds three fields the row shows:
+
+```yaml
+section: sports
+league: CFB            # CFB, NFL, WNBA, NCAA
+span: 1936–present     # the seasons covered; "through 2025" for a finished dataset
+line: "One sentence for the row. The blurb stays for the manifest and any future use."
+```
+
+The `/sports` build also writes `/sports/index.json`, the sports manifest: every sports entry with its title, line, league, span, live URL and repo. The sports sites read it so none of them keeps a hand-written list of the others. A site built from `DrewHoo/dataviz-project-template` fetches it in `scripts/prerender.mjs` at build time and renders "more sports from drewhoover.com" into the HTML; an older site includes `public/embed/sports-nav.js` instead and gets the same list at runtime (see below).
+
 ## Blog content (headless Hashnode)
 
 Blog posts live in [Hashnode](https://hashnode.com/) and are fetched at build time via their GraphQL API (`gql.hashnode.com`) — no migration, no local markdown files. Keep writing in the Hashnode editor; the next build/deploy picks up changes.
@@ -89,6 +102,24 @@ To resubmit every URL (seeding a newly registered engine, or a template change t
 
 To opt out on a specific page, add `data-dhv-back-bar="off"` to the `<html>` or `<body>` tag.
 
+A site in a section links back to the section page instead of home. The sports sites pass `data-section="sports"` on the script tag and get "← drewhoover.com/sports" linking to `/sports/`:
+
+```html
+<script src="https://drewhoover.com/embed/back-bar.js" data-section="sports" async></script>
+```
+
+The bar's colors follow `prefers-color-scheme`. A sports-section bar defaults to the dark palette, since every sports site is dark; any page can pin it with `data-dhv-back-bar-theme="dark"` or `"light"` on `<html>` or `<body>`. Clicks report through the analytics embed as the event `back bar` with `to` set to `home` or the section.
+
+## "More sports" list on the sports sites
+
+`public/embed/sports-nav.js` fetches `/sports/index.json` and lists every other sports site, so a site that predates the template's build-time list can include:
+
+```html
+<script src="https://drewhoover.com/embed/sports-nav.js" async></script>
+```
+
+It mounts into `<div id="sports-nav">` when the page has one, else just before `<div id="comments">`, else at the end of `<body>`. Opt out with `data-dhv-sports-nav="off"`. Clicks report as the event `sports nav` with `to` set to the slug.
+
 The actual integration in `DrewHoo/cfb-all-time-records` and `DrewHoo/space-rock` is a follow-up task in those repos; this repo only ships the snippet.
 
 ## Comments on project sites
@@ -118,13 +149,15 @@ src/
   pages/
     index.astro             Post index (the front page). /blog redirects here.
     about.astro
-    projects/index.astro    Card grid.
+    projects/index.astro    Card grid (entries without a section).
+    sports/index.astro      The sports list (entries with section: sports).
+    sports/index.json.ts    The sports manifest the sports sites read.
     blog/[...slug].astro    Single post.
-    projects/[...slug].astro  Per-project detail/writeup page.
+    projects/[...slug].astro  Per-project detail/writeup page (not for sports entries).
     rss.xml.js              Blog RSS feed.
   styles/global.css         One hand-written stylesheet.
 public/
-  CNAME, favicon.svg, fonts/, embed/back-bar.js, embed/giscus.js
+  CNAME, favicon.svg, fonts/, embed/back-bar.js, embed/giscus.js, embed/sports-nav.js
 ```
 
 ## Style / design notes

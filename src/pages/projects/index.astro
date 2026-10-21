@@ -9,7 +9,8 @@ import { SITE_TITLE, PROJECT_TAGS } from '../../consts';
 
 // Default order: newest repo first, by `created`. The client-side sort toggle
 // below can re-sort the grid by `updated` (recently updated) without a reload.
-const projects = (await getCollection('projects')).sort(
+// Sports entries have their own page at /sports.
+const projects = (await getCollection('projects', (p) => p.data.section !== 'sports')).sort(
 	(a, b) => b.data.created.valueOf() - a.data.created.valueOf(),
 );
 ---

@@ -1,0 +1,212 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import { SITE_TITLE } from '../../consts';
+import { getSportsSites, getSportsPosts } from '../../lib/sports';
+
+const sites = await getSportsSites();
+const posts = await getSportsPosts();
+
+const description =
+	'College football, NFL and WNBA data tools by Drew Hoover. Each one answers a question from real game data, cites a source on every claim, rebuilds weekly in season, and is open source.';
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'CollectionPage',
+	name: `sports — ${SITE_TITLE}`,
+	url: new URL('/sports/', Astro.site).toString(),
+	description,
+	mainEntity: {
+		'@type': 'ItemList',
+		itemListElement: sites.map((site, i) => ({
+			'@type': 'ListItem',
+			position: i + 1,
+			url: site.data.liveUrl,
+			name: site.data.title,
+		})),
+	},
+};
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`sports — ${SITE_TITLE}`} description={description} />
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="hero">
+				<h1>sports</h1>
+				<p class="lede">
+					Data tools for college football, the NFL and the WNBA. Each one answers a question from
+					real game data, cites a source on every claim, rebuilds weekly in season, and is open
+					source, so you (or your agent) can check the work.
+				</p>
+			</section>
+
+			<section aria-labelledby="sites-heading">
+				<h2 id="sites-heading" class="sr-only">Sites</h2>
+				<ol class="rows" role="list">
+					{
+						sites.map((site) => {
+							const { title, line, blurb, league, span, liveUrl, repoUrl } = site.data;
+							return (
+								<li class="row">
+									<p class="meta">
+										{league && <span class="league">{league}</span>}
+										{league && span && <span aria-hidden="true"> · </span>}
+										{span && <span class="span">{span}</span>}
+									</p>
+									<div class="body">
+										<h3 class="title">
+											<a href={liveUrl}>
+												{title}
+												<span class="arrow" aria-hidden="true"> ↗</span>
+											</a>
+										</h3>
+										<p class="line">{line ?? blurb}</p>
+									</div>
+									{repoUrl && (
+										<p class="src">
+											<a href={repoUrl} rel="noopener">source</a>
+										</p>
+									)}
+								</li>
+							);
+						})
+					}
+				</ol>
+			</section>
+
+			{
+				posts.length > 0 && (
+					<section class="writing" aria-labelledby="writing-heading">
+						<h2 id="writing-heading">writing</h2>
+						<ol class="rows" role="list">
+							{posts.map((post) => (
+								<li class="row">
+									<p class="meta">
+										<FormattedDate date={post.data.pubDate} />
+									</p>
+									<div class="body">
+										<h3 class="title">
+											<a href={`/blog/${post.id}/`}>{post.data.title}</a>
+										</h3>
+										<p class="line">{post.data.description}</p>
+									</div>
+									{post.data.aiWritten && <p class="src">agent-written</p>}
+								</li>
+							))}
+						</ol>
+					</section>
+				)
+			}
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	/* Lower elevation than the project cards: no shadow, no border box, no
+	   buttons. A hairline between rows and the title underline do the work. */
+	.hero {
+		margin-top: 1rem;
+		margin-bottom: 2rem;
+	}
+	.hero h1 {
+		margin-bottom: 0.5em;
+	}
+	.lede {
+		font-size: 1.15rem;
+		max-width: 52ch;
+		color: var(--ink-soft);
+	}
+	.rows {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		max-width: none;
+		border-top: 1px solid var(--hairline);
+	}
+	.row {
+		margin: 0;
+		padding: 1.1rem 0 1.15rem;
+		border-bottom: 1px solid var(--hairline);
+		display: grid;
+		grid-template-columns: 11ch minmax(0, 1fr) max-content;
+		column-gap: 1.5rem;
+		align-items: baseline;
+	}
+	.meta,
+	.src {
+		margin: 0;
+		max-width: none;
+		font-family: 'Space Mono', ui-monospace, monospace;
+		font-size: 0.78rem;
+		line-height: 1.5;
+		color: var(--ink-soft);
+		white-space: nowrap;
+	}
+	.league {
+		font-weight: 700;
+	}
+	.body {
+		min-width: 0;
+	}
+	.title {
+		margin: 0 0 0.2rem;
+		font-size: 1.2rem;
+		line-height: 1.25;
+	}
+	.title a {
+		color: var(--ink);
+		text-decoration: underline;
+		text-decoration-thickness: 2px;
+		text-decoration-color: var(--hot);
+		text-underline-offset: 4px;
+	}
+	.title a:hover {
+		background: var(--acid);
+		color: var(--acid-ink);
+	}
+	.title a:visited {
+		color: var(--ink);
+	}
+	.arrow {
+		display: inline-block;
+	}
+	.line {
+		margin: 0;
+		max-width: 62ch;
+		font-size: 0.98rem;
+		line-height: 1.5;
+		color: var(--ink-soft);
+	}
+	.src a {
+		color: var(--ink-soft);
+	}
+	.writing {
+		margin-top: 3rem;
+	}
+	.writing h2 {
+		font-size: 1.15rem;
+		margin-bottom: 0.75rem;
+	}
+	@media (max-width: 640px) {
+		.row {
+			grid-template-columns: minmax(0, 1fr) max-content;
+			row-gap: 0.2rem;
+		}
+		.meta {
+			grid-column: 1 / -1;
+			order: -1;
+		}
+		.src {
+			align-self: start;
+		}
+	}
+</style>
