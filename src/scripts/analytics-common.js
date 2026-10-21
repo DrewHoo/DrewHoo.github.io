@@ -29,10 +29,35 @@ function framed() {
 	}
 }
 
+// Drew's own browsers. Visiting any drewhoover.com page with ?notrack=1 sets
+// this flag for the browser, and ?notrack=0 clears it. Every site here shares
+// the origin, so one visit covers the index and every project. Older events
+// from his devices are filtered in Mixpanel by the "Drew's devices" property.
+const NOTRACK_KEY = 'dh-notrack';
+
+// Its own try, so blocked storage can't skip the checks after it.
+function notrack() {
+	try {
+		const param = new URLSearchParams(location.search).get('notrack');
+		if (param === '1') {
+			localStorage.setItem(NOTRACK_KEY, '1');
+			console.info('drewhoover.com analytics: off for this browser (?notrack=0 turns it back on)');
+		} else if (param === '0') {
+			localStorage.removeItem(NOTRACK_KEY);
+			console.info('drewhoover.com analytics: on for this browser');
+		}
+		return localStorage.getItem(NOTRACK_KEY) === '1';
+	} catch {
+		return false;
+	}
+}
+
 // True when nothing about this load should reach Mixpanel: local dev
-// servers, automated clients, and the Small Web embed above.
+// servers, automated clients, the Small Web embed above, and Drew's own
+// browsers.
 export function isAutomated() {
 	try {
+		if (notrack()) return true;
 		if (LOCAL_HOSTS.test(location.hostname) || location.hostname === '') return true;
 		if (navigator.webdriver === true) return true;
 		if (CRAWLER_UA.test(navigator.userAgent)) return true;
