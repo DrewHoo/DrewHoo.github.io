@@ -2,15 +2,14 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
 import { SITE_TITLE } from '../../consts';
-import { getSportsSites, getSportsPosts } from '../../lib/sports';
+import { getSportsSites, getSportsPosts, leagueMark } from '../../lib/sports';
 
 const sites = await getSportsSites();
 const posts = await getSportsPosts();
 
-const description =
-	'College football, NFL and WNBA data tools by Drew Hoover. Each one answers a question from real game data, cites a source on every claim, rebuilds weekly in season, and is open source.';
+const description = `Anytime I see a really interesting factoid about a team or a player on the entertainment and sports programming network, I think to myself, 
+	"What if there were an app that could tell you that for every player?" Well, here are those apps.`;
 
 const jsonLd = {
 	'@context': 'https://schema.org',
@@ -41,11 +40,7 @@ const jsonLd = {
 		<main>
 			<section class="hero">
 				<h1>sports</h1>
-				<p class="lede">
-					Data tools for college football, the NFL and the WNBA. Each one answers a question from
-					real game data, cites a source on every claim, rebuilds weekly in season, and is open
-					source, so you (or your agent) can check the work.
-				</p>
+				<p class="lede">{description}</p>
 			</section>
 
 			<section aria-labelledby="sites-heading">
@@ -53,14 +48,20 @@ const jsonLd = {
 				<ol class="rows" role="list">
 					{
 						sites.map((site) => {
-							const { title, line, blurb, league, span, liveUrl, repoUrl } = site.data;
+							const { title, line, blurb, league, liveUrl, repoUrl } = site.data;
+							const mark = leagueMark(league);
 							return (
 								<li class="row">
-									<p class="meta">
-										{league && <span class="league">{league}</span>}
-										{league && span && <span aria-hidden="true"> · </span>}
-										{span && <span class="span">{span}</span>}
-									</p>
+									{mark ? (
+										<span
+											class="mark"
+											style={`--mark: url(/sports/logos/${mark}.png)`}
+											role="img"
+											aria-label={league}
+										/>
+									) : (
+										<span class="mark" aria-hidden="true" />
+									)}
 									<div class="body">
 										<h3 class="title">
 											<a href={liveUrl}>
@@ -86,12 +87,9 @@ const jsonLd = {
 				posts.length > 0 && (
 					<section class="writing" aria-labelledby="writing-heading">
 						<h2 id="writing-heading">writing</h2>
-						<ol class="rows" role="list">
+						<ol class="rows posts" role="list">
 							{posts.map((post) => (
 								<li class="row">
-									<p class="meta">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
 									<div class="body">
 										<h3 class="title">
 											<a href={`/blog/${post.id}/`}>{post.data.title}</a>
@@ -137,22 +135,33 @@ const jsonLd = {
 		padding: 1.1rem 0 1.15rem;
 		border-bottom: 1px solid var(--hairline);
 		display: grid;
-		grid-template-columns: 11ch minmax(0, 1fr) max-content;
-		column-gap: 1.5rem;
-		align-items: baseline;
+		grid-template-columns: 2rem minmax(0, 1fr) max-content;
+		column-gap: 1rem;
+		align-items: start;
 	}
-	.meta,
+	.posts .row {
+		grid-template-columns: minmax(0, 1fr) max-content;
+	}
+	/* the organization's one-color mark, painted in ink through a mask so it
+	   reads in both schemes (the PNG's alpha is the shape) */
+	.mark {
+		display: block;
+		width: 2rem;
+		height: 2rem;
+		margin-top: 0.05rem;
+		background-color: var(--ink);
+		-webkit-mask: var(--mark) center / contain no-repeat;
+		mask: var(--mark) center / contain no-repeat;
+	}
 	.src {
 		margin: 0;
 		max-width: none;
 		font-family: 'Space Mono', ui-monospace, monospace;
 		font-size: 0.78rem;
 		line-height: 1.5;
+		padding-top: 0.3rem;
 		color: var(--ink-soft);
 		white-space: nowrap;
-	}
-	.league {
-		font-weight: 700;
 	}
 	.body {
 		min-width: 0;
@@ -198,15 +207,12 @@ const jsonLd = {
 	}
 	@media (max-width: 640px) {
 		.row {
-			grid-template-columns: minmax(0, 1fr) max-content;
-			row-gap: 0.2rem;
+			column-gap: 0.75rem;
 		}
-		.meta {
-			grid-column: 1 / -1;
-			order: -1;
-		}
-		.src {
-			align-self: start;
+		.mark {
+			width: 1.6rem;
+			height: 1.6rem;
+			margin-top: 0.15rem;
 		}
 	}
 </style>

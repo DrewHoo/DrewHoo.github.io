@@ -33,10 +33,12 @@ A sports site is a project entry with `section: sports`. It is listed on `/sport
 
 ```yaml
 section: sports
-league: CFB            # CFB, NFL, WNBA, NCAA
-span: 1936–present     # the seasons covered; "through 2025" for a finished dataset
+league: CFB            # CFB, NFL, WNBA, NCAA — picks the one-color mark the row shows (src/lib/sports.ts)
+span: 1936–present     # the seasons covered; in the manifest, not on the row
 line: "One sentence for the row. The blurb stays for the manifest and any future use."
 ```
+
+The marks live in `public/sports/logos/` (`nfl`, `wnba`, `ncaa` for the championships grid, `ncaa-football` for CFB) and were made with the ink-density pipeline from `cfb-streak-king/scripts/gen-logos.mjs`. A new league needs a mark there and a line in `LEAGUE_MARK`.
 
 The `/sports` build also writes `/sports/index.json`, the sports manifest: every sports entry with its title, line, league, span, live URL and repo. The sports sites read it so none of them keeps a hand-written list of the others. A site built from `DrewHoo/dataviz-project-template` fetches it in `scripts/prerender.mjs` at build time and renders "more sports from drewhoover.com" into the HTML; an older site includes `public/embed/sports-nav.js` instead and gets the same list at runtime (see below).
 

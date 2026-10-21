@@ -20,6 +20,22 @@ export async function getSportsPosts(): Promise<CollectionEntry<'blog'>[]> {
 	).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 }
 
+// The one-color organization mark for a league, under public/sports/logos/.
+// Made with the ink-density pipeline from cfb-streak-king/scripts/gen-logos.mjs
+// (NFL and WNBA from ESPN's league marks, the NCAA disc from Wikimedia Commons,
+// the NCAA Football ball-and-pennant from Wikipedia). The row paints it through
+// a CSS mask, so it takes the ink color in either scheme.
+const LEAGUE_MARK: Record<string, string> = {
+	NFL: 'nfl',
+	WNBA: 'wnba',
+	NCAA: 'ncaa',
+	CFB: 'ncaa-football',
+};
+
+export function leagueMark(league: string | undefined): string | null {
+	return league ? (LEAGUE_MARK[league.toUpperCase()] ?? null) : null;
+}
+
 /** One row of the manifest at /sports/index.json, which the sports sites read for their "more sports" links. */
 export function manifestRow(site: SportsEntry) {
 	const { title, line, league, span, liveUrl, repoUrl, updated } = site.data;
