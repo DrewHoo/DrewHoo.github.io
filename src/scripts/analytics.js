@@ -24,6 +24,13 @@ if (typeof window !== 'undefined' && !isAutomated()) {
 			mp.init(TOKEN, {
 				// Pageviews are fired by trackPageviews() below, after register().
 				track_pageview: false,
+				// Same as the embed the project sites load (embed-analytics.js):
+				// the sites share this origin, so with the same store the
+				// distinct_id carries over and a visit that starts here and
+				// continues into a project reads as one person. With the
+				// default cookie persistence here and localStorage there, the
+				// same visitor was two people.
+				persistence: 'localStorage',
 			});
 			mp.register(clientProps());
 			trackPageviews(mp);

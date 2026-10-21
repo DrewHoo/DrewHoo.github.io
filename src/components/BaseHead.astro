@@ -12,7 +12,13 @@ interface Props {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const { title, description, image, ogType = 'website' } = Astro.props;
-const ogImage = image ? new URL(image, Astro.url) : undefined;
+// A page without a cover of its own (the front page, /sports, /projects,
+// /about) shares the site-level image from scripts/gen-og.mjs, so every URL
+// unfurls with a picture. twitter:card is summary_large_image on all of
+// them, which is an empty box without one.
+const DEFAULT_OG_IMAGE = '/og-default.png';
+const ogImage = new URL(image ?? DEFAULT_OG_IMAGE, Astro.url);
+const ogImageIsDefault = !image;
 ---
 
 <meta charset="utf-8" />
@@ -62,13 +68,22 @@ const ogImage = image ? new URL(image, Astro.url) : undefined;
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-{ogImage && <meta property="og:image" content={ogImage} />}
+<meta property="og:image" content={ogImage} />
+{
+	ogImageIsDefault && (
+		<>
+			<meta property="og:image:width" content="1200" />
+			<meta property="og:image:height" content="630" />
+			<meta property="og:image:alt" content="drewhoover.com — Figured out, written down." />
+		</>
+	)
+}
 
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={Astro.url} />
-<meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
-{ogImage && <meta property="twitter:image" content={ogImage} />}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={Astro.url} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
 
 <script>
 	import '../scripts/analytics.js';
