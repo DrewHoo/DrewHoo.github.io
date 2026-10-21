@@ -7,7 +7,9 @@ import FormattedDate from '../../components/FormattedDate.astro';
 import { emphasize, plainBlurb } from '../../lib/blurb';
 
 export async function getStaticPaths() {
-	const projects = await getCollection('projects');
+	// A sports entry has no detail page: the row on /sports links straight to
+	// the live site, and astro.config.mjs redirects the old /projects/<slug>/.
+	const projects = await getCollection('projects', (p) => p.data.section !== 'sports');
 	return projects.map((project) => ({
 		params: { slug: project.id },
 		props: project,

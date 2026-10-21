@@ -5,11 +5,11 @@ export const SITE_AUTHOR = 'Drew Hoover';
 export const GITHUB_URL = 'https://github.com/DrewHoo';
 
 // The tag vocabulary for project cards — also drives the filter bar on /projects.
+// Sports is a section, not a tag: see `section` in src/content.config.ts.
 export const PROJECT_TAGS = [
 	'data viz',
 	'engineering',
 	'finance',
 	'health',
-	'sports',
 	'video games',
 ] as const;

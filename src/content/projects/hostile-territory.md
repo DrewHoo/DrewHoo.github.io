@@ -1,12 +1,15 @@
 ---
 title: Hostile Territory
+section: sports
+league: CFB
+span: 1936–present
+line: "Every head coach's true road record against AP top-10 teams, with a Sports-Reference receipt on every game."
 blurb: "Lane Kiffin is ~~1–8~~ 1–9 on the road against top-10 teams — ESPN flashed the graphic, but nobody flashed the denominator. Every head coach's true road record vs AP top-10 opponents since 1990, computed from game results, weekly AP polls, and coaching tenures, with a Sports-Reference receipt on every game. Winning in hostile territory is rarer than you think: road teams are 282–1545–6 all-time, and it's been done at the #1 team just 13 times in 36 seasons."
 liveUrl: https://drewhoover.com/hostile-territory/
 sitemapUrl: https://drewhoover.com/hostile-territory/sitemap.xml
 repoUrl: https://github.com/DrewHoo/hostile-territory
 tags:
   - data viz
-  - sports
 stack:
   - Vite
   - React

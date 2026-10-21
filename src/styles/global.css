@@ -15,6 +15,9 @@
 	/* text color for anything sitting on an acid background — stays dark in both themes */
 	--acid-ink: #141210;
 
+	/* a row separator with less weight than --rule: the /sports list */
+	--hairline: rgba(27, 24, 20, 0.28);
+
 	--shadow-offset: 4px;
 	--shadow-offset-pressed: 2px;
 
@@ -34,6 +37,7 @@
 		--hot: #ff7a4f;
 		--cool: #8ea7ff;
 		--acid: #c5d86d;
+		--hairline: rgba(242, 234, 211, 0.28);
 		color-scheme: dark;
 	}
 }

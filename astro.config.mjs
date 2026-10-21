@@ -13,14 +13,24 @@ import fs from 'node:fs';
 // content (the CNAME makes drewhoover.com canonical). A sitemap may only list
 // URLs on its own host, so those are normalised here rather than dropped.
 const projectDir = new URL('./src/content/projects/', import.meta.url);
+const projectFiles = fs.readdirSync(projectDir).filter((f) => /\.mdx?$/.test(f));
+const frontmatter = (f, key) =>
+	fs.readFileSync(new URL(f, projectDir), 'utf8').match(new RegExp(`^${key}:\\s*(\\S+)`, 'm'))?.[1];
+
+// A sports entry (`section: sports`) has no /projects/<slug>/ detail page: the
+// row on /sports links straight to the live site. Send the old detail URL,
+// which was indexed and linked, to the live site too.
+const sportsRedirects = Object.fromEntries(
+	projectFiles
+		.filter((f) => frontmatter(f, 'section') === 'sports')
+		.map((f) => [`/projects/${f.replace(/\.mdx?$/, '')}`, frontmatter(f, 'liveUrl')])
+		.filter(([, to]) => typeof to === 'string'),
+);
+
 const siblingSites = [
 	...new Set(
-		fs
-			.readdirSync(projectDir)
-			.filter((f) => /\.mdx?$/.test(f))
-			.map(
-				(f) => fs.readFileSync(new URL(f, projectDir), 'utf8').match(/^liveUrl:\s*(\S+)/m)?.[1],
-			)
+		projectFiles
+			.map((f) => frontmatter(f, 'liveUrl'))
 			.filter((u) => typeof u === 'string')
 			.map((u) => u.replace('https://drewhoo.github.io/', 'https://drewhoover.com/'))
 			.filter((u) => u.startsWith('https://drewhoover.com/'))
@@ -35,6 +45,7 @@ export default defineConfig({
 	// Old Hashnode-era permalinks (drewhoover.com/<slug>) now live under /blog/.
 	// Redirect the originals so existing links and search results keep working.
 	redirects: {
+		...sportsRedirects,
 		// The blog listing moved to the site root; posts still live at /blog/<slug>/.
 		'/blog': '/',
 		// Hashnode-era static page URLs (drewhoover.com/page/<slug>).
