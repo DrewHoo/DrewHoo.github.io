@@ -22,10 +22,11 @@ export async function getSportsPosts(): Promise<CollectionEntry<'blog'>[]> {
 
 // The one-color organization mark for a league, under public/sports/logos/.
 // Made with the ink-density pipeline from cfb-streak-king/scripts/gen-logos.mjs
-// (NFL and WNBA from ESPN's league marks, the NCAA disc from Wikimedia Commons,
+// (NBA, NFL and WNBA from ESPN's league marks, the NCAA disc from Wikimedia Commons,
 // the NCAA Football ball-and-pennant from Wikipedia). The row paints it through
 // a CSS mask, so it takes the ink color in either scheme.
 const LEAGUE_MARK: Record<string, string> = {
+	NBA: 'nba',
 	NFL: 'nfl',
 	WNBA: 'wnba',
 	NCAA: 'ncaa',
