@@ -4,7 +4,7 @@ section: sports
 league: NBA
 span: 1946–present
 line: "Compare NBA players at the same point in their careers: who, which stat, through how many games or starts, back to the BAA."
-blurb: "Wilt Chamberlain has 3,748 points through his first 100 games; Walt Bellamy had 3,122, Zion Williamson 2,524. Compare NBA players at the same point in their careers: set the sentence — who, which stat or per-game test, how it adds up, through how many games or starts or seasons — and the board ranks every career or player-season at that window, back to the league's first season in 1946-47. Open a row to read it against a peer: where their curves crossed, and what the player needs over the next five games to match. Every player has a page of what he leads."
+blurb: "Wilt Chamberlain has 3,748 points through his first 100 games; Walt Bellamy had 3,122, Zion Williamson 2,524. Compare NBA players at the same point in their careers: set the sentence — who, which stat or test, how it adds up, through how many games, starts or seasons — and the board ranks every career or player-season at that window, back to 1946-47. Open a row to read it against a peer: where their curves crossed, what he needs to match. Every player has a page of what he leads."
 liveUrl: https://drewhoover.com/nba-comparator/
 sitemapUrl: https://drewhoover.com/nba-comparator/sitemap.xml
 repoUrl: https://github.com/DrewHoo/nba-comparator
