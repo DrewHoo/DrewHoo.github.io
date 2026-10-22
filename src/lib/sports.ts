@@ -10,7 +10,7 @@ export async function getSportsSites(): Promise<SportsEntry[]> {
 }
 
 // Blog tags that put a post on /sports. Matched case-insensitively.
-const SPORTS_TAGS = new Set(['sports', 'college football', 'nfl', 'wnba', 'soccer', 'ncaa']);
+const SPORTS_TAGS = new Set(['sports', 'college football', 'nfl', 'wnba', 'nhl', 'soccer', 'ncaa']);
 
 export async function getSportsPosts(): Promise<CollectionEntry<'blog'>[]> {
 	return (
@@ -28,6 +28,7 @@ export async function getSportsPosts(): Promise<CollectionEntry<'blog'>[]> {
 const LEAGUE_MARK: Record<string, string> = {
 	NBA: 'nba',
 	NFL: 'nfl',
+	NHL: 'nhl',
 	WNBA: 'wnba',
 	NCAA: 'ncaa',
 	CFB: 'ncaa-football',
