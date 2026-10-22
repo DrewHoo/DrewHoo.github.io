@@ -4,7 +4,7 @@ section: sports
 league: NHL
 span: 1917–present
 line: "Compare NHL players at the same point in their careers: who, which stat, through how many games, starts or seasons, every career since 1917-18."
-blurb: "Wayne Gretzky has 1,186 points through his first 500 games; Mario Lemieux had 971, and Connor McDavid 724. Compare NHL players at the same point in their careers: set the sentence — who, which stat or per-game test, how it adds up, through how many games or starts or seasons or team games of a season — and the board ranks every career or player-season at that window, back to the league's first season in 1917-18, from the NHL's own game records. Open a row to read it against a peer: where their curves crossed, and what the player needs over the next five games to match."
+blurb: "Wayne Gretzky has 1,186 points through his first 500 games; Mario Lemieux had 971, and Connor McDavid 724. Compare NHL players at the same point in their careers: set the sentence — who, which stat or per-game test, how it adds up, through how many games, starts or seasons — and the board ranks every career or player-season at that window, back to the league's first season in 1917-18. Open a row to read it against a peer: where their curves crossed, and what the player needs to match."
 liveUrl: https://drewhoover.com/nhl-comparator/
 sitemapUrl: https://drewhoover.com/nhl-comparator/sitemap.xml
 repoUrl: https://github.com/DrewHoo/nhl-comparator
