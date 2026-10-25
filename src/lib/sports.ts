@@ -23,7 +23,8 @@ export async function getSportsPosts(): Promise<CollectionEntry<'blog'>[]> {
 // The one-color organization mark for a league, under public/sports/logos/.
 // Made with the ink-density pipeline from cfb-streak-king/scripts/gen-logos.mjs
 // (NBA, NFL and WNBA from ESPN's league marks, the NCAA disc from Wikimedia Commons,
-// the NCAA Football ball-and-pennant from Wikipedia). The row paints it through
+// the NCAA Football ball-and-pennant from Wikipedia; PUN is puttingupnumbers.com's own
+// number-card mark, from its logo-mono.svg). The row paints it through
 // a CSS mask, so it takes the ink color in either scheme.
 const LEAGUE_MARK: Record<string, string> = {
 	NBA: 'nba',
@@ -32,6 +33,7 @@ const LEAGUE_MARK: Record<string, string> = {
 	WNBA: 'wnba',
 	NCAA: 'ncaa',
 	CFB: 'ncaa-football',
+	PUN: 'puttingupnumbers',
 };
 
 export function leagueMark(league: string | undefined): string | null {

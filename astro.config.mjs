@@ -46,6 +46,13 @@ export default defineConfig({
 	// Redirect the originals so existing links and search results keep working.
 	redirects: {
 		...sportsRedirects,
+		// The five comparators became Putting Up Numbers (2026-10-25): their cards are
+		// gone, so their old detail URLs go to the league there.
+		'/projects/nba-comparator': 'https://puttingupnumbers.com/nba/',
+		'/projects/wnba-comparator': 'https://puttingupnumbers.com/wnba/',
+		'/projects/nfl-comparator': 'https://puttingupnumbers.com/nfl/',
+		'/projects/nhl-comparator': 'https://puttingupnumbers.com/nhl/',
+		'/projects/cfb-comparator': 'https://puttingupnumbers.com/cfb/',
 		// The blog listing moved to the site root; posts still live at /blog/<slug>/.
 		'/blog': '/',
 		// Hashnode-era static page URLs (drewhoover.com/page/<slug>).
