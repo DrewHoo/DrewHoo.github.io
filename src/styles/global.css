@@ -223,6 +223,14 @@ blockquote {
 	font-style: italic;
 }
 
+.callout {
+	margin: 1.5em 0 2em;
+	padding: 0.25em 1.25em;
+	border: 2px solid var(--rule);
+	border-left: 6px solid var(--hot);
+	background-color: var(--paper-deep);
+}
+
 hr {
 	border: none;
 	height: 1.5rem;
