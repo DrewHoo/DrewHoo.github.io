@@ -20,12 +20,18 @@ Streak King's: the sentence with pickers, the board, the panel inline under its 
 pages, a calendar, named pages for search, weekly posts, the share worker. Hosting follows
 the dataviz-pages-site pattern at drewhoover.com/<slug>/.
 
-Nobody offers this. Portfolio Visualizer and its free cousins backtest a fixed cadence
-(monthly, quarterly) into a portfolio; dcabtc.com and dca-cc.com do one asset on a weekday
-or monthly schedule; the "buy the dip" writeups (Maggiulli, Vanguard's lump-sum paper) are
+Nobody offers this. Portfolio Visualizer, testfol.io, Curvo and PortfoliosLab backtest a
+portfolio with contributions on a calendar interval (monthly, quarterly, yearly), and
+Portfolio Visualizer's timing models move the whole portfolio in or out on one signal;
+dcabtc.com, dca-cc.com and a crowd of clones do one asset on an interval; Seasonax draws
+seasonal averages; the buy-the-dip and lump-sum writeups (Maggiulli, Vanguard, Schwab) are
 one-off studies with a fixed rule. None composes a schedule with conditions, none schedules
-on events (Fed meetings, jobs reports, earnings, elections), and none shows the per-option
-delta in the menu. The research report has the table.
+on an event (a Fed decision, a jobs report, earnings, an election, a full moon, even a
+weekday), none ranks a universe under a rule, and none shows the per-option delta in the
+menu. The prior-art report has the table, and one more gap it found: every calendar
+anomaly in the literature has a "then it faded" chapter (the pre-FOMC drift, the Monday
+effect, pre-holiday returns), and no tool shows that inline. This site does, with the edge
+by decade on every panel.
 
 ## Strategy semantics
 
@@ -64,11 +70,17 @@ the worker, so no two views can disagree on a number.
   word too (`amt=fixed`): "every full moon" then invests a twelfth of "every trading day",
   so the board switches from dollars to the money-weighted annual return (IRR) while it is on.
 - **Plain DCA**, the baseline every number is read against, is the same budget spent the
-  day it arrives (every trading day, at the close). **Lump sum** is the window's whole
-  budget invested at the first close. Both are in the panel; the board's number is the
-  **edge**: the strategy's ending value over plain DCA's, less one, as a percent
-  ("2.1% ahead of plain DCA", "1.4% behind"). The edge isolates the timing from the
-  security's own return, which is why it compares across securities and plain dollars don't.
+  day it arrives (every trading day, at the close). The board's number is the **edge**: the
+  strategy's ending value over plain DCA's, less one, as a percent ("2.1% ahead of plain
+  DCA", "1.4% behind"). The edge isolates the timing from the security's own return, which
+  is why it compares across securities and plain dollars don't.
+- Two more benchmarks sit in the panel, Schwab's named investors: **the year's money on day
+  one** (each year's budget invested at that year's first close; Schwab's "Ashley") and
+  **cash** (never invested, earning the bill rate). The lump-sum literature's "invest the
+  windfall now" compares a pile against spreading it, which is a different question from
+  money arriving over 36 years; the prior-art report flags the confusion, so the panel never
+  says "lump sum" without saying which one. The windfall version (the window's whole budget
+  at the first close) is a word in the budget menu for the Vanguard two-thirds gate.
 - **Dividends** reinvest on the ex-date through the adjusted close; splits are adjusted.
   Fees, taxes, bid-ask spread and whole-share rounding are ignored. Method says all of it.
   The price-data report sizes the ex-date-versus-pay-date error.
@@ -85,16 +97,28 @@ the worker, so no two views can disagree on a number.
   ending value against the lump sum; the portfolio's worst drawdown; average cost per share
   against plain DCA's; buys made; average cash held; and the luck line below.
 
-### The luck line
+### The luck line, the windows and the decades
 
-Streak King's footnote reads "1 in 16 trillion by chance". Here, with a million strategies
-available and a reader who will go looking for the one that won, the footnote says how a
-result compares with blind timing: "Among 1,000 random schedules with 443 buys over the
-same window, this one beat 61%." It is a bootstrap in a Web Worker over the open strategy
-only (1,000 schedules × 9,100 days, ~50 ms), never over the menu. A stack of four
-conditions that beats plain DCA by 40% with 12 buys will read "beat 99% of random 12-buy
-schedules", and Method says why that is still mostly luck: the reader chose the stack after
-seeing the result. The mine (below) charges each condition in bits for the same reason.
+One path from 1990 is one draw. Three numbers keep a result honest, all from the same
+engine, all in the panel, the first also in the footnote:
+
+- **Luck.** Streak King's footnote reads "1 in 16 trillion by chance". Here the footnote
+  says how a result compares with blind timing: "Among 1,000 random schedules with 443 buys
+  over the same window, this one beat 61%." A bootstrap in a Web Worker over the open
+  strategy only (1,000 schedules × 9,100 days, ~50 ms), never over the menu.
+- **Windows.** "Beat plain DCA in 58% of the ten-year windows starting each month since
+  1990." Maggiulli's and Vanguard's results are win rates across start dates, and that is
+  the number every writeup in this literature leads with; one evaluation per start month
+  (~320 windows), a few milliseconds.
+- **Decades.** The edge for the 1990s, 2000s, 2010s and 2020s as four small numbers, the
+  CXO Advisory sub-period panel. The pre-FOMC drift was 49 basis points a meeting from
+  1994 to 2011 and gone after 2015; a strategy built on it should show that in the strip.
+
+A stack of four conditions that beats plain DCA by 40% with 12 buys will read "beat 99% of
+random 12-buy schedules", and Method says why that is still mostly luck: the reader chose
+the stack after seeing the result, and Sullivan, Timmermann and White (2001) showed that no
+calendar rule survives being judged against every rule that could have been tried. The
+mine (below) charges each condition in bits for the same reason.
 
 ## Catalog (v1)
 
@@ -112,7 +136,7 @@ Exactly one. Each names dates; non-trading dates roll forward.
 | Quarterly and yearly | the first or last trading day of the quarter / of the year / quad witching (the third Friday of Mar, Jun, Sep, Dec) / tax day (Apr 15, rolled) / [a fixed date] | a fixed date is a `MM-DD` parameter; the menu offers a few (Jan 2, Black Friday, Dec 24, Oct 19) and the URL takes any |
 | Events | Fed decision day / jobs report / CPI / GDP advance estimate / the security's earnings day / the security's ex-dividend day / election day / inauguration day / Jackson Hole (the Fed chair's speech) | each with an offset word: the day before, the day of (default), the day after, the week after. "Day of" for a two-day Fed meeting is the decision day, 2 pm ET, inside the session. Floors per event in the event-calendars report (earnings ~2003 via EDGAR; the rest 1990 or earlier) [research] |
 | Sky | full moon / new moon / the day Mercury turns retrograde | moon instants by Meeus ch. 49, Streak King's `moon.ts`; a full moon when the instant falls within 24 h of 00:00 UTC after the buy date, Streak King's werewolf-game rule. Mercury from a published table [research] |
-| Odd | Friday the 13th / the Monday after the Super Bowl / the first trading day after a long weekend / Groundhog Day | computable from the calendar; Super Bowl dates are a small ruling file |
+| Odd | Friday the 13th / the Monday after the Super Bowl / the day before a market holiday / the first trading day after one / the Monday after a daylight-saving change / Groundhog Day | computable from the calendar; Super Bowl dates are a small ruling file; the DST rule changed in 1987 and 2007 |
 
 ### Conditions
 
@@ -134,12 +158,15 @@ the same condition with two references. Groups marked exclusive offer a swap, no
 | Sky | within a day of a full moon / a new moon / moon waxing / waning / Mercury retrograde | computed | the schedule "every full moon" buys on the moon; the condition "under a full moon" filters another schedule ("every Monday under a full moon") |
 | Streak | the market fell [N] days in a row = Trend's down days; after the year's worst day so far | self or S&P | "the year's worst day so far" is knowable at the close and a cute cousin of a streak |
 
-Cut from v1 after research, to confirm against the reports: recessions (dated after the
-fact), Fear & Greed (no history before 2011 and no license), intraday prices (nothing free
-before 2000 and every schedule here is a close), short interest and fund flows (paid),
-weather (paid; and a national market has no weather), analyst ratings (paid, and
-survivorship), Google Trends (2004+, sampled, unstable), consensus estimates (paid; "beat /
-missed" may go with them).
+Cut from v1 after research, to confirm against the price and event reports: recessions
+(dated after the fact), Fear & Greed (no history before 2011 and no license), intraday
+prices (nothing free before 2000 and every schedule here is a close), short interest and
+fund flows (paid), weather (Hirshleifer & Shumway's sunshine effect needs New York daily
+weather and is disputed; v2 if ever), analyst ratings (paid, and survivorship), Google
+Trends (2004+, sampled, unstable), consensus estimates (paid; "beat / missed" goes with
+them). Daylight-saving Mondays and the day before a market holiday stay in as Odd
+schedules: the calendar is already there and the literature says both are null since 1990,
+which makes them safe to ship.
 
 ### Securities (the board's rows)
 
@@ -222,10 +249,11 @@ sentence, drawn from the same engine (`share/og.png?<definition>`).
 ### The panel (a security's row, open)
 
 The claim in plain English: "Buying SPY every Monday after a 2% drop in the S&P 500,
-$100 a week since 1993, ended at $112,400: 2.1% ahead of plain DCA and 9% behind a lump
-sum." A stat strip: ending value, contributed, IRR, worst drawdown, average cost against
-plain DCA's, buys, average cash. A cumulative SVG of the strategy, plain DCA and the lump
-sum (the comparator's curve). The ledger: the last eight buys (date, price, shares, what
+$100 a week since 1993, ended at $112,400: 2.1% ahead of plain DCA, 3% behind putting each
+year's money in on day one." A stat strip: ending value, contributed, IRR, worst drawdown,
+average cost against plain DCA's, buys, average cash. The windows line and the decades
+strip. A cumulative SVG of the strategy, plain DCA, the year's-money-on-day-one line and
+cash (the comparator's curve; Schwab's four investors on one chart). The ledger: the last eight buys (date, price, shares, what
 the lot is worth now), the **next buy day** on top as a row of the same design with a rust
 dashed rule (the next third Thursday, the next Fed decision, the next full moon), a link to
 the security page, share and close. Deep link `?t=spy`.
@@ -408,7 +436,10 @@ patched in the data.
 
 The build fails before writing the payload on any of these, and `golden.test.ts` asserts
 them again through the client's code path. The quotable ones come from the prior-art
-report [research: the exact numbers and periods]; the structural ones are:
+report, whose numbers are from search extracts and need checking against the primary
+sources before they become gates (the sandbox that wrote the report could not open the
+pages); a gate names its source and period, and a mismatch is explained in Method, never
+patched. The structural ones first:
 
 - Plain DCA on every trading day equals the sum of the daily buys marked to the last close,
   to the cent; a strategy's ending value equals its shares × the last close plus cash.
@@ -420,10 +451,39 @@ report [research: the exact numbers and periods]; the structural ones are:
 - Every schedule buys the expected count: "every Monday since 1990" is the number of
   Mondays the NYSE was open; "every full moon" ~443; "the third Friday" the count of
   months; "Fed decision day" the FOMC table's count.
-- A famous rule reproduces: lump sum beats DCA in about two thirds of rolling ten-year
-  windows (Vanguard); Maggiulli's buy-the-dip result on the S&P 500 [research]; the "best
-  day of the week" and turn-of-the-month effects land in the direction the literature
-  reports for the periods it reports them, and the gate names the paper.
+Then the famous numbers, each reproduced on the site's own series over the source's period
+where the series reaches it, and otherwise over the overlap with the direction checked:
+
+- The windfall lump sum beats 12-month DCA in about two thirds of rolling ten-year windows
+  (Vanguard 2012: 67% US, 60/40, 1926–2011; 68% on MSCI World 1976–2022 in the 2023 note).
+  Our series start in 1990, so the gate is the 1990→ overlap, direction and rough rate.
+- Buying the dip with perfect foresight loses to monthly DCA in more than 70% of 40-year
+  windows, 97% when the bottom is missed by two months (Maggiulli 2019); a 10–20% dip
+  threshold beats DCA about one time in four over 20-year windows (Maggiulli 2021). The
+  "below its all-time high" condition and the cash accounting must reproduce the asymmetry.
+- Schwab's five investors, $2,000 a year 2003–2022: perfect timing $138,044, day one
+  $127,506, monthly DCA $124,248, the worst day of each year still about three times cash.
+  The period is inside ours and the year's-money-on-day-one benchmark is Ashley exactly.
+- Missing the ten best days roughly halves twenty-year wealth, and seven of the ten best
+  days fall within two weeks of the ten worst (J.P. Morgan Guide to Retirement 2023–24;
+  Estrada 2008 for the critique). A data-integrity gate on the daily total-return series,
+  and the "best days live in bear markets" fact (Hartford/Ned Davis: about 78%) pairs with
+  the VIX condition.
+- Turn of the month: the last and first three trading days carry the market's return
+  (Lakonishok & Smidt 1988; McConnell & Xu 2008, 0.15% a day value-weighted 1926–2005).
+- Sell in May: November–April beats May–October (Bouman & Jacobsen 2002; Zhang & Jacobsen
+  2021, about 6 points a year over 50 years). The Almanac's Dow figures are price-only, so a
+  total-return reproduction differs and the gate says by how much.
+- The pre-FOMC drift: about 49 basis points a meeting 1994–2011 (Lucca & Moench 2015) and
+  gone after 2015 (Kurov, Wolfe & Gilbert 2021). Checks the FOMC table and the decades strip.
+- The Santa Claus rally: the last five trading days of December and the first two of
+  January, about +1.3%, positive about 79% of years since 1950 (Hirsch).
+- Friday the 13th: no effect (Dyl & Maberly 1988; Lucey 2000). A deliberately null gate.
+- The full moon: new-moon-window returns about double full-moon-window returns over a
+  century (Dichev & Janes 2003) and weak since 1990 (CXO). The werewolf schedule should land
+  near zero edge, and the gate is the direction, not the size.
+- The S&P 500 total return since 1990, about 10–11% a year depending on the end date, computed
+  from our series and checked against a published figure for one fixed end date.
 
 ## Analytics
 
