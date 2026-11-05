@@ -4,8 +4,12 @@ Status: draft for Drew's review, 2026-11-05. Nothing is built. The spec lives in
 index repo until the site's repo exists; it moves there as `specs/<site>.spec.md` with
 `specs/research/` beside it, the way cfb-streak-king keeps its own. The research reports
 behind it are [prior-art.md](research/prior-art.md), [price-data.md](research/price-data.md)
-and [event-calendars.md](research/event-calendars.md). The site's name is open (Open
-questions, 1); this document says "the site".
+and [event-calendars.md](research/event-calendars.md). The sandbox that wrote them could
+reach npm, PyPI and raw GitHub and nothing else, so their numbers, dates and terms come from
+search extracts, each marked unverified, and every report ends with a verify-first list;
+the first build task is a smoke script that fetches each source and asserts its shape, so
+the floors below are confirmed by data rather than by the reports. The site's name is open
+(Open questions, 1); this document says "the site".
 
 Users build a buying strategy out of a schedule (every Monday, the third Thursday of the
 month, every full moon, the day after a Fed meeting) and up to four conditions (only after
@@ -81,9 +85,15 @@ the worker, so no two views can disagree on a number.
   money arriving over 36 years; the prior-art report flags the confusion, so the panel never
   says "lump sum" without saying which one. The windfall version (the window's whole budget
   at the first close) is a word in the budget menu for the Vanguard two-thirds gate.
-- **Dividends** reinvest on the ex-date through the adjusted close; splits are adjusted.
-  Fees, taxes, bid-ask spread and whole-share rounding are ignored. Method says all of it.
-  The price-data report sizes the ex-date-versus-pay-date error.
+- **Two price series a security.** Returns and values use the adjusted close (dividends
+  reinvested at the cum-dividend close before the ex-date, the CRSP convention Yahoo
+  follows). Conditions read the split-adjusted close, the price the buyer saw: a
+  dividend-adjusted series lowers every past price, so "10% below its 52-week high" would
+  fire on the wrong days. The pay-date reinvestment model (cash lands two to six weeks
+  after the ex-date, SPY about 42 days) changes ending wealth by well under half a percent
+  over 36 years with no systematic sign, so it is v2; the price-data report has the
+  arithmetic. Fees, taxes, bid-ask spread and whole-share rounding are ignored. Method says
+  all of it.
 - The **window** opens 1990-01-02 or at the security's first close, whichever is later,
   and closes at the latest close. A security that starts later says so in the sentence
   ("since 1998"). A word picks the start: 1990, 2000, 2010, 2020, or the security's start.
@@ -94,8 +104,9 @@ the worker, so no two views can disagree on a number.
   price, a halted stock) neither buys nor is counted that day; the ledger marks it. A
   condition whose reference series is missing on a day doesn't hold that day.
 - The numbers a strategy produces: ending value; dollars contributed; the edge; IRR; the
-  ending value against the lump sum; the portfolio's worst drawdown; average cost per share
-  against plain DCA's; buys made; average cash held; and the luck line below.
+  ending value against the year's money on day one and against cash; the portfolio's worst
+  drawdown; average cost per share against plain DCA's; buys made; average cash held; and
+  the three numbers below.
 
 ### The luck line, the windows and the decades
 
@@ -123,7 +134,7 @@ mine (below) charges each condition in bits for the same reason.
 ## Catalog (v1)
 
 Every row is computable from the spine for the full window unless a floor is noted. Floors
-and sources come from the research reports; a row marked [research] waits on them.
+and sources come from the research reports and are confirmed by the smoke script.
 
 ### Schedules
 
@@ -131,12 +142,12 @@ Exactly one. Each names dates; non-trading dates roll forward.
 
 | group | schedules | notes |
 | --- | --- | --- |
-| Every | every trading day / every [weekday] | weekday 1–5; the default schedule is every Monday? No: the default is every trading day, which is plain DCA, so the empty strategy's edge is 0 and the board is flat until a word changes. See Open questions, 4 |
+| Every | every trading day / every [weekday] | weekday 1–5. Every trading day is plain DCA, so a strategy with that schedule and no conditions has an edge of 0 for every security (Open questions, 4) |
 | Monthly | the [N]th of the month (1–28, last) / the [first…fourth, last] [weekday] of the month / the first or last trading day of the month / payday (the 1st and 15th) / monthly options expiration (the third Friday) | "the third Thursday" is `nth:3:4`. Options expiration moves to Thursday when the Friday is a holiday; the calendar carries it |
 | Quarterly and yearly | the first or last trading day of the quarter / of the year / quad witching (the third Friday of Mar, Jun, Sep, Dec) / tax day (Apr 15, rolled) / [a fixed date] | a fixed date is a `MM-DD` parameter; the menu offers a few (Jan 2, Black Friday, Dec 24, Oct 19) and the URL takes any |
-| Events | Fed decision day / jobs report / CPI / GDP advance estimate / the security's earnings day / the security's ex-dividend day / election day / inauguration day / Jackson Hole (the Fed chair's speech) | each with an offset word: the day before, the day of (default), the day after, the week after. "Day of" for a two-day Fed meeting is the decision day, 2 pm ET, inside the session. Floors per event in the event-calendars report (earnings ~2003 via EDGAR; the rest 1990 or earlier) [research] |
-| Sky | full moon / new moon / the day Mercury turns retrograde | moon instants by Meeus ch. 49, Streak King's `moon.ts`; a full moon when the instant falls within 24 h of 00:00 UTC after the buy date, Streak King's werewolf-game rule. Mercury from a published table [research] |
-| Odd | Friday the 13th / the Monday after the Super Bowl / the day before a market holiday / the first trading day after one / the Monday after a daylight-saving change / Groundhog Day | computable from the calendar; Super Bowl dates are a small ruling file; the DST rule changed in 1987 and 2007 |
+| Events | Fed decision day / jobs report / CPI / GDP advance estimate / ISM manufacturing (the first business day) / the security's earnings day / the security's ex-dividend day / election day / inauguration day / Jackson Hole (the chair's Friday speech) | each with an offset word: the day before, the day of (default), the day after, the week after, in trading days. Every event carries its session: an 8:30 am release and a 2 pm Fed decision are both inside the day's session, so the day's close is after the event and "the day of" buys it; an after-close event (earnings filed after 4 pm, a Sunday rate cut like 2020-03-15) buys the next session, which is what "the day of" means for it. "Day of" for a two-day Fed meeting is the decision day; the first day is its own anchor. Floors: Fed meetings 1990 (statements exist from 1994-02-04, at every meeting from 2000, at 2:00 pm from 2013-03-20 and 2:15 before), jobs report and CPI 1990 (BLS has the dates from 1957), GDP 1990 via ALFRED to verify, earnings 2003 (below) |
+| Sky | full moon / new moon / the day Mercury turns retrograde | instants from `astronomy-engine` (MIT, VSOP87-based, no dependencies), which also gives Mercury's stations (geocentric longitude turning; the 1990 stations match the published dates) and the seasons, so there is no table to curate. The schedule's buy date is the instant's date in New York time, rolled forward: two of 2024's twelve full moons fall on a different date in UTC than in Eastern time, so the zone is a rule, not a detail. The condition "under a full moon" keeps Streak King's werewolf rule, the instant within 24 h of 00:00 UTC after the buy date |
+| Odd | Friday the 13th / the Monday after the Super Bowl / the day before a market holiday / the first trading day after one / the Monday after a daylight-saving change / Groundhog Day | computable from the calendar; Super Bowl Sundays from nflverse's `games.csv` for 1999 on (license to check) and ten hand rows for 1990–98; the DST rule changed in 1987 and 2007 (first Sunday of April to 2006, second Sunday of March since) and the tz database's `Rule US` lines are the source |
 
 ### Conditions
 
@@ -150,15 +161,15 @@ the same condition with two references. Groups marked exclusive offer a swap, no
 | Move | fell at least [1, 2, 3, 5, 10]% over [a day, a week, a month, a quarter, a year] / rose at least the same | any series | the lookback is in trading days (1, 5, 21, 63, 252). Exclusive with itself per reference |
 | Drawdown | [5, 10, 20, 30]% or more below its all-time high / below its 52-week high / at an all-time high (within 0.5%) / at a 52-week low | any price series | "below its all-time high" is the buy-the-dip family. The all-time high is the series' own since its first close, so a 1993 ETF's "all-time" is 1993+ and the sentence says so |
 | Trend | above / below its [50, 200]-day average / golden cross in effect / death cross in effect / [3, 5, 10] down days in a row / up days in a row | any price series | a cross "in effect" is the state (50 over 200), not the crossing day; the crossing day is `event:cross` [v2] |
-| Volatility | VIX above / below [15, 20, 25, 30, 40] / VIX rose [10, 20]% in a day | VIX only | CBOE VIX daily from 1990-01-02 [research], which is why the window opens there |
-| Rates | fed funds rising / falling (the direction of the last target change) / yield curve inverted (10y below 2y) / 10-year yield above / below [X]% / Fed day with a hike / a cut / a hold | FRED | "Fed day with a cut" reads the 2 pm decision and buys the close; it is knowable in-session. Target history `DFEDTAR`, `DFEDTARU`/`L` [research] |
-| Economy | unemployment rose / fell in the latest report / inflation (CPI, year over year) above / below [2, 3, 4, 5]% / the latest jobs report beat / missed consensus | BLS via FRED and ALFRED | **as first published** (ALFRED vintages), not revised; consensus needs a source and may be cut [research] |
-| Sentiment | AAII bulls below [25, 30]% / bears above [40, 50]% / consumer sentiment (Michigan) below [X] | AAII weekly 1987, UMich monthly | AAII's terms need checking before it ships [research] |
+| Volatility | VIX above / below [15, 20, 25, 30, 40] / VIX rose [10, 20]% in a day | VIX only | Cboe's VIX is daily from 1990-01-02 (FRED `VIXCLS`), which is why the window opens there; the old VXO reaches 1986 and ended in 2021, so it isn't used |
+| Rates | fed funds rising / falling (the direction of the last target change) / yield curve inverted (10y below 2y) / 10-year yield above / below [X]% / Fed day with a hike / a cut / a hold | FRED H.15, the target series | "Fed day with a cut" reads the 2 pm decision and buys the close; it is knowable in-session. Target history `DFEDTAR` to 2008, `DFEDTARU`/`DFEDTARL` since; `DGS10` 1962, `DGS2` 1976, `DFF` 1954 |
+| Economy | unemployment rose / fell in the latest report / inflation (CPI, year over year) above / below [2, 3, 4, 5]% / payrolls fell in the latest report | BLS via ALFRED | **as first published** (ALFRED vintages, the first vintage on or after the release date), effective from the release date, never the reference month; payrolls are the most-revised series in the set. "Beat / missed consensus" is cut: consensus estimates are paid data |
+| Sentiment and valuation | consumer sentiment (Michigan) below [60, 70, 80] / CAPE above [20, 25, 30] / below [15, 20] | FRED `UMCSENT` monthly from 1978, Shiller's monthly file | monthly step series, effective on the release date (the preliminary print for Michigan). AAII's weekly survey is members-only and isn't offered |
 | Season | in [month] / Nov–Apr / May–Oct / the first or last week of the month / options-expiration week / earnings season (the six weeks after a quarter ends) / year [1–4] of the presidential term / a Democrat / a Republican in the White House / the [N] trading days before an election | calendar | months exclusive; the two halves exclusive; the two parties exclusive |
 | Sky | within a day of a full moon / a new moon / moon waxing / waning / Mercury retrograde | computed | the schedule "every full moon" buys on the moon; the condition "under a full moon" filters another schedule ("every Monday under a full moon") |
 | Streak | the market fell [N] days in a row = Trend's down days; after the year's worst day so far | self or S&P | "the year's worst day so far" is knowable at the close and a cute cousin of a streak |
 
-Cut from v1 after research, to confirm against the price and event reports: recessions
+Cut from v1 after research: recessions
 (dated after the fact), Fear & Greed (no history before 2011 and no license), intraday
 prices (nothing free before 2000 and every schedule here is a close), short interest and
 fund flows (paid), weather (Hirshleifer & Shumway's sunshine effect needs New York daily
@@ -170,31 +181,80 @@ which makes them safe to ship.
 
 ### Securities (the board's rows)
 
-The universe is a hand-kept list like the sibling site's `universe.mjs`, each with its own
-first close, grouped in the picker:
+The universe is a hand-kept table like the sibling site's `universe.mjs`, one row a series
+with its source, its first close and the floor the sentence shows, grouped in the picker.
+Deleting a row removes a series; nothing else knows the list. The price-data report has
+the sources, the terms and the floors; the groups:
 
-- **Indices**: the S&P 500 total return (`^SP500TR`, 1988), the S&P 500 price index, the
-  Dow, the Nasdaq Composite, the Russell 2000, the Wilshire 5000 (FRED), with the
-  price-data report settling which carry dividends and from when [research].
-- **The pre-ETF total-return spine**: Vanguard index mutual funds with daily adjusted closes
-  back decades: VFINX (the 500, 1976), VTSMX (total market, 1992), VEXMX (extended market,
-  1987), VBMFX (total bond, 1986), VGTSX (total international, 1996), VEIEX (emerging,
-  1994), VGSIX (REIT, 1996), VWELX (Wellington, 1929). These are how "$100 a week since
-  1990 with dividends" is honest; SPY begins 1993-01-29.
-- **ETFs**: SPY, DIA, QQQ, IWM, VTI, the nine original Select Sector SPDRs (1998-12-16) plus
-  XLRE and XLC, TLT, AGG, BND, GLD, SLV, USO, EFA, EEM, VNQ, VXUS, ARKK, with their dates.
-- **Sectors before 1998**: Kenneth French's 12 industry portfolios, daily from 1926,
-  value-weighted, shown as "the tech industry (Fama-French), since 1990" so nobody reads
-  them as a fund [research on terms].
-- **Stocks**: the S&P 100 and Nasdaq 100 members from the sibling universe, each from its
-  first close. Method says plainly that these are today's winners, so a "buy every stock
-  here since 1990" reading is survivorship, and the indices and funds are the fair rows.
-- **Other**: Bitcoin (Yahoo's `BTC-USD` from 2014; earlier needs a source [research]),
-  gold spot (LBMA via FRED, 1968), oil (WTI via FRED), the dollar index.
+- **Indexes.** The S&P 500 total return (`^SP500TR`, Yahoo, from 1988-01-04, the only free
+  daily large-cap total-return series before SPY), the S&P 500 price index, the Dow (Yahoo's
+  history starts 1992), the Nasdaq Composite and the Russell 2000. The last four carry no
+  dividends and their rows say "price only, no dividends"; FTSE Russell's and Dow Jones's
+  total-return series aren't free, and FRED removed every Wilshire series in June 2024.
+- **The pre-ETF total-return spine.** Vanguard index mutual funds with daily adjusted
+  closes on Yahoo back decades: VFINX (the 500, 1976), VTSMX (total market, 1992), VEXMX
+  (extended market, 1987), VBMFX (total bond, 1986), VGTSX (total international, 1996),
+  VEIEX (emerging, 1994), VGSIX (REIT, 1996), VWELX (Wellington, 1929). These are how
+  "$100 a week since 1990 with dividends" is honest for an investable thing. Yahoo's fund
+  adjustments sometimes miss a capital-gains distribution; the coverage report checks each
+  fund's adjusted return against the fund's published annual returns for two sample years.
+- **The academic total market.** Fama-French's daily market return (Mkt-RF plus RF) from
+  1926, value-weighted, every CRSP stock, dividends in, no fees. Labeled "academic index,
+  not investable" wherever it appears.
+- **ETFs**: SPY (1993-01-29), DIA, QQQ, IWM, VTI, the nine original Select Sector SPDRs
+  (first closes 1998-12-22, floor 1999-01-04) plus XLRE (2015) and XLC (2018), TLT, AGG,
+  BND, GLD (2004-11-18), SLV, USO, EFA, EEM, VNQ, VXUS, ARKK, each from its first close.
+- **Sectors before 1999, three tiers, never spliced silently.** The SPDR is the sector from
+  1999. Before that, two labeled proxies the picker offers as their own rows: Fama-French's
+  daily 12-industry portfolios (SIC-based, reconstituted yearly, "academic industry
+  portfolio") and the investable sector funds that reach 1990 (Fidelity Selects from
+  1981-07-14, Vanguard Health Care and Energy from 1984-05-23, actively managed and
+  fee-laden, "a sector fund"). S&P's own sector indices are back-filled to 1989 and not
+  free to redistribute, so they aren't here.
+- **Stocks**: the S&P 100 and Nasdaq 100 members from the sibling universe, each from
+  Yahoo's `firstTradeDate` or 1990, whichever is later. Yahoo deletes a ticker's whole
+  history when it delists, so this group is today's survivors and nothing else; the row's
+  small print says "a currently listed stock" and Method says why the index and fund rows
+  are the fair ones.
+- **Other**: Bitcoin (FRED's Coinbase series from 2014-12-01, a seven-day series aligned to
+  trading days), oil (WTI via FRED, 1986), the dollar index (FRED's broad index from 2006,
+  or spliced onto the retired major-currencies index back to 1973 with the splice labeled),
+  gold through GLD (the LBMA history was pulled from public sites at ICE's request in 2025,
+  so FRED's copy can't be relied on).
+
+Not offered, by terms: the ICE BofA high-yield spread (written permission required, and
+FRED keeps three years from April 2026), S&P's sector indices and FRED's ten-year `SP500`,
+Wilshire, AAII's sentiment survey (members only), MSCI. The loader is table-driven so a
+series that turns out to carry terms is one deleted row.
 
 The board's default load must stay under about 1.5 MB gzipped (Payload). If the whole
-universe doesn't fit, the board loads a core set (indices, funds, ETFs, Dow 30 and the
+universe doesn't fit, the board loads a core set (indexes, funds, ETFs, Dow 30 and the
 mega caps) and the rest join the board when picked, like Streak King's crowns files.
+
+### Floors the sentence shows
+
+The security and series floors. The event floors are in the Events row of the schedule table.
+
+| series | source | data starts | floor shown |
+| --- | --- | --- | --- |
+| S&P 500 total return | Yahoo `^SP500TR` | 1988-01-04 | 1990-01-02 |
+| S&P 500 price, Nasdaq, Russell 2000 | Yahoo | 1927 / 1971 / 1987 | 1990-01-02, "price only" |
+| Dow | Yahoo `^DJI` | 1992-01-02 (to verify) | 1992-01-02, "price only" |
+| SPY | Yahoo | 1993-01-29 | 1993-02-01 |
+| VTSMX, VFINX, the funds | Yahoo | 1992-04-27, 1976-08-31, … | 1990-01-02 or the fund's first close |
+| Fama-French market and industries | Ken French | 1926-07-01 | 1990-01-02, "academic" |
+| Sector SPDRs | Yahoo | 1998-12-22 | 1999-01-04 |
+| a stock | Yahoo | `firstTradeDate` | max(first close, 1990-01-02), "currently listed" |
+| VIX | FRED `VIXCLS`, Cboe's CSV as backup | 1990-01-02 | 1990-01-02 |
+| yields, fed funds, oil | FRED H.15, EIA | 1954–1986 | 1990-01-02 |
+| unemployment, CPI, payrolls | ALFRED first prints | 1939–1948 | 1990-01, effective on the release date |
+| consumer sentiment | FRED `UMCSENT` | 1978-01 | 1990-01, preliminary print |
+| CAPE | Shiller's monthly file | 1881 | 1990-01, monthly step |
+| dollar index | FRED `DTWEXBGS` (+ `DTWEXM` splice) | 2006-01-02 (1973) | 2006, or 1990 labeled spliced |
+| Bitcoin | FRED `CBBTCUSD` | 2014-12-01 | 2014-12-01 |
+| gold | GLD | 2004-11-18 | 2004-11-18 |
+| earnings dates | EDGAR 8-K Item 2.02 | 2003-03 | 2003, see the event report |
+| trading calendar | `pandas_market_calendars` NYSE, emitted once | 1885 | 1990-01-02 |
 
 ## The menu's deltas
 
@@ -253,10 +313,11 @@ $100 a week since 1993, ended at $112,400: 2.1% ahead of plain DCA, 3% behind pu
 year's money in on day one." A stat strip: ending value, contributed, IRR, worst drawdown,
 average cost against plain DCA's, buys, average cash. The windows line and the decades
 strip. A cumulative SVG of the strategy, plain DCA, the year's-money-on-day-one line and
-cash (the comparator's curve; Schwab's four investors on one chart). The ledger: the last eight buys (date, price, shares, what
-the lot is worth now), the **next buy day** on top as a row of the same design with a rust
-dashed rule (the next third Thursday, the next Fed decision, the next full moon), a link to
-the security page, share and close. Deep link `?t=spy`.
+cash (the comparator's curve; Schwab's four investors on one chart). The ledger: the last
+eight buys (date, price, shares, what the lot is worth now), the **next buy day** on top as
+a row of the same design with a rust dashed rule (the next third Thursday, the next Fed
+decision, the next full moon), a link to the security page, share and close. Deep link
+`?t=spy`.
 
 ### The by-security board, `/?for=spy`
 
@@ -272,8 +333,8 @@ Prerendered per security with its own card. The h1 is the security beside its ma
 a picker for any other; mono meta (first close, last close, the fund or company name).
 "$100 a week since 1993" as the plain story: ending value, contributed, IRR, the curve.
 "What works for SPY": the strategies it leads (the mine's placings, One floor), each a row
-that opens the board under that strategy with SPY open, sub-strategies grouped under their shorter telling. "Best day
-to buy": three short strips, weekdays, days of the month and events, each option's edge as
+that opens the board under that strategy with SPY open, sub-strategies grouped under their
+shorter telling. "Best day to buy": three short strips, weekdays, days of the month and events, each option's edge as
 a bar. "Upcoming buy days": its next earnings, ex-dividend, the next Fed decision and jobs
 report, the next full moon. `<title>`: "Best day of the week to buy SPY, and every other
 schedule since 1993 · <site>".
@@ -334,37 +395,79 @@ Streak King's shape: raw caches gitignored, rulings in `data/ref/*.json` with re
 CI, one engine. The sources and floors are the research reports' findings; this section
 names the pieces and the rules, and the reports carry the URLs and terms.
 
-1. **Prices.** `yahoo-finance2` daily adjusted closes with `events: 'div,splits'` for the
-   universe, as the sibling site does today in CI, cached under `data/raw/yahoo/`. Each
-   series' first close is recorded as its floor. A series the fetch drops for a day it
-   should have (SPY on a non-holiday weekday) fails the build: a degraded payload is a bug.
-   Cross-check a sample against a second source (Stooq) in `coverage-report.mjs`.
-   [research: terms, reliability, delisted tickers]
-2. **Indices and macro.** FRED's API with the free key (`DTB3`, `VIXCLS`, `DGS10`, `DGS2`,
-   `DFF`, `DFEDTAR*`, `UNRATE`, `CPIAUCSL`, `PAYEMS`, `WILL5000*`, gold, oil, the dollar).
-   **Vintages**: `UNRATE` and `CPIAUCSL` are read from ALFRED as first published, so a
-   condition sees the number the day's buyer saw; the revised series stays for the chart.
-   The CBOE's own VIX history file for 1990–2003 if FRED's `VIXCLS` starts later [research].
-3. **Sectors.** Kenneth French's daily 12-industry portfolios, fetched and checksummed,
-   value-weighted, under his terms [research].
-4. **Event calendars**, each a `data/ref/<event>.json` of dates with receipts (`{ url,
-   quote }`, checked by `check-receipts.mjs` against committed page copies): FOMC decisions
-   from the Fed's historical-materials pages, 1990→ (and the unscheduled moves of 2001,
-   2008, 2020 as their own flag); BLS Employment Situation and CPI release dates from the
-   schedule archives, with the shutdown delays of 1995–96, 2013, 2018–19 and 2025; BEA
-   GDP advance dates; election and inauguration days by rule with a ruling file for the
-   oddities; Jackson Hole; Super Bowl Sundays. [research: how far back each archive goes]
-5. **Earnings.** EDGAR's submissions API per CIK (fair access: 10 requests a second, a
-   `User-Agent`), 8-K filings with Item 2.02 from 2003-03. Before- or after-market is not
-   in the filing, so "earnings day" is the first session that trades on it: a filing
-   stamped after 4 pm ET maps to the next session [research: whether the acceptance time
-   suffices; a floor year]. Ex-dividend dates from the Yahoo events.
-6. **The moon.** `moon.ts` from Streak King (Meeus, within ~2 min of NASA's instants),
-   phases for every day in the window; Mercury retrograde from a published table with a
-   receipt [research].
-7. **The calendar.** NYSE trading days 1990→ as a committed table with receipts, built once
-   and cross-checked against `exchange_calendars` [research: license]; the running year
-   from the NYSE's published holidays.
+1. **Prices.** `yahoo-finance2`'s `chart()` (the `historical()` module is deprecated onto
+   it) with `events: 'div|split'`, storing per symbol the split-adjusted close, the adjusted
+   close and the dividend and split event lists, as the sibling site does today in CI,
+   cached under `data/raw/yahoo/`. Each series' `meta.firstTradeDate` is its floor. The
+   fetch is incremental from the last committed date, retries with backoff, and sends a
+   browser-like `User-Agent` (the crumb endpoint 429s without one); Yahoo blocks an IP for a
+   day now and then, so a failed fetch keeps the committed data and the dateline shows its
+   date, while a fetch that returns a series with a hole (SPY missing a weekday the calendar
+   says was open) fails the build. Nothing free matches Yahoo's depth plus adjusted closes
+   plus events; Tiingo's free tier is the alternative for events if Yahoo breaks, under an
+   "internal use only" clause the report flags. Stooq's long index series are an offline
+   cross-check in `coverage-report.mjs`, not a dependency. Yahoo grants no license to
+   redistribute; the committed form stays minimal (closes and events, never the raw
+   payload), the posture the sibling site already carries.
+2. **Macro and rates.** FRED's API with the free key (120 requests a minute): `DTB3`,
+   `VIXCLS`, `DGS10`, `DGS2`, `DFF`, the target series, `UMCSENT`, `DCOILWTICO`,
+   `DTWEXBGS`, `CBBTCUSD`. Government series (H.15, BLS, EIA, H.10) are public domain and
+   committed with a citation; Cboe's VIX and Coinbase's Bitcoin are committed with their
+   FRED notes' credit lines, confirmed against the notes before the first push. **Vintages**:
+   `UNRATE`, `CPIAUCSL` and `PAYEMS` come from ALFRED's `series/observations` with
+   `realtime_start`, two columns a month (`first_print`, `latest`), fetched once in 2,000-
+   vintage chunks and committed; conditions read `first_print` from the release date. Shiller's
+   monthly file for CAPE, cited, no license claimed. One flag from the event report: FRED's
+   API terms reportedly forbid storing, caching or archiving FRED content. The government
+   series are public domain whatever FRED's wrapper says, so the loader takes them from the
+   agencies where an endpoint exists (BLS's API, the Fed's H.15 download, EIA) or from the
+   keyless `fredgraph.csv` download, and the terms get read before the first push.
+3. **Fama-French.** The daily market factor and the 12-industry file (zipped CSVs with
+   multi-block layouts and -99.99 sentinels), fetched by a rarely-run step and checksummed;
+   French refreshes them monthly with a lag, so they are the pre-1993 and academic rows,
+   never the live spine. His page shows a copyright line and no grant; read it before the
+   first push.
+4. **Event calendars**, each a `data/ref/<event>.json` of dated rows with a session
+   (`pre`, `regular`, `post`, `closed`) and receipts (`{ url, quote }`, checked by
+   `check-receipts.mjs` against committed page copies). No trustworthy ready-made file
+   exists for any of them (the one FOMC dates package on npm holds 31 rows), so each is a
+   parse of the agency's own pages:
+   - **FOMC**: the Board's per-year historical pages (`fomchistoricalYYYY.htm`) and the
+     current `fomccalendars.htm`, one row a meeting with start, end, statement time and
+     press conference; intermeeting moves (2001, 2008, 2020-03-03 and 03-15) from the
+     target series' change dates, flagged `unscheduled`. Meetings are two-day since 2009.
+   - **BLS**: the Employment Situation from the bureau's historical release-date PDF
+     (1957–2000) and the per-year schedule pages (1999 on), likewise CPI and PPI; JOLTS from
+     2002-07. The rule is the third Friday after the reference week, not the first Friday,
+     and the shutdowns moved or killed releases (the September 2013 report came out
+     October 22; the October 2025 report was never published). A scheduled release that
+     never happened stays in the file as `released: false`: the schedule doesn't buy, the
+     budget accrues, and the ledger shows the gap with its reason.
+   - **BEA** GDP advance dates from the archived yearly schedules; ALFRED's per-release date
+     lists (`release/dates`) are the one-format shortcut for BLS, BEA, Census and Michigan
+     together and get verified first, since one text file a release would replace the
+     parses above.
+   - **Elections and inaugurations** by statute, with a ten-row table of when each
+     presidential result was called (2000-12-12; 2020-11-07) for "the day after the result".
+     Shutdown and debt-ceiling dates from the CRS reports, a hand JSON.
+   - **Jackson Hole** Fridays from the Kansas City Fed's archive; Super Bowls as above.
+5. **Earnings.** EDGAR's submissions API per CIK (fair access: 10 requests a second and a
+   `User-Agent`), 8-K filings with Item 2.02 "Results of Operations" from 2003-03-28, which
+   was Item 12 until the August 2004 renumbering, so the parser reads Items 9 and 12 for
+   2003–04. The filing's `acceptanceDateTime` sets the session: before 9:30 am or inside the
+   session buys that day's close, after 4 pm buys the next session (a filing accepted after
+   5:30 pm already carries the next day's filing date). Nothing free is complete before
+   2003; 10-Q filing dates are a poor proxy and aren't used. The one free dataset found
+   (505 tickers, 2003–2025, no license) is a cross-check, never shipped. Ex-dividend dates
+   from the Yahoo events.
+6. **The sky.** `astronomy-engine` at build: moon quarters, Mercury's stations and the
+   seasons for every year in the window, dated in New York time, written to `core.json`;
+   Streak King's `moon.ts` (Meeus) is the cross-check for the full moons.
+7. **The calendar.** `data/ref/calendar.json`, the NYSE trading days and early closes from
+   1990, emitted once by a Python step from `pandas_market_calendars` (MIT; its NYSE rules
+   run from 1885 and carry 9/11, Sandy and every mourning day) and cross-checked against
+   `exchange_calendars` (Apache 2.0); the running year's holidays from the NYSE's own page,
+   added to the file with a receipt each December.
 8. **Refresh.** CI runs `build-current` weekdays after the close (about 22:30 ET) and a full
    refetch on Sundays; the push build uses committed data. The dateline shows the data's
    date. A new FOMC year, BLS schedule or holiday list is a yearly ruling-file update the
@@ -372,8 +475,15 @@ names the pieces and the rules, and the reports carry the URLs and terms.
 
 Rulings expected: fund-to-ETF successors (none in v1; each row is its own series), split
 and dividend corrections where Yahoo's adjustments are wrong (a `price-corrections.json`
-layered at parse, fail-loud when stale), the Super Bowl and Jackson Hole dates, and the
-fixed-date schedules' holiday rolls.
+layered at parse, fail-loud when stale; the known defects are missed dividends and fund
+capital-gains distributions), the Super Bowl and Jackson Hole dates, and the fixed-date
+schedules' holiday rolls.
+
+**Terms to read before the first push**, since the sandbox that wrote the research could
+not open the pages: Yahoo's US terms, Ken French's data library page, FRED's API terms and
+the per-series notes for `VIXCLS`, `UMCSENT` and `CBBTCUSD`, Tiingo's license page if it
+becomes the events source, Stooq's terms, Shiller's download page. The research reports
+each end with a verify-first list.
 
 ## Payload and compute
 
@@ -384,11 +494,12 @@ gzipped a series, to be measured; price deltas are close to noise and don't comp
 further). Log returns in Int16 were considered and rejected: a basis point of rounding a
 day drifts about half a percent over 36 years, which is the size of the edges the board
 ranks. `core.json` carries the index, the S&P 500, the VIX, the macro and rate series,
-every event calendar and the moon phases, about 250 KB gzipped. The board needs every
-row's series, so the universe size is the load: 100 series is ~1.5 MB, 300 is ~4.5 MB. The decision rule is a measured production
-build under 1.5 MB before first paint (Streak King's "is a browser going to fetch 84 MB"
-question), which puts ~100 series on the board by default and the rest behind the picker,
-each a `series/<id>.json` fetched when chosen. Open questions, 5.
+every event calendar and the sky, about 250 KB gzipped. The board needs every row's
+series, so the universe size is the load: 100 series is ~1.5 MB, 300 is ~4.5 MB. The
+decision rule is a measured production build under 1.5 MB before first paint (Streak
+King's "is a browser going to fetch 84 MB" question), which puts ~100 series on the board
+by default and the rest behind the picker, each a `series/<id>.json` fetched when chosen.
+Open questions, 5.
 
 The engine is one module with no React: `masks.ts` (per-day bitmasks per condition and
 reference, lazily built and cached), `evaluate.ts` (the AND, the forward pass, the
@@ -416,8 +527,10 @@ leads the field (rank 1, ties included), no score floor, every list paging with 
 The order is a score in bits that is never shown: the luck percentile as `−log2(1 − p)`
 less each condition's cost (plain 3, parameterized 3 + log2 of its choices, as the crown
 score charges "vs Tennessee" for being one of 288), so a four-word stack must beat blind
-timing by more than a plain one to rank above it. A sub-strategy, one whose conditions are a strict superset of a shorter telling's that does at least as well,
-is grouped under that telling behind "show N sub-strategies", Streak King's `markDups`. Named pages and security pages read `dist/mine/<id>.json`; the board never does.
+timing by more than a plain one to rank above it. A sub-strategy, one whose conditions are
+a strict superset of a shorter telling's that does at least as well, is grouped under that
+telling behind "show N sub-strategies", Streak King's `markDups`. Named pages and security
+pages read `dist/mine/<id>.json`; the board never does.
 
 ## Honesty, in Method
 
@@ -430,7 +543,9 @@ luck line and the bits cost exist because a reader who tries a hundred strategie
 find one that wins, and that one is probably noise; every published number a gate checks
 is named with its source, and where our number differs (Portfolio Visualizer's monthly
 compounding, a publisher's dividend treatment) the difference is explained there, never
-patched in the data.
+patched in the data; the Dow, Nasdaq and Russell rows are price-only and say so; a sector
+before 1999 is an academic portfolio or a named fund and says which; the README's NOTICE
+lists every source with its page and credit line.
 
 ## Known-answer gates
 
@@ -451,6 +566,7 @@ patched. The structural ones first:
 - Every schedule buys the expected count: "every Monday since 1990" is the number of
   Mondays the NYSE was open; "every full moon" ~443; "the third Friday" the count of
   months; "Fed decision day" the FOMC table's count.
+
 Then the famous numbers, each reproduced on the site's own series over the source's period
 where the series reaches it, and otherwise over the overlap with the direction checked:
 
@@ -499,18 +615,18 @@ Each chunk in the executive-summary shape: what it is, what dropping it costs, t
 version.
 
 1. **Engine, core data and the board.** `core.json` (trading days, the S&P 500 TR, the
-   VIX, the FRED series, the moon, the rule-based calendars), the Vanguard funds and the
+   VIX, the macro and rate series, the sky, the rule-based calendars), the Vanguard funds and the
    ETFs, `evaluate.ts`, the sentence with every schedule and condition the core data
    supports, the deltas menu, the board, the panel, the luck line, URL state, prerender of
    the root. Drop it and nothing exists. The cheap version is the whole site at its
    smallest: no events needing research, no stocks, no mine. It already answers "best
-   weekday", "full moon", "buy the dip" and "sell in May" for the indices and funds.
+   weekday", "full moon", "buy the dip" and "sell in May" for the indexes and funds.
 2. **Event calendars.** FOMC, BLS, BEA, elections, Jackson Hole as receipt-backed ruling
    files; the Events schedule group; the calendar page. Drop it and the Fed-day, jobs-day
    and election strategies the brief names don't exist. Cheap version: FOMC and BLS only.
 3. **Securities and their pages.** The stock universe as on-demand series, security pages
    with the plain story and the three "best day" strips (computed in the browser, no mine),
-   the by-security board. Drop it and the site is indices and funds, which is defensible.
+   the by-security board. Drop it and the site is indexes and funds, which is defensible.
 4. **Earnings.** EDGAR 8-K Item 2.02 per CIK, the reaction-day rule, the earnings schedule
    and the "earnings season" condition. Floor 2003. Drop it and no per-stock event schedule
    exists; the stock rows still work on every other schedule.
@@ -568,14 +684,14 @@ adoption starts after 1: the site is shareable the day the board renders.
    Lean: the root is "every Monday" with the S&P 500 open, which shows a real board and a
    sentence a reader can change.
 5. **Board universe versus payload.** Exact varint closes for ~100 series is ~1.5 MB gzipped;
-   300 is ~4.5 MB. Lean: ~100 series on the board by default (indices, funds, ETFs, the Dow
+   300 is ~4.5 MB. Lean: ~100 series on the board by default (indexes, funds, ETFs, the Dow
    30 and the mega caps), the rest fetched when picked. Or quantize harder (weekly closes
    for the board's sparklines, daily only for the open row), which complicates one engine.
 6. **Earnings.** Floor 2003 from EDGAR 8-K Item 2.02; the acceptance timestamp decides the
-   reaction session. If the timestamp is unreliable, the schedule offers "the day of the
-   filing" and "the day after" and says which it is. Alpha Vantage's free earnings
-   endpoint reports dates back further; its terms decide [research]. Which floor is honest
-   enough to ship?
+   session. If the timestamp proves unreliable for a filer, the schedule offers "the day of
+   the filing" and "the day after" and says which it is. Alpha Vantage's free endpoint
+   reports dates further back, at 25 requests a day under a redistribution clause nobody
+   has read, so it isn't the plan. Is 2003 honest enough to ship the schedule?
 7. **The mine's size.** Measure one security first. If three conditions at canonical
    thresholds is too slow on a runner, the mine runs on the Mac and commits its output, as
    the NBA history spine does; or it mines two conditions in CI and three offline.
@@ -583,9 +699,9 @@ adoption starts after 1: the site is shareable the day the board renders.
    second fetch path and a Method paragraph; revised values are wrong by a tenth here and
    there and cost nothing. Lean: ALFRED for the two series conditions read, revised for
    the charts.
-9. **Sectors before 1998.** Fama-French industries as rows, labeled as such, or sectors
-   start in 1998 with the SPDRs and the sentence says so. Lean: both, the industries as
-   their own group so a reader can't mistake one for a fund.
+9. **Sectors before the SPDRs.** Fama-French industries and the old sector funds as rows,
+   labeled as such, or sectors start in 1999 with the SPDRs and the sentence says so. Lean:
+   both, the proxies as their own group so a reader can't mistake one for the sector.
 10. **The luck line's method.** Random schedules with the same buy count over the same
     window is the plainest null. A stricter null keeps the schedule and shuffles the
     conditions' days, which tests the condition rather than the timing. One method on the
@@ -593,6 +709,14 @@ adoption starts after 1: the site is shareable the day the board renders.
 11. **Four conditions.** The UI cost of four is nothing, the space is already past
     counting (below), and the bits cost keeps the four-word stacks honest on the lists.
     Fine?
+12. **Missing releases.** A scheduled jobs report that never came out (October 2025) is a
+    gap the ledger shows, not a buy on the next report. The other reading, buy on the next
+    release with two months' money, is also defensible. Lean: the gap, since the schedule
+    says "jobs report day" and there wasn't one.
+13. **The academic rows.** Fama-French's market and industries are the only daily
+    total-return series before 1988. Offering them as rows means a reader can DCA into an
+    uninvestable index; labeling them "academic" on the row, in the sentence and in Method
+    is the mitigation. Keep them, or hold them to the sector proxies only?
 
 ### How big the space is
 
