@@ -89,13 +89,16 @@ export function clientProps() {
 // `user_agent`. Init with track_pageview off, register, then call this.
 // Fires once now and once per history change, the same as the library's
 // 'url-with-path-and-query-string' mode; the project sites write their
-// shareable ?state= URLs with replaceState.
+// shareable ?state= URLs with replaceState. Returns how many it has fired,
+// for `leave`.
 export function trackPageviews(mp) {
 	let last = '';
+	let views = 0;
 	const fire = () => {
 		const url = location.pathname + location.search;
 		if (url === last) return;
 		last = url;
+		views++;
 		try {
 			mp.track_pageview();
 		} catch {}
@@ -110,4 +113,60 @@ export function trackPageviews(mp) {
 		};
 	}
 	window.addEventListener('popstate', fire);
+	return () => views;
+}
+
+// `leave`, sent as the tab hides (a phone switching apps, a close, back to
+// Reddit): how long the page was in view, how far down it got, how many taps
+// and how many pageviews. A one-page visit of 40 seconds to the foot of the
+// board is a read; 3 seconds at the top is a bounce, and a pageview alone
+// can't tell them apart. Same event and fields as puttingupnumbers.com's, so
+// one query reads every site. A tab that comes back and hides again sends the
+// running totals again, so read the last one for each `load`.
+export function trackLeave(mp, views) {
+	const load = Math.random().toString(36).slice(2, 10);
+	const landing = location.pathname;
+	// In view since the page started loading, unless it opened in the
+	// background. performance.now() counts from navigation, so the time
+	// before this async script loaded is in it.
+	let since = document.visibilityState === 'visible' ? 0 : null;
+	let seen = 0;
+	let deepest = 0;
+	let taps = 0;
+	const measure = () => {
+		const height = document.documentElement.scrollHeight;
+		const reached = height > 0 ? (window.scrollY + window.innerHeight) / height : 1;
+		deepest = Math.max(deepest, Math.min(1, reached));
+	};
+	measure();
+	window.addEventListener('scroll', measure, { passive: true });
+	document.addEventListener('click', () => taps++, { capture: true, passive: true });
+	const send = () => {
+		if (since === null) return;
+		seen += performance.now() - since;
+		since = null;
+		measure();
+		try {
+			mp.track(
+				'leave',
+				{
+					load,
+					landing,
+					page: location.pathname,
+					seconds: Math.round(seen / 1000),
+					scroll: Math.round(deepest * 20) * 5,
+					taps,
+					views: views(),
+				},
+				{ transport: 'sendBeacon', send_immediately: true },
+			);
+		} catch {}
+	};
+	document.addEventListener('visibilitychange', () => {
+		if (document.visibilityState === 'hidden') send();
+		else if (since === null) since = performance.now();
+	});
+	// Safari can skip visibilitychange on a close; send() ignores the second
+	// of the pair.
+	window.addEventListener('pagehide', send);
 }
