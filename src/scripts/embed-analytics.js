@@ -15,7 +15,7 @@
   third-party CDN on every project page), and leaves this source readable.
 */
 import mixpanel from 'mixpanel-browser';
-import { isAutomated, clientProps, trackPageviews } from './analytics-common.js';
+import { isAutomated, clientProps, trackPageviews, trackLeave } from './analytics-common.js';
 
 // Public by design: write-only event ingestion, no PII.
 const TOKEN = '1c6a0f45b8a5768185a8d9a2f4d65452';
@@ -62,7 +62,7 @@ if (
 			site: location.pathname.split('/')[1] || 'index',
 			...clientProps(),
 		});
-		trackPageviews(mixpanel);
+		trackLeave(mixpanel, trackPageviews(mixpanel));
 		ready = true;
 		for (const [name, props] of queue) {
 			try {
