@@ -4,14 +4,18 @@ interface Props {
 }
 
 const { date } = Astro.props;
+// Frontmatter dates are calendar days ("2026-11-08"), which parse to UTC
+// midnight. Format them in UTC so the day doesn't shift with the build
+// machine's timezone (a build in US time would print the day before).
 ---
 
-<time datetime={date.toISOString()}>
+<time datetime={date.toISOString().slice(0, 10)}>
 	{
 		date.toLocaleDateString('en-us', {
 			year: 'numeric',
 			month: 'short',
 			day: 'numeric',
+			timeZone: 'UTC',
 		})
 	}
 </time>
