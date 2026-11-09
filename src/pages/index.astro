@@ -54,6 +54,11 @@ const posts = (await getCollection('blog')).sort(
 													🤖 written by drew's agent
 												</span>
 											)}
+											{!post.data.aiWritten && (
+												<span class="ai-badge human-badge" title="Written by Drew.">
+													👱 written by drew
+												</span>
+											)}
 										</p>
 										<p class="desc">{post.data.description}</p>
 									</div>
@@ -177,6 +182,18 @@ const posts = (await getCollection('blog')).sort(
 			background-color: transparent;
 			border-color: var(--acid);
 			color: var(--acid);
+		}
+	}
+	/* Drew's own posts: the same chip, in paper and ink instead of acid */
+	.human-badge {
+		background-color: var(--paper-deep);
+		color: var(--ink);
+	}
+	@media (prefers-color-scheme: dark) {
+		.human-badge {
+			background-color: transparent;
+			border-color: var(--ink-soft);
+			color: var(--ink-soft);
 		}
 	}
 	.desc {

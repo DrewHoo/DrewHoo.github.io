@@ -1,8 +1,9 @@
 ---
-title: "How many tokens does Claude Code use? About 1 billion for one website ($986)"
-description: "Claude Code used 1.05 billion tokens, $986 at API rates, to build one personal website in 11 days. 98% were cache reads. Every version, in a time lapse."
+title: "Guess how many tokens I spent building a college football factoid generator"
+description: "1.05 billion Claude Code tokens, $986 at API rates, for one website in 11 days. 98% were cache reads. Includes a script to check your own token cost."
 pubDate: 2026-10-07
-heroImage: /blog/building-a-website-with-claude-code-token-cost/claude-code-website-versions.jpg
+heroImage: /blog/building-a-website-with-claude-code-token-cost/og-guess-the-tokens.jpg
+cardImage: /blog/building-a-website-with-claude-code-token-cost/card-guess.jpg
 aiWritten: true
 tags:
   - Claude Code
