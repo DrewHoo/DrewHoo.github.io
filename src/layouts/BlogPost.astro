@@ -8,7 +8,7 @@ import { SITE_AUTHOR } from '../consts';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage, tags, aiWritten } =
+const { title, description, pubDate, updatedDate, heroImage, hideHero, tags, aiWritten } =
 	Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -66,7 +66,7 @@ const jsonLd = {
 					<h1>{title}</h1>
 					<p class="desc">{description}</p>
 					{
-						heroImage && (
+						heroImage && !hideHero && (
 							<img class="hero" width={1020} height={510} src={heroImage} alt="" />
 						)
 					}

@@ -16,6 +16,9 @@ const blog = defineCollection({
 		// card thumbnail on the blog index when it should differ from the
 		// og:image (heroImage) — e.g. bfme2's box art vs its share card
 		cardImage: z.string().optional(),
+		// keep heroImage as the og:image but don't draw it atop the post,
+		// for a share card that would repeat the post's own charts
+		hideHero: z.boolean().default(false),
 		tags: z.array(z.string()).default([]),
 		aiWritten: z.boolean().default(false),
 	}),
