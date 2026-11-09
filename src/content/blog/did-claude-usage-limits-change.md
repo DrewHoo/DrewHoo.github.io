@@ -2,7 +2,7 @@
 title: "Did Claude usage limits change? Fable's weekly meter now costs 1.8x per message"
 description: "How to tell if Claude's Fable weekly limit got pricier: divide the meter by your Claude Code messages and tokens. Drew's went from 0.41% to 0.76% per message."
 pubDate: 2026-11-08
-heroImage: /blog/did-claude-usage-limits-change/og.png
+heroImage: /blog/did-claude-usage-limits-change/og-card.png
 cardImage: /blog/did-claude-usage-limits-change/card.png
 aiWritten: true
 tags:

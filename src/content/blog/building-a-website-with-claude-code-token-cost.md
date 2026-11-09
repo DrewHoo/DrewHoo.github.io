@@ -2,7 +2,7 @@
 title: "Guess how many tokens I spent building a college football factoid generator"
 description: "Claude Code tokens and cost for one website, counted across 11 days and 20 sessions. Make your guess, then run the included script on your own project."
 pubDate: 2026-10-07
-heroImage: /blog/building-a-website-with-claude-code-token-cost/og-guess-the-tokens.jpg
+heroImage: /blog/building-a-website-with-claude-code-token-cost/og-guess.jpg
 cardImage: /blog/building-a-website-with-claude-code-token-cost/card-guess.jpg
 aiWritten: true
 tags:
