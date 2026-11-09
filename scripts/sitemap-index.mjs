@@ -25,10 +25,22 @@ if (!fs.existsSync(indexFile)) {
 	process.exit(1);
 }
 
+// The five comparators moved to puttingupnumbers.com on 2026-10-26. Their
+// project cards were deleted the day before, and their sitemaps left this
+// index with them. Every address in those sitemaps now answers 301, and a
+// crawler only learns that by fetching the old address again; listing the old
+// sitemaps is how Google's site-move guide asks for that recrawl. On
+// 2026-11-09 Search Console showed 68 of 70 old addresses not crawled since
+// the move and still indexed as live pages. Take a sport out once Search
+// Console reports its old addresses as "Page with redirect".
+const movedSitemaps = ['cfb', 'nfl', 'nba', 'nhl', 'wnba'].map(
+	(sport) => `https://drewhoover.com/${sport}-comparator/sitemap.xml`,
+);
+
 // Same shape as the liveUrl harvest in astro.config.mjs: a frontmatter line.
 const siblingSitemaps = [
-	...new Set(
-		fs
+	...new Set([
+		...fs
 			.readdirSync(projectDir)
 			.filter((f) => /\.mdx?$/.test(f))
 			.map(
@@ -36,7 +48,8 @@ const siblingSitemaps = [
 					fs.readFileSync(new URL(f, projectDir), 'utf8').match(/^sitemapUrl:\s*(\S+)/m)?.[1],
 			)
 			.filter((u) => typeof u === 'string'),
-	),
+		...movedSitemaps,
+	]),
 ];
 
 const xml = fs.readFileSync(indexFile, 'utf8');
