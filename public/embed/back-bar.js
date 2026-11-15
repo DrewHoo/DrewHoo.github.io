@@ -7,6 +7,13 @@
   Usage (in any project site's <head> or end of <body>):
     <script src="https://drewhoover.com/embed/back-bar.js" async></script>
 
+  The bar returns the visitor to the drewhoover.com page they came from,
+  #fragment included: a lookbook opened from /favorites/#lookbooks goes back
+  to that tab, a project opened from /projects/ goes back there. The index
+  site saves that page on click (src/scripts/back-bar-return.js); the
+  referrer is the fallback. A visitor who arrived from anywhere else gets
+  the home page, or the site's section page.
+
   A site in a section of drewhoover.com links back to that section's page
   instead of the home page:
     <script src="https://drewhoover.com/embed/back-bar.js" data-section="sports" async></script>
@@ -21,7 +28,9 @@
     <html data-dhv-back-bar="off">  — or —  <body data-dhv-back-bar="off">
 
   Clicks are reported through the analytics embed, when it is on the page, as
-  the event "back bar" with `to` ("home" or the section).
+  the event "back bar" with `to` (the first path segment of the target, or
+  "home") and `returning` (true when it goes back to where the visitor came
+  from, false for the default).
 */
 (function () {
 	if (typeof document === 'undefined') return;
@@ -46,8 +55,48 @@
 	if (!/^[a-z][a-z0-9-]*$/.test(section)) section = '';
 
 	var ORIGIN = 'https://drewhoover.com';
-	var href = section ? ORIGIN + '/' + section + '/' : ORIGIN + '/';
-	var label = section ? 'drewhoover.com/' + section : 'drewhoover.com';
+	var fallback = section ? ORIGIN + '/' + section + '/' : ORIGIN + '/';
+
+	// Return to the page the visitor came from, when it was a drewhoover.com
+	// page outside this site. On drewhoover.com this site is /<slug>/; a site
+	// on its own domain is that whole domain.
+	var siteRoot =
+		location.origin === ORIGIN
+			? ORIGIN + '/' + (location.pathname.split('/')[1] || '') + '/'
+			: location.origin + '/';
+	var outside = function (url) {
+		return (
+			typeof url === 'string' && url.indexOf(ORIGIN + '/') === 0 && url.indexOf(siteRoot) !== 0
+		);
+	};
+	// The index site (src/scripts/back-bar-return.js) saves the page and the
+	// link of every click. That keeps the #fragment the referrer drops, so a
+	// lookbook opened from /favorites/#lookbooks returns to that tab, and it
+	// survives navigation inside a multi-page site. It's localStorage, shared
+	// by every tab, so trust it only when the click led into this site, was
+	// within the hour, and the visitor didn't arrive from another website.
+	var back = '';
+	try {
+		var saved = JSON.parse(localStorage.getItem('dhv-back-bar-return') || 'null');
+		var ref = document.referrer;
+		if (
+			saved &&
+			outside(saved.from) &&
+			String(saved.to).indexOf(siteRoot) === 0 &&
+			Date.now() - saved.at < 60 * 60 * 1000 &&
+			(!ref || ref.indexOf(ORIGIN + '/') === 0)
+		) {
+			back = saved.from;
+		}
+	} catch (e) {}
+	if (!back && outside(document.referrer)) back = document.referrer;
+
+	var href = back || fallback;
+	// Name the section, not the page: "drewhoover.com/favorites",
+	// "drewhoover.com/blog", or "drewhoover.com" for the front page.
+	var place = href.slice(ORIGIN.length).split('/')[1] || '';
+	place = place.split('#')[0].split('?')[0];
+	var label = place ? 'drewhoover.com/' + place : 'drewhoover.com';
 
 	// The index site's palette, both schemes (src/styles/global.css).
 	var themes = {
@@ -108,7 +157,7 @@
 
 	link.addEventListener('click', function () {
 		try {
-			if (window.dhAnalytics) window.dhAnalytics.track('back bar', { to: section || 'home' });
+			if (window.dhAnalytics) window.dhAnalytics.track('back bar', { to: place || 'home', returning: !!back });
 		} catch (e) {}
 	});
 
