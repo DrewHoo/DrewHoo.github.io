@@ -104,13 +104,15 @@ To resubmit every URL (seeding a newly registered engine, or a template change t
 
 To opt out on a specific page, add `data-dhv-back-bar="off"` to the `<html>` or `<body>` tag.
 
-A site in a section links back to the section page instead of home. The sports sites pass `data-section="sports"` on the script tag and get "← drewhoover.com/sports" linking to `/sports/`:
+The bar goes back to the drewhoover.com page the visitor came from, tab included: a lookbook opened from `/favorites/#lookbooks` returns to that tab, and a project opened from `/projects/` returns there. Browsers drop the `#fragment` from the referrer, so the index site saves the page on every click (`src/scripts/back-bar-return.js`, localStorage, same origin as every `/<slug>/` site) and the bar reads it if the click led into that site within the last hour and the visitor didn't arrive from another website. The referrer is the fallback. A visitor who arrived from anywhere else gets the default below.
+
+By default the bar links home. A site in a section links to the section page instead. The sports sites pass `data-section="sports"` on the script tag and get "← drewhoover.com/sports" linking to `/sports/`:
 
 ```html
 <script src="https://drewhoover.com/embed/back-bar.js" data-section="sports" async></script>
 ```
 
-The bar's colors follow `prefers-color-scheme`. A sports-section bar defaults to the dark palette, since every sports site is dark; any page can pin it with `data-dhv-back-bar-theme="dark"` or `"light"` on `<html>` or `<body>`. Clicks report through the analytics embed as the event `back bar` with `to` set to `home` or the section.
+The bar's colors follow `prefers-color-scheme`. A sports-section bar defaults to the dark palette, since every sports site is dark; any page can pin it with `data-dhv-back-bar-theme="dark"` or `"light"` on `<html>` or `<body>`. Clicks report through the analytics embed as the event `back bar` with `to` set to the target's first path segment (or `home`) and `returning` true when it goes back to where the visitor came from.
 
 ## "More sports" list on the sports sites
 
