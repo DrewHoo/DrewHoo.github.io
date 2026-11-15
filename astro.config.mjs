@@ -39,6 +39,18 @@ const siblingSites = [
 	),
 ];
 
+// The shopping lookbooks are sibling sites too, but they have no project
+// cards: the "shopping lookbooks" tab on /favorites is their only index. Take
+// their URLs from that tab's links, so adding an entry there is all it takes
+// to put a new lookbook in the sitemap.
+const favorites = fs.readFileSync(new URL('./src/pages/favorites.astro', import.meta.url), 'utf8');
+const lookbookPanel = favorites.match(/id="panel-lookbooks"[\s\S]*?<\/section>/)?.[0] ?? '';
+const lookbookSites = [
+	...new Set(
+		[...lookbookPanel.matchAll(/href="(https:\/\/drewhoover\.com\/[a-z0-9-]+\/)"/g)].map((m) => m[1]),
+	),
+].filter((u) => !siblingSites.includes(u));
+
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://drewhoover.com',
@@ -69,5 +81,5 @@ export default defineConfig({
 		'/why-deadlines-are-hard-and-why-forecasts-are-better':
 			'/blog/why-deadlines-are-hard-and-why-forecasts-are-better/',
 	},
-	integrations: [mdx(), sitemap({ customPages: siblingSites })],
+	integrations: [mdx(), sitemap({ customPages: [...siblingSites, ...lookbookSites] })],
 });
