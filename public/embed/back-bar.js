@@ -48,7 +48,7 @@
   today, and adds the sport's list while there are under three. Under three in
   all, or no answer, and the back link stays; it also holds the bar's height
   until the links land. A phone scrolls every link sideways; a desktop shows
-  the ones from the front that fit whole. `data-read-next-origin` on the
+  each one that fits whole, in order. `data-read-next-origin` on the
   script tag points it at another PUN (a local server, for testing).
   The order goes to the page as window.dhReadNext = { subject, links, tap,
   shown } and a `dh:readnext` event on window each time it's drawn, so the
@@ -233,7 +233,7 @@
 
 	// The bar's layout once it's on the page. A phone scrolls the links
 	// sideways with the right edge faded until the end; a desktop shows the
-	// ones from the front that fit whole.
+	// ones that fit whole, in order.
 	var fade = function () {
 		var more = !!rn && narrow() && bar.scrollLeft + bar.clientWidth < bar.scrollWidth - 2;
 		var mask = more ? 'linear-gradient(90deg,#000 calc(100% - 36px),transparent)' : 'none';
@@ -250,10 +250,15 @@
 		if (!narrow()) {
 			bar.scrollLeft = 0;
 			var right = bar.getBoundingClientRect().right - 14;
-			var cut = false;
+			// In order, each link that still fits whole, skipping one that
+			// doesn't for the shorter ones after it: a desktop shows four or five,
+			// not the two before the first long line.
 			rn.forEach(function (x) {
-				if (!cut && x.a.getBoundingClientRect().right > right + 0.5) cut = true;
-				if (cut) x.a.style.display = 'none';
+				x.a.style.display = 'none';
+			});
+			rn.forEach(function (x) {
+				x.a.style.display = '';
+				if (x.a.getBoundingClientRect().right > right + 0.5) x.a.style.display = 'none';
 			});
 		}
 		fade();
