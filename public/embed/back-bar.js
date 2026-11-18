@@ -155,6 +155,10 @@
 	);
 	// The links on the bar once they've landed, [{ a, l }], else null (the back link shows)
 	var rn = null;
+	// The links' own strip inside the bar: it scrolls and its text fades at the
+	// right edge, while the bar's dark field stays solid behind it to the edge.
+	var track = document.createElement('div');
+	track.id = 'dhv-read-next';
 	var narrowQuery = window.matchMedia ? window.matchMedia('(max-width: 700px)') : null;
 	var narrow = function () {
 		return narrowQuery ? narrowQuery.matches : window.innerWidth <= 700;
@@ -178,23 +182,28 @@
 			'text-align:left',
 			'box-sizing:border-box',
 		];
-		// One line of 12px links, the back link's 13px line height, so the bar
+		// One line of 11px links, the back link's 13px line height, so the bar
 		// is the same height either way. iOS Safari enlarges the text of a wide
 		// one-line block on a phone (text autosizing), which made 12px read as
-		// about 18; text-size-adjust keeps it at the size set.
+		// about 18; text-size-adjust keeps it at the size set. The track runs
+		// edge to edge, its own padding in place of the bar's.
 		if (rn) {
 			css.push(
 				'-webkit-text-size-adjust:100%',
 				'text-size-adjust:100%',
-				'font-size:12px',
+				'font-size:11px',
 				'line-height:18.2px',
+				'padding:6px 0',
+			);
+			track.style.cssText = [
 				'display:flex',
-				'gap:26px',
+				'gap:24px',
 				'white-space:nowrap',
 				'overflow-y:hidden',
 				'overflow-x:' + (narrow() ? 'auto' : 'hidden'),
 				'scrollbar-width:none',
-			);
+				'padding:0 14px',
+			].join(';');
 		} else {
 			css.push('font-size:13px', 'line-height:1.4');
 		}
@@ -235,20 +244,20 @@
 	// sideways with the right edge faded until the end; a desktop shows the
 	// ones that fit whole, in order.
 	var fade = function () {
-		var more = !!rn && narrow() && bar.scrollLeft + bar.clientWidth < bar.scrollWidth - 2;
+		var more = !!rn && narrow() && track.scrollLeft + track.clientWidth < track.scrollWidth - 2;
 		var mask = more ? 'linear-gradient(90deg,#000 calc(100% - 36px),transparent)' : 'none';
-		bar.style.webkitMaskImage = mask;
-		bar.style.maskImage = mask;
+		track.style.webkitMaskImage = mask;
+		track.style.maskImage = mask;
 	};
 	var pendingShown = false;
 	var fit = function () {
 		if (!rn || !bar.isConnected) return;
-		bar.style.overflowX = narrow() ? 'auto' : 'hidden';
+		track.style.overflowX = narrow() ? 'auto' : 'hidden';
 		rn.forEach(function (x) {
 			x.a.style.display = '';
 		});
 		if (!narrow()) {
-			bar.scrollLeft = 0;
+			track.scrollLeft = 0;
 			var right = bar.getBoundingClientRect().right - 14;
 			// In order, each link that still fits whole, skipping one that
 			// doesn't for the shorter ones after it: a desktop shows four or five,
@@ -501,15 +510,17 @@
 				shown: shown,
 			};
 			bar.textContent = '';
+			track.textContent = '';
 			if (links.length) {
 				rn = links.map(function (l, i) {
 					var a = anchor(l, teams);
 					a.addEventListener('click', function () {
 						tap(l, i + 1, 'bar');
 					});
-					bar.appendChild(a);
+					track.appendChild(a);
 					return { a: a, l: l };
 				});
+				bar.appendChild(track);
 				bar.setAttribute('aria-label', 'Read next');
 				pendingShown = true;
 			} else {
@@ -574,9 +585,9 @@
 		};
 
 		var style = document.createElement('style');
-		style.textContent = '#dhv-back-bar::-webkit-scrollbar{display:none}';
+		style.textContent = '#dhv-read-next::-webkit-scrollbar{display:none}';
 		(document.head || document.documentElement).appendChild(style);
-		bar.addEventListener('scroll', fade, { passive: true });
+		track.addEventListener('scroll', fade, { passive: true });
 		window.addEventListener('resize', fitSoon);
 		if (narrowQuery && narrowQuery.addEventListener) narrowQuery.addEventListener('change', function () {
 			paint();
