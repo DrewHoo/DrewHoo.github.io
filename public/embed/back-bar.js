@@ -179,9 +179,13 @@
 			'box-sizing:border-box',
 		];
 		// One line of 12px links, the back link's 13px line height, so the bar
-		// is the same height either way.
+		// is the same height either way. iOS Safari enlarges the text of a wide
+		// one-line block on a phone (text autosizing), which made 12px read as
+		// about 18; text-size-adjust keeps it at the size set.
 		if (rn) {
 			css.push(
+				'-webkit-text-size-adjust:100%',
+				'text-size-adjust:100%',
 				'font-size:12px',
 				'line-height:18.2px',
 				'display:flex',
