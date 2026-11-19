@@ -159,6 +159,15 @@
 	// right edge, while the bar's dark field stays solid behind it to the edge.
 	var track = document.createElement('div');
 	track.id = 'dhv-read-next';
+	// A desktop's links come a page at a time, each page the ones that fit
+	// whole; the arrow at the bar's right shows the next page, and the last
+	// page's goes back to the first. A phone scrolls instead and has no arrow.
+	var pages = [];
+	var page = 0;
+	var more = document.createElement('button');
+	more.type = 'button';
+	more.textContent = '\u203a';
+	more.setAttribute('aria-label', 'More links');
 	var narrowQuery = window.matchMedia ? window.matchMedia('(max-width: 700px)') : null;
 	var narrow = function () {
 		return narrowQuery ? narrowQuery.matches : window.innerWidth <= 700;
@@ -194,8 +203,25 @@
 				'font-size:11px',
 				'line-height:18.2px',
 				'padding:6px 0',
+				'display:flex',
+				'align-items:center',
 			);
+			more.style.cssText = [
+				'flex:none',
+				'display:' + (!narrow() && pages.length > 1 ? 'block' : 'none'),
+				'background:none',
+				'border:none',
+				'margin:0',
+				'padding:0 14px 0 4px',
+				'font:inherit',
+				'font-size:16px',
+				'line-height:18.2px',
+				'color:' + t.ink,
+				'cursor:pointer',
+			].join(';');
 			track.style.cssText = [
+				'flex:1 1 auto',
+				'min-width:0',
 				'display:flex',
 				'gap:24px',
 				'white-space:nowrap',
@@ -244,8 +270,8 @@
 	// sideways with the right edge faded until the end; a desktop shows the
 	// ones that fit whole, in order.
 	var fade = function () {
-		var more = !!rn && narrow() && track.scrollLeft + track.clientWidth < track.scrollWidth - 2;
-		var mask = more ? 'linear-gradient(90deg,#000 calc(100% - 36px),transparent)' : 'none';
+		var further = !!rn && narrow() && track.scrollLeft + track.clientWidth < track.scrollWidth - 2;
+		var mask = further ? 'linear-gradient(90deg,#000 calc(100% - 36px),transparent)' : 'none';
 		track.style.webkitMaskImage = mask;
 		track.style.maskImage = mask;
 	};
@@ -256,20 +282,45 @@
 		rn.forEach(function (x) {
 			x.a.style.display = '';
 		});
+		pages = [];
 		if (!narrow()) {
 			track.scrollLeft = 0;
-			var right = bar.getBoundingClientRect().right - 14;
-			// In order, each link that still fits whole, skipping one that
-			// doesn't for the shorter ones after it: a desktop shows four or five,
-			// not the two before the first long line.
-			rn.forEach(function (x) {
-				x.a.style.display = 'none';
+			// Pages from each link's width: each page takes, in order, the links
+			// not on an earlier page that still fit whole beside the ones it has,
+			// skipping a long one for the shorter ones after it. A link wider than
+			// the bar is a page of its own.
+			more.style.display = 'block';
+			var room = track.clientWidth - 28;
+			var gap = 24;
+			var widths = rn.map(function (x) {
+				return x.a.getBoundingClientRect().width;
 			});
-			rn.forEach(function (x) {
-				x.a.style.display = '';
-				if (x.a.getBoundingClientRect().right > right + 0.5) x.a.style.display = 'none';
+			var left = rn.map(function (_, i) {
+				return i;
 			});
+			while (left.length) {
+				var used = 0;
+				var on = [];
+				left = left.filter(function (i) {
+					var w = widths[i] + (on.length ? gap : 0);
+					if (on.length && used + w > room) return true;
+					used += w;
+					on.push(i);
+					return false;
+				});
+				pages.push(on);
+			}
+			if (page >= pages.length) page = 0;
+			var here = pages[page] || [];
+			rn.forEach(function (x, i) {
+				x.a.style.display = here.indexOf(i) >= 0 ? '' : 'none';
+			});
+			if (pages.length < 2) {
+				// one page: the arrow's room goes back to the links
+				more.style.display = 'none';
+			}
 		}
+		paint();
 		fade();
 		if (pendingShown) {
 			pendingShown = false;
@@ -508,6 +559,10 @@
 				// for the page's own block: a tap and a sighting, counted the bar's way
 				tap: tap,
 				shown: shown,
+				// a desktop reader's turn to the next page of the bar
+				paged: function (n, ids) {
+					send('readnext page', { from: from, subject: subject, page: n, ids: ids });
+				},
 			};
 			bar.textContent = '';
 			track.textContent = '';
@@ -521,6 +576,8 @@
 					return { a: a, l: l };
 				});
 				bar.appendChild(track);
+				bar.appendChild(more);
+				page = 0;
 				bar.setAttribute('aria-label', 'Read next');
 				pendingShown = true;
 			} else {
@@ -588,6 +645,15 @@
 		style.textContent = '#dhv-read-next::-webkit-scrollbar{display:none}';
 		(document.head || document.documentElement).appendChild(style);
 		track.addEventListener('scroll', fade, { passive: true });
+		more.addEventListener('click', function () {
+			if (pages.length < 2) return;
+			page = (page + 1) % pages.length;
+			fit();
+			var ids = (pages[page] || []).map(function (i) {
+				return rn[i].l.id;
+			});
+			if (window.dhReadNext && window.dhReadNext.paged) window.dhReadNext.paged(page + 1, ids);
+		});
 		window.addEventListener('resize', fitSoon);
 		if (narrowQuery && narrowQuery.addEventListener) narrowQuery.addEventListener('change', function () {
 			paint();
