@@ -2,7 +2,7 @@
   Source for public/embed/analytics.js — the drop-in analytics the sibling
   project sites load, alongside back-bar.js and giscus.js. Build it with:
 
-    npm run gen:embed
+    pnpm run gen:embed
 
   Each project site is its own GitHub Pages deployment, so none of them inherit
   this site's bundled Mixpanel; before this embed existed, a project reported

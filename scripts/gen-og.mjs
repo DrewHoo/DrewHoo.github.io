@@ -1,5 +1,5 @@
 // Generate the site-level share image. Run with:
-//   npm run gen:og
+//   pnpm run gen:og
 // Writes public/og-default.png (1200x630), the og:image / twitter:image for
 // every page that has no cover of its own: the front page, /sports, /projects,
 // /about. A blog post with a heroImage keeps using that instead (see

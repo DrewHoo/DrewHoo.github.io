@@ -54,10 +54,10 @@ Blog posts live in [Hashnode](https://hashnode.com/) and are fetched at build ti
 ## Local development
 
 ```bash
-npm install
-npm run dev       # localhost:4321
-npm run build
-npm run preview
+pnpm install
+pnpm run dev       # localhost:4321
+pnpm run build
+pnpm run preview
 ```
 
 ## Hosting / deploy

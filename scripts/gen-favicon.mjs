@@ -1,5 +1,5 @@
 // Generate the drewhoover.com favicon set from one SVG source. Run with:
-//   npm run gen:favicon
+//   pnpm run gen:favicon
 // Writes to public/:
 //   favicon.svg          — modern browsers (vector)
 //   favicon.ico          — 16/32/48 for anything that probes the root .ico

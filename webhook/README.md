@@ -74,7 +74,7 @@ Site settings → Environment variables → Add:
 
 ```bash
 cd webhook
-npx netlify dev    # requires `npm i -g netlify-cli`
+pnpm dlx netlify dev    # requires `pnpm add -g netlify-cli`
 ```
 
 Hit `http://localhost:8888/.netlify/functions/hashnode-rebuild` with a crafted signed POST, or use Hashnode's **Send test event** against an ngrok tunnel.

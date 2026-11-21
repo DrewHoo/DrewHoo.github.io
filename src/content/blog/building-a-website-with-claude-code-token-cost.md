@@ -102,7 +102,7 @@ Swap `my-project` for part of your project's folder name. The `**` picks up the 
 None of it is clever.
 
 1. List every commit on every branch, merged or not, and extract each one with `git archive`.
-2. Install each commit's own `package-lock.json` once per distinct lockfile (there were five), and run that commit's real build.
+2. Install each commit's own `pnpm-lock.yaml` once per distinct lockfile (there were five), and run that commit's real build.
 3. Serve each build and photograph it with Playwright, with the browser clock frozen at the commit's timestamp, so "this week's games" means that week's games. Same URL every time: `?c=unranked&scope=active`, which every version since the first build understands.
 4. Drop frames that look identical to the one before. 121 builds became 27 frames, because most commits change data or code you can't see.
 5. Read the running totals from the script above at each commit's timestamp.
